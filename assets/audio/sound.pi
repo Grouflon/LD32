@@ -1,0 +1,63 @@
+use_bpm 140
+
+s = :ambi_drone
+s_duration = sample_duration(s)
+
+with_fx :echo do
+  with_fx :reverb, room: 1, damp: 1 do
+    with_fx :bitcrusher, bits:4 do
+      live_loop :noise_loop do
+        #sync :rien
+
+
+        noise_count = 2
+        (noise_count).times do
+
+          length = s_duration/noise_count
+          wait = rrand(0, length)
+          sleep wait
+          sample :elec_blip, rate: rrand(1.03, 0.97) , attack: 0, decay: 0.2, decay_value: 0.8, release: 8, amp: rrand(5, 2), cutoff: rrand(60, 100)
+          #play choose(scale(:C, :hex_major6)), amp: 0.5, release: length * 2
+          sleep length - wait
+
+        end
+      end
+    end
+  end
+end
+
+
+
+live_loop :bass do
+  sync :rien
+  with_fx :distortion do |d|
+  use_synth :supersaw
+  play :B2, cutoff: rrand(90, 100)
+  use_synth :pulse
+  play :B1, amp: 0.5, release: 0.5
+  sleep 0.5
+  15.times do
+    use_synth :supersaw
+    play :C3, cutoff: rrand(90, 100)
+    use_synth :pulse
+    play :C2, amp: 0.5, release: 0.5
+    #sample :bass_thick_c, rate: 1, sustain: 0.1, release: 0.2
+    sleep 0.5
+  end
+  #sample :bass_thick_c, rate: 1, sustain: 0.1, release: 0.2
+  #sample :bass_dnb_f, rate: 1
+  #sample :bass_dnb_f, rate: 1
+  end
+end
+
+
+live_loop :sample, mix: 0.5 do
+  sync :rien
+
+  with_fx :distortion do
+    with_fx :slicer, phase:0.01, amp: 1 do |r|
+      sample s, mix: 0.3
+      sleep s_duration
+    end
+  end
+end

@@ -2,8 +2,13 @@ import com.haxepunk.Entity;
 import com.haxepunk.graphics.Backdrop;
 import com.haxepunk.Scene;
 import com.haxepunk.HXP;
+import com.haxepunk.Sfx;
+import com.haxepunk.tweens.sound.Fader;
+import com.haxepunk.tweens.sound.SfxFader;
+import com.haxepunk.utils.Ease;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
+import sys.db.Types.SFlags;
 
 class MainScene extends Scene
 {
@@ -22,6 +27,18 @@ class MainScene extends Scene
 		_bg.layer = 2;
 		_ground.layer = 1;
 		player.layer = 0;
+		
+		#if flash
+		var sfx:Sfx = new Sfx("audio/background.mp3");
+		#else
+		var sfx:Sfx = new Sfx("audio/background.ogg");
+		#end
+		sfx.play(1, 0, true);
+		sfx.volume = 0.0;
+		
+		var fader:SfxFader = new SfxFader(sfx);
+		fader.fadeTo(1.0, 20.0, Ease.quadInOut);
+		addTween(fader, true);
 	}
 	
 	public override function update()

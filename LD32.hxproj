@@ -11,7 +11,7 @@
     <movie version="1" />
     <movie minorVersion="0" />
     <movie platform="Lime" />
-    <movie background="#333333" />
+    <movie background="333333" />
   </output>
   <!-- Other classes to be compiled into your SWF -->
   <classpaths>
@@ -30,7 +30,7 @@
     <option noInlineOnDebug="False" />
     <option mainClass="ApplicationMain" />
     <option enabledebug="False" />
-    <option additional="--no-output &#xA;--remap flash:openfl&#xA;#--macro keep(&quot;Main&quot;)&#xA;-debug " />
+    <option additional="--no-output &#xA;--remap flash:openfl&#xA;#--macro keep(&quot;Main&quot;)" />
   </build>
   <!-- haxelib libraries -->
   <haxelib>
