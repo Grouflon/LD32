@@ -6,7 +6,7 @@ s_duration = sample_duration(s)
 with_fx :echo do
   with_fx :reverb, room: 1, damp: 1 do
     with_fx :bitcrusher, bits:4 do
-      live_loop :noise_loop do
+      live_loop :noise_loop do
         #sync :rien
 
 
@@ -29,30 +29,51 @@ end
 
 
 live_loop :bass do
-  sync :rien
+  #sync :rien
   with_fx :distortion do |d|
-  use_synth :supersaw
-  play :B2, cutoff: rrand(90, 100)
-  use_synth :pulse
-  play :B1, amp: 0.5, release: 0.5
-  sleep 0.5
-  15.times do
     use_synth :supersaw
-    play :C3, cutoff: rrand(90, 100)
-    use_synth :pulse
-    play :C2, amp: 0.5, release: 0.5
-    #sample :bass_thick_c, rate: 1, sustain: 0.1, release: 0.2
+    play :B2, cutoff: rrand(90, 100)
+    use_synth :pulse
+    play :B1, amp: 0.5, release: 0.5
     sleep 0.5
-  end
-  #sample :bass_thick_c, rate: 1, sustain: 0.1, release: 0.2
-  #sample :bass_dnb_f, rate: 1
-  #sample :bass_dnb_f, rate: 1
+    15.times do
+      use_synth :supersaw
+      play :C3, cutoff: rrand(90, 100)
+      use_synth :pulse
+      play :C2, amp: 0.5, release: 0.5
+      #sample :bass_thick_c, rate: 1, sustain: 0.1, release: 0.2
+      sleep 0.5
+    end
+    #sample :bass_thick_c, rate: 1, sustain: 0.1, release: 0.2
+    #sample :bass_dnb_f, rate: 1
+    #sample :bass_dnb_f, rate: 1
   end
 end
 
 
+live_loop :lead do
+  #with_fx :reverb, phase: 0.5, mix: 1 do
+    with_fx :echo, phase: 0.125, decay: 8, max_phase: 1 do
+      define :play_lead do |n|
+        use_synth :fm
+        play n, mod_range: 2, mod_phase: 1, release: 4, depth: 2, divisor: 2
+      end
+
+      sync :bass
+      play_lead scale(:C6, :minor)[6]
+      sleep 2
+      play_lead scale(:C6, :minor)[6]
+      sleep 2
+      play_lead scale(:C6, :minor)[6]
+      sleep 2
+      play_lead scale(:C6, :minor)[6]
+    end
+  #end
+end
+
+
 live_loop :sample, mix: 0.5 do
-  sync :rien
+  #sync :rien
 
   with_fx :distortion do
     with_fx :slicer, phase:0.01, amp: 1 do |r|
