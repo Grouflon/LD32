@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Michel</title>
+	<script src="http://code.jquery.com/jquery-1.11.2.min.js"></script>
+	<style>
+	* { margin: 0; padding: 0; }
+	</style>
+</head>
+<body>
+<object type="application/x-shockwave-flash" 
+  data="Main.swf" 
+  width="0" height="0" id="player" style="display:block; margin:0; padding:0;">
+  <param name="movie" value="Main.swf" />
+  <param name="quality" value="high"/>
+</object>
+<script>
+	$("#player").attr("width", $(window).innerWidth());
+	$("#player").attr("height", $(window).innerHeight());
+</script>
+</body>
+</html>

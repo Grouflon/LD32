@@ -31,30 +31,42 @@ class MainScene extends Scene
 		#if flash
 		var sfx:Sfx = new Sfx("audio/background.mp3");
 		_bass = new Sfx("audio/bassline.mp3", function():Void {
-			if (!_leadFader.active)
+			if (Input.check(Key.LEFT) || Input.check(Key.RIGHT))
 			{
 				_lead.play(0.2);
 				_leadFader.fadeTo(0.5, 2, Ease.quadOut);
 				_leadFader.start();
-			}
-			else
-			{
-				_lead.play(0.5);
+				/*if (!_leadFader.active)
+				{
+					_lead.play(0.2);
+					_leadFader.fadeTo(0.5, 2, Ease.quadOut);
+					_leadFader.start();
+				}
+				else
+				{
+					_lead.play(0.5);
+				}*/
 			}
 		});
 		_lead = new Sfx("audio/lead.mp3");
 		#else
 		var sfx:Sfx = new Sfx("audio/background.ogg");
 		_bass = new Sfx("audio/bassline.ogg", function():Void {
-			if (!_leadFader.active)
+			if (Input.check(Key.LEFT) || Input.check(Key.RIGHT))
 			{
 				_lead.play(0.2);
 				_leadFader.fadeTo(0.5, 2, Ease.quadOut);
 				_leadFader.start();
-			}
-			else
-			{
-				_lead.play(0.5);
+				/*if (!_leadFader.active)
+				{
+					_lead.play(0.2);
+					_leadFader.fadeTo(0.5, 2, Ease.quadOut);
+					_leadFader.start();
+				}
+				else
+				{
+					_lead.play(0.5);
+				}*/
 			}
 		});
 		_lead = new Sfx("audio/lead.ogg");
@@ -71,6 +83,10 @@ class MainScene extends Scene
 		_bassFader = new SfxFader(_bass);
 		_bassFader.active = false;
 		addTween(_bassFader);
+		_bass.play(0., 0, true);
+		_bassFader.active = true;
+		_bassFader.fadeTo(1.0, 20, Ease.quadIn);
+		_bassFader.start();
 
 		_leadFader = new SfxFader(_lead);
 		addTween(_leadFader);
@@ -81,24 +97,6 @@ class MainScene extends Scene
 		var bgSpeed:Float = 40.;
 		var groundSpeed:Float = 80.;
 		
-		
-		if (Input.check(Key.LEFT) || Input.check(Key.RIGHT))
-		{
-			if (!_bassFader.active)
-			{
-				_bass.play(0.4, 0, true);
-				_bassFader.active = true;
-				_bassFader.fadeTo(1.0, 4, Ease.quadIn);
-				_bassFader.start();
-			}
-		}
-		else
-		{
-			_bass.stop();
-			_lead.stop();
-			_bassFader.active = false;
-			_leadFader.active = false;
-		}
 		
 		if (Input.check(Key.LEFT))
 		{
