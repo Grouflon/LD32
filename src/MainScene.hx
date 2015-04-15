@@ -10,6 +10,7 @@ import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 import sys.db.Types.SFlags;
 
+
 class MainScene extends Scene
 {
 	public function new()
