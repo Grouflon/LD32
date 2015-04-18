@@ -20,6 +20,8 @@ class Player extends Entity
 
 	public function new(x:Float=0, y:Float=0)
 	{
+		super(x, y);
+		
 		addGraphic(Image.createRect(30, 50, 0xFFFFFF, 1));
 		
 		setHitbox(30, 50);
@@ -30,8 +32,6 @@ class Player extends Entity
 		
 		name = "player";
 		type = "player";
-		
-		super(x, y);
 	}
 	
 	
@@ -71,21 +71,18 @@ class Player extends Entity
 	{
 		if (!_onGround) return;
 		
-		_velocity.y = -5;
+		_velocity.y = -7;
 	}
 	
-	/*
+	
 	override public function moveCollideY(e:Entity):Bool
 	{
-		if (_velocity.y * HXP.sign(_gravity.y) > 0)
-		{
-			_onGround = true;
-		}
+		_onGround = true;
 		_velocity.y = 0;
 		
 		return true;
 	}
-	*/
+	
 	
 	private function _applyGravity():Void
 	{
@@ -98,7 +95,7 @@ class Player extends Entity
 		moveBy(_velocity.x, _velocity.y, "block");
 	}
 	
-	private var _gravity:Vector2 = new Vector2(0. , 10.);
+	private var _gravity:Vector2 = new Vector2(0. , 20.);
 	private var _velocity:Vector2 = new Vector2(0., 0.);
 	
 	private var _onGround:Bool = false;
