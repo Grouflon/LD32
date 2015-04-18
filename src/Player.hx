@@ -25,6 +25,9 @@ class Player extends Entity
 		setHitbox(30, 50);
 		collidable = true;
 		
+		width = 30;
+		height = 50;
+		
 		name = "player";
 		type = "player";
 		

@@ -2,6 +2,7 @@ import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Image;
 
+
 class SolidBlock extends Entity
 {
 	public function new(x:Int, y:Int)
