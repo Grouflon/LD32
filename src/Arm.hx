@@ -6,10 +6,7 @@ import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.Tween;
 import com.haxepunk.tweens.misc.Alarm;
-<<<<<<< HEAD
 import com.haxepunk.utils.Draw;
-=======
->>>>>>> d64298bc83e931a5c2366a642f765baf940380ce
 import src.Limb;
 
 /**
