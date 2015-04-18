@@ -93,9 +93,6 @@ class Player extends Entity
 			_height = 72;
 		}
 		
-		trace("Do I have a tween ? " + hasTween);
-		trace("I have " + _armCount + " arms and " + _legCount + " legs...");
-		
 		_playerMovement();
 		_applyGravity();
 		
@@ -127,6 +124,15 @@ class Player extends Entity
 	
 	private function _doJump():Void
 	{
+		if (_short)
+		{
+			_reach = 7.;
+		}
+		else
+		{
+			_reach = 9.5;
+		}
+		
 		_onGround = false;
 		_velocity.y = -_reach;
 	}
@@ -174,6 +180,15 @@ class Player extends Entity
 	
 	private function _playerMovement():Void
 	{
+		if (_short)
+		{
+			_speed = 2;
+		}
+		else
+		{
+			_speed = 4;
+		}
+		
 		moveBy(_velocity.x * _direction, _velocity.y, ["block", "enemy"]);
 	}
 	
