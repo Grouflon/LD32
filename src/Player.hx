@@ -20,7 +20,12 @@ class Player extends Entity
 
 	public function new(x:Float=0, y:Float=0)
 	{
-		addGraphic(Image.createRect(50, 50, 0xFFFFFF, 1));
+		addGraphic(Image.createRect(30, 50, 0xFFFFFF, 1));
+		
+		setHitbox(30, 50);
+		
+		name = "player";
+		type = "player";
 		
 		super(x, y);
 	}
@@ -47,14 +52,35 @@ class Player extends Entity
 		
 		if (Input.pressed(Key.SPACE))
 		{
-			_velocity.y = -5;
+			if (_onGround)
+			{
+				_doJump();
+			}
 		}
 		
-		_applyGravity();
-		
 		_playerMovement();
+		_applyGravity();
 	}
 	
+	
+	private function _doJump():Void
+	{
+		if (!_onGround) return;
+		
+		_velocity.y = -5;
+	}
+	
+	
+	override public function moveCollideY(e:Entity):Bool
+	{
+		if (_velocity.y * HXP.sign(_gravity.y)> 0)
+		{
+			_onGround = true;
+		}
+		_velocity.y = 0;
+		
+		return true;
+	}
 	
 	private function _applyGravity():Void
 	{
@@ -63,19 +89,13 @@ class Player extends Entity
 	
 	private function _playerMovement():Void
 	{
-		moveBy(_velocity.x, _velocity.y);
-		
-		var groundLevel:Int = HXP.height - 100;
-		if (y > groundLevel)
-		{
-			y = groundLevel;
-			_velocity.y = 0;
-		}
+		_onGround = false;
+		moveBy(_velocity.x, _velocity.y, "block", true);
 	}
 	
 	private var _gravity:Vector2 = new Vector2(0. , 10.);
 	private var _velocity:Vector2 = new Vector2(0., 0.);
 	
-	private var _jump:Bool = false;
+	private var _onGround:Bool = false;
 
 }
