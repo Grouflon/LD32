@@ -11,9 +11,9 @@ import src.Limb;
 class Arm extends Limb
 {
 
-	public function new(x:Float, y:Float, direction:Int) 
+	public function new(x:Float, y:Float, direction:Int, playerHeight:Int) 
 	{
-		super(x, y + 10, direction);
+		super(x, y - (playerHeight / 3) * 2, direction);
 		
 		addGraphic(Image.createRect(7, 4, 0x3366FF, 1));
 		

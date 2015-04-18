@@ -11,9 +11,9 @@ import src.Limb;
 class Leg extends Limb
 {
 
-	public function new(x:Float, y:Float, direction:Int) 
+	public function new(x:Float, y:Float, direction:Int, playerHeight:Int) 
 	{
-		super(x, y + 40, direction);
+		super(x, y - (playerHeight / 3) * 1, direction);
 		
 		addGraphic(Image.createRect(10, 5, 0x3366FF, 1));
 		
