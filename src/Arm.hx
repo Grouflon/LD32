@@ -34,6 +34,8 @@ class Arm extends Limb
 	
 	override public function moveCollideX(e:Entity):Bool
 	{
+		super.moveCollideX(e);
+		
 		if (e.type == "block")
 		{
 			_velocity.x = 0;
