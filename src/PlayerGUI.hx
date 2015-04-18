@@ -13,7 +13,7 @@ import Player;
 class PlayerGUI extends Entity
 {
 
-	public function new() 
+	public function new()
 	{	
 		super();
 		
