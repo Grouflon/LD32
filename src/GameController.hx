@@ -18,7 +18,7 @@ class GameController
 		HXP.scene.removeAll();
 	}
 	
-	public function isPlayer():Bool
+	public function isPlayerAlive():Bool
 	{
 		if (HXP.scene.getInstance("player") == null)
 		{
@@ -26,5 +26,11 @@ class GameController
 			return false;
 		}
 		return true;
+	}
+	
+	public function update():Void
+	{
+		if (!isPlayerAlive())
+			start();
 	}
 }

@@ -9,7 +9,7 @@ class SolidBlock extends Entity
 	{
 		super(x, y);
 		
-		addGraphic(Image.createRect(32, 32, 0xFFFFFF, 1));
+		addGraphic(Image.createRect(32, 32, 0x8D8D8D, 1));
 		setHitbox(32, 32);
 		name = "block";
 		type = "block";
