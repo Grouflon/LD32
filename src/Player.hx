@@ -10,7 +10,10 @@ import com.haxepunk.graphics.atlas.TextureAtlas;
 import com.haxepunk.utils.Draw;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
+import com.haxepunk.utils.Joystick;
 import hxmath.math.Vector2;
+import src.Arm;
+import src.Leg;
 
 /**
  * ...
@@ -25,7 +28,7 @@ class Player extends Entity
 		
 		_initGraphics();
 		
-		setHitbox(24, 72);
+		setHitbox(24, _height);
 		collidable = true;
 		
 		originX = cast(width * 0.5, Int);
@@ -33,6 +36,12 @@ class Player extends Entity
 		
 		name = "player";
 		type = "player";
+		
+		Input.define("Jump", [Key.W, Key.UP, Key.SPACE]);
+		Input.define("MoveLeft", [Key.A, Key.LEFT]);
+		Input.define("MoveRight", [Key.D, Key.RIGHT]);
+		Input.define("FireArm", [Key.Q]);
+		Input.define("FireLeg", [Key.E]);
 	}
 	
 	
@@ -40,27 +49,50 @@ class Player extends Entity
 	{
 		super.update();
 		
-		if (Input.check(Key.LEFT))
+		if (Input.check("MoveLeft"))
 		{
-			_velocity.x = -_speed;
-		}
-		
-		if (Input.check(Key.RIGHT))
-		{
+			_direction = -1;
 			_velocity.x = _speed;
 		}
 		
-		if (!Input.check(Key.RIGHT) && !Input.check(Key.LEFT))
+		if (Input.check("MoveRight"))
+		{
+			_direction = 1;
+			_velocity.x = _speed;
+		}
+		
+		if (!Input.check("MoveLeft") && !Input.check("MoveRight"))
 		{
 			_velocity.x = 0;
 		}
 		
-		if (Input.pressed(Key.SPACE))
+		if (Input.pressed("Jump"))
 		{
 			if (_onGround)
 			{
 				_doJump();
 			}
+		}
+				
+		if (Input.pressed("FireArm"))
+		{
+			_fireArm();
+		}
+		
+		if (Input.pressed("FireLeg"))
+		{
+			_fireLeg();
+		}
+		
+		if (_legCount == 0)
+		{
+			_short = true;
+			_height = 57;
+		}
+		else
+		{
+			_short = false;
+			_height = 72;
 		}
 		
 		_playerMovement();
@@ -70,10 +102,28 @@ class Player extends Entity
 	}
 	
 	
+	private function _fireArm()
+	{
+		if (_armCount > 0)
+		{
+			HXP.scene.add(new Arm(x, y, _direction, _height));
+			_armCount--;
+		}
+	}
+	
+	
+	private function _fireLeg()
+	{
+		if (_legCount > 0)
+		{
+			HXP.scene.add(new Leg(x, y, _direction, _height));
+			_legCount--;
+		}
+	}
+	
+	
 	private function _doJump():Void
 	{
-		if (!_onGround) return;
-		
 		_onGround = false;
 		_velocity.y = -_reach;
 	}
@@ -106,7 +156,7 @@ class Player extends Entity
 	
 	private function _playerMovement():Void
 	{
-		moveBy(_velocity.x, _velocity.y, "block");
+		moveBy(_velocity.x * _direction, _velocity.y, "block");
 	}
 	
 	private function _initGraphics():Void
@@ -124,6 +174,15 @@ class Player extends Entity
 	
 	private function _updateGraphics():Void
 	{
+		/*
+		if (_short)
+		{
+		}
+		else
+		{
+		}
+		*/
+		
 		if (Math.abs(_velocity.x) > 0)
 		{
 			_sprite.play("walk");
@@ -133,11 +192,11 @@ class Player extends Entity
 			_sprite.play("idle");
 		}
 		
-		if (_velocity.x > 0)
+		if (_direction > 0)
 		{
 			_sprite.flipped = false;
 		}
-		else if (_velocity.x < 0)
+		else if (_direction < 0)
 		{
 			_sprite.flipped = true;
 		}
@@ -147,9 +206,18 @@ class Player extends Entity
 	
 	private var _gravity:Vector2 = new Vector2(0. , 20.);
 	private var _velocity:Vector2 = new Vector2(0., 0.);
+
+	private var _short:Bool = false;
+	private var _height:Int = 72;
 	
+	private var _direction:Int = 1;
+
 	private var _speed:Float = 4.;
 	private var _reach:Float = 9.5;
+
+	
+	private var _armCount:Int = 2;
+	private var _legCount:Int = 2;
 	
 	private var _onGround:Bool = false;
 
