@@ -13,6 +13,7 @@ import com.haxepunk.utils.Draw;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Joystick;
+import com.haxepunk.graphics.Text;
 import hxmath.math.Vector2;
 import src.Arm;
 import src.Leg;
@@ -97,16 +98,21 @@ class Player extends Entity
 		_applyGravity();
 		
 		_updateGraphics();
+		
+		_firedArm = false;
 	}
-	
+
 	
 	private function _fireArm()
 	{
-		if (_armCount > 0)
+		if (_armCount > 0 && _canFireArm)
 		{
-			HXP.scene.add(new Arm(x, y, _direction, _height));
+			_firedArm = true;
+			_canFireArm = false;
 			_armCount--;
+			addTween(new Alarm(.15, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height)); }, TweenType.OneShot), true);
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
+			addTween(new Alarm(.3, function (e:Dynamic = null):Void { _canFireArm = true; }, TweenType.OneShot), true);
 		}
 	}
 	
@@ -180,92 +186,151 @@ class Player extends Entity
 	
 	private function _playerMovement():Void
 	{
-		if (_short)
+		if (_short && _onGround)
 		{
-			_speed = 2;
+			_speed = 0;
 		}
 		else
 		{
-			_speed = 4;
+			_speed = 4.;
 		}
 		
-		moveBy(_velocity.x * _direction, _velocity.y, ["block", "enemy"]);
+		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy"]);
 	}
 	
 	private function _initGraphics():Void
 	{
-		_sprite = new Spritemap("graphics/player_spritesheet.png", 78, 75);
-		_sprite.add("idle", [0, 1, 2, 3], 10);
-		_sprite.add("walk", [10, 11, 12, 13, 14, 15, 16], 13);
-		_sprite.add("jump_ascend", [20, 21], 13, false);
-		_sprite.add("jump_ascend_loop", [22, 23], 13, true);
-		_sprite.add("jump_descent", [24, 25], 13, false);
-		_sprite.add("jump_descent_loop", [26, 27], 13, true);
+		_legsSprite = new Spritemap("graphics/player_legs_spritesheet.png", 78, 75);
+		_chestSprite = new Spritemap("graphics/player_chest_spritesheet.png", 78, 75);
+		_legsSprite.add("idle", [0], 10);
+		_chestSprite.add("idle", [0, 1, 2, 3], 10);
+		_chestSprite.add("idle_1arm", [70, 71, 72, 73], 10);
+		_chestSprite.add("idle_0arm", [80, 81, 82, 83], 10);
+		_legsSprite.add("walk", [10, 11, 12, 13, 14, 15, 16], 13);
+		_chestSprite.add("walk_1arm", [50, 51, 52, 53, 54, 55, 56], 13);
+		_chestSprite.add("walk_0arm", [60, 61, 62, 63, 64, 65, 66], 13);
+		_chestSprite.add("walk", [10, 11, 12, 13, 14, 15, 16], 13);
+		_legsSprite.add("jump_ascend", [20, 21], 13, false);
+		_chestSprite.add("jump_ascend", [20, 21], 13, false);
+		_legsSprite.add("jump_ascend_loop", [22, 23], 13, true);
+		_chestSprite.add("jump_ascend_loop", [22, 23], 13, true);
+		_legsSprite.add("jump_descent", [24, 25], 13, false);
+		_chestSprite.add("jump_descent", [24, 25], 13, false);
+		_legsSprite.add("jump_descent_loop", [26, 27], 13, true);
+		_chestSprite.add("jump_descent_loop", [26, 27], 13, true);
 		
-		graphic = _sprite;
-		_sprite.play("idle");
+		_chestSprite.add("arm1_tearing", [30, 31, 32, 33], 13, false);
+		_chestSprite.add("arm2_tearing", [40, 41, 42, 43], 13, false);
+
+		addGraphic(_legsSprite);
+		addGraphic(_chestSprite);
+		_legsSprite.play("idle");
+		_chestSprite.play("idle");
 		
-		_sprite.originX = _sprite.width / 2;
-		_sprite.originY = _sprite.height;
+		_legsSprite.originX = _legsSprite.width / 2;
+		_chestSprite.originX = _chestSprite.width / 2;
+		_legsSprite.originY = _legsSprite.height;
+		_chestSprite.originY = _chestSprite.height;
 	}
 	
 	private function _updateGraphics():Void
 	{
-		/*
-		if (_short)
+		// CHEST
+		if (_firedArm && (_armCount == 1)) _chestSprite.play("arm1_tearing");
+		if (_firedArm && (_armCount == 0)) _chestSprite.play("arm2_tearing");
+		
+		var armStr:String = "";
+		if (_armCount == 1) armStr = "_1arm";
+		else if (_armCount == 0) armStr = "_0arm";
+		
+		if ((_chestSprite.currentAnim != "arm1_tearing" && _chestSprite.currentAnim != "arm2_tearing") || _chestSprite.complete)
 		{
+			if (!_onGround)
+			{
+				if (_chestSprite.currentAnim != "jump_ascend" &&
+					_chestSprite.currentAnim != "jump_ascend_loop" &&
+					_chestSprite.currentAnim != "jump_descent" &&
+					_chestSprite.currentAnim != "jump_descent_loop")
+				{
+					_chestSprite.play("jump_ascend");
+				}
+				else if (_chestSprite.currentAnim == "jump_ascend" && _chestSprite.complete)
+				{
+					_chestSprite.play("jump_ascend_loop");
+				}
+				
+				if (_velocity.y > -1 && _chestSprite.currentAnim != "jump_descent" && _chestSprite.currentAnim != "jump_descent_loop")
+				{
+					_chestSprite.play("jump_descent");
+				}
+				else if (_chestSprite.currentAnim == "jump_descent" && _chestSprite.complete)
+				{
+					_chestSprite.play("jump_descent_loop");
+				}
+			}
+			else if (Math.abs(_velocity.x) > 0)
+			{
+				_chestSprite.play("walk" + armStr);
+			}
+			else
+			{
+				_chestSprite.play("idle" + armStr);
+			}
 		}
-		else
-		{
-		}
-		*/
 		
 		if (!_onGround)
 		{
-			if (_sprite.currentAnim != "jump_ascend" && _sprite.currentAnim != "jump_ascend_loop" && _sprite.currentAnim != "jump_descent" && _sprite.currentAnim != "jump_descent_loop")
+			if (_legsSprite.currentAnim != "jump_ascend" && _legsSprite.currentAnim != "jump_ascend_loop" && _legsSprite.currentAnim != "jump_descent" && _legsSprite.currentAnim != "jump_descent_loop")
 			{
-				_sprite.play("jump_ascend");
+				_legsSprite.play("jump_ascend");
 			}
-			else if (_sprite.currentAnim == "jump_ascend" && _sprite.complete)
+			else if (_legsSprite.currentAnim == "jump_ascend" && _legsSprite.complete)
 			{
-				_sprite.play("jump_ascend_loop");	
+				_legsSprite.play("jump_ascend_loop");	
 			}
 			
-			if (_velocity.y > -1 && _sprite.currentAnim != "jump_descent" && _sprite.currentAnim != "jump_descent_loop")
+			if (_velocity.y > -1 && _legsSprite.currentAnim != "jump_descent" && _legsSprite.currentAnim != "jump_descent_loop")
 			{
-				_sprite.play("jump_descent");
+				_legsSprite.play("jump_descent");
 			}
-			else if (_sprite.currentAnim == "jump_descent" && _sprite.complete)
+			else if (_legsSprite.currentAnim == "jump_descent" && _legsSprite.complete)
 			{
-				_sprite.play("jump_descent_loop");
+				_legsSprite.play("jump_descent_loop");
 			}
 		}
-		
 		else if (Math.abs(_velocity.x) > 0)
 		{
-			_sprite.play("walk");
+			_legsSprite.play("walk");
 		}
 		else
 		{
-			_sprite.play("idle");
+			_legsSprite.play("idle");
 		}
 		
 		if (_direction > 0)
 		{
-			_sprite.flipped = false;
+			_legsSprite.flipped = false;
+			_chestSprite.flipped = false;
 		}
 		else if (_direction < 0)
 		{
-			_sprite.flipped = true;
+			_legsSprite.flipped = true;
+			_chestSprite.flipped = true;
 		}
 	}
-	
+
 	public function takeDamage()
 	{
 		trace("Player damage !");
 	}
 	
 	private var _sprite:Spritemap;
+	
+	public function getArmCount():Int { return _armCount; }
+	public function getLegCount():Int { return _legCount; }
+	
+	private var _legsSprite:Spritemap;
+	private var _chestSprite:Spritemap;
 	
 	private var _gravity:Vector2 = new Vector2(0. , 20.);
 	private var _velocity:Vector2 = new Vector2(0., 0.);
@@ -283,5 +348,8 @@ class Player extends Entity
 	private var _legCount:Int = 2;
 	
 	private var _onGround:Bool = false;
-
+	private var _firedArm:Bool = false;
+	private var _canFireArm:Bool = true;
+	
+	private var _text:Text;
 }

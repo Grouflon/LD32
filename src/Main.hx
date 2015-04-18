@@ -15,8 +15,7 @@ class Main extends Engine
 	
 	override public function update()
 	{
-		if (!gameController.isPlayer())
-			gameController.start();
+		gameController.update();
 		super.update();
 	}
 	

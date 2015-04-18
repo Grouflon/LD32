@@ -17,7 +17,7 @@ class EnemySpawner extends Entity
 
 	public function new(_x : Int, _y : Int, _respawnTimer : Float, _spawnNumber : Int)
 	{
-		super(_x, _y, Image.createRect(50, 100, 0xFF99FD));
+		super(_x, _y, Image.createRect(32, 64, 0xFF99FD));
 		
 		layer = 50;
 		spawn = _spawnNumber;
@@ -37,7 +37,7 @@ class EnemySpawner extends Entity
 			else
 			{
 				spawn -= 1;
-				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 400));
+				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 400));
 				effectiveTimer = respawnTimer;
 			}
 		}

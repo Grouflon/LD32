@@ -121,7 +121,7 @@ class Enemy extends Entity
 		var velocitySign:Int = HXP.sign(velocity.y);
 		if (velocitySign > 0)
 		{
-			if (e.type == "block")
+			if (e.type == "block" || e.type == "platform")
 			{
 				onGround = true;
 				velocity.y = 0;
@@ -138,7 +138,7 @@ class Enemy extends Entity
 			HXP.scene.remove(e);
 		}
 		
-		if (e.type == "block")
+		if (e.type == "block" || e.type == "platform")
 		{
 			if (direction == Direction.RIGHT)
 				direction = Direction.LEFT;

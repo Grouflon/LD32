@@ -24,7 +24,7 @@ class MeleeEnemy extends Enemy
 		if (HXP.scene.getInstance("player").y == y)
 			visionRange = 400;
 		else
-			visionRange = 200;
+			visionRange = 50;
 			
 		// Mise à jour de l'état de l'ennemi
 		if (isPlayerSpotted())
@@ -92,37 +92,27 @@ class MeleeEnemy extends Enemy
 		
 		var playerDirection : Direction = Direction.RIGHT;
 		
-		if (x < 0)
+		if (thisToPlayer.x < 0)
 			playerDirection = Direction.LEFT;
-		else if (x > 0)
+		else if (thisToPlayer.x > 0)
 			playerDirection = Direction.RIGHT;
 		
 		if (playerDirection == Direction.LEFT)
 		{
-			// Puis-je aller encore à gauche ?
+			trace("player left !");
 			if (canIGoLeft())
 			{
-				velocity.x -= speed * HXP.elapsed;
-			}
-			// Sinon, puis-je aller à droite ?
-			else if (canIGoRight())
-			{
-				direction = Direction.RIGHT;
-				velocity.x += speed * HXP.elapsed;
+				velocity.x -= speed * 2 * HXP.elapsed;
+				direction = playerDirection;
 			}
 		}
 		else if (playerDirection == Direction.RIGHT)
 		{
-			// Puis-je aller encore à droite ?
+			trace("player right !");
 			if (canIGoRight())
 			{
-				velocity.x += speed * HXP.elapsed;
-			}
-			// Sinon, puis-je aller à droite ?
-			else if (canIGoLeft())
-			{
-				direction = Direction.LEFT;
-				velocity.x -= speed * HXP.elapsed;
+				direction = playerDirection;
+				velocity.x += speed * 2 * HXP.elapsed;
 			}
 		}
 	}
