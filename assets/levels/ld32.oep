@@ -49,6 +49,15 @@
       </TileSize>
       <TileSep>0</TileSep>
     </Tileset>
+    <Tileset>
+      <Name>NewTileset0</Name>
+      <FilePath>..\graphics\door.png</FilePath>
+      <TileSize>
+        <Width>32</Width>
+        <Height>32</Height>
+      </TileSize>
+      <TileSep>0</TileSep>
+    </Tileset>
   </Tilesets>
   <EntityDefinitions />
 </project>

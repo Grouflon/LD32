@@ -2,6 +2,7 @@ import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Image;
 
+
 class SolidBlock extends Entity
 {
 	public function new(x:Int, y:Int)
@@ -12,5 +13,6 @@ class SolidBlock extends Entity
 		setHitbox(32, 32);
 		name = "block";
 		type = "block";
+		collidable = true;
 	}
 }
