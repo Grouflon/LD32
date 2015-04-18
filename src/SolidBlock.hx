@@ -12,5 +12,6 @@ class SolidBlock extends Entity
 		setHitbox(32, 32);
 		name = "block";
 		type = "block";
+		collidable = true;
 	}
 }

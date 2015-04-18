@@ -23,6 +23,7 @@ class Player extends Entity
 		addGraphic(Image.createRect(30, 50, 0xFFFFFF, 1));
 		
 		setHitbox(30, 50);
+		collidable = true;
 		
 		name = "player";
 		type = "player";
@@ -70,10 +71,10 @@ class Player extends Entity
 		_velocity.y = -5;
 	}
 	
-	
+	/*
 	override public function moveCollideY(e:Entity):Bool
 	{
-		if (_velocity.y * HXP.sign(_gravity.y)> 0)
+		if (_velocity.y * HXP.sign(_gravity.y) > 0)
 		{
 			_onGround = true;
 		}
@@ -81,6 +82,7 @@ class Player extends Entity
 		
 		return true;
 	}
+	*/
 	
 	private function _applyGravity():Void
 	{
@@ -90,7 +92,7 @@ class Player extends Entity
 	private function _playerMovement():Void
 	{
 		_onGround = false;
-		moveBy(_velocity.x, _velocity.y, "block", true);
+		moveBy(_velocity.x, _velocity.y, "block");
 	}
 	
 	private var _gravity:Vector2 = new Vector2(0. , 10.);

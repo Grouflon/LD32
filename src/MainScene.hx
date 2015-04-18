@@ -2,6 +2,7 @@ import com.haxepunk.HXP;
 import com.haxepunk.Scene;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.utils.Draw;
 import Enemy;
 
 class MainScene extends Scene
@@ -13,7 +14,7 @@ class MainScene extends Scene
 	
 	public override function begin()
 	{
-		add(new Player(HXP.screen.width / 2, HXP.screen.height - 150));
+		add(new Player(HXP.screen.width / 2, HXP.screen.height - 400));
 
 		var i:Int = 0;
 		var u:Int = 0;
@@ -32,5 +33,21 @@ class MainScene extends Scene
 		}
 		
 		add(new Enemy(HXP.screen.width / 2, HXP.screen.height / 2, Image.createRect(50,100, 0xFF0000)));
+	}
+	
+	
+	override public function render():Void
+	{
+		super.render();
+		
+		var entities:Array<Entity> = [];
+		getAll(entities);
+		
+		for (entity in entities)
+		{
+			trace("entity name : " + entity.name);
+			Draw.hitbox(entity, true, 0x00FF00, 1);
+		}
+
 	}
 }
