@@ -204,6 +204,8 @@ class Player extends Entity
 		_chestSprite = new Spritemap("graphics/player_chest_spritesheet.png", 78, 75);
 		_legsSprite.add("idle", [0], 10);
 		_chestSprite.add("idle", [0, 1, 2, 3], 10);
+		_chestSprite.add("idle_1arm", [70, 71, 72, 73], 10);
+		_chestSprite.add("idle_0arm", [80, 81, 82, 83], 10);
 		_legsSprite.add("walk", [10, 11, 12, 13, 14, 15, 16], 13);
 		_chestSprite.add("walk_1arm", [50, 51, 52, 53, 54, 55, 56], 13);
 		_chestSprite.add("walk_0arm", [60, 61, 62, 63, 64, 65, 66], 13);
@@ -237,6 +239,10 @@ class Player extends Entity
 		if (_firedArm && (_armCount == 1)) _chestSprite.play("arm1_tearing");
 		if (_firedArm && (_armCount == 0)) _chestSprite.play("arm2_tearing");
 		
+		var armStr:String = "";
+		if (_armCount == 1) armStr = "_1arm";
+		else if (_armCount == 0) armStr = "_0arm";
+		
 		if ((_chestSprite.currentAnim != "arm1_tearing" && _chestSprite.currentAnim != "arm2_tearing") || _chestSprite.complete)
 		{
 			if (!_onGround)
@@ -264,13 +270,11 @@ class Player extends Entity
 			}
 			else if (Math.abs(_velocity.x) > 0)
 			{
-				if (_armCount == 1) _chestSprite.play("walk_1arm");
-				else if (_armCount == 0) _chestSprite.play("walk_0arm");
-				else _chestSprite.play("walk");
+				_chestSprite.play("walk" + armStr);
 			}
 			else
 			{
-				_chestSprite.play("idle");
+				_chestSprite.play("idle" + armStr);
 			}
 		}
 		
