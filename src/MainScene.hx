@@ -16,9 +16,9 @@ class MainScene extends Scene
 		Parsing.createBlock();
 		add(new Player(HXP.screen.width / 2, HXP.screen.height - 400));
 		
-		add(new EnemySpawner(65, 28, 2, 1));
+		//add(new EnemySpawner(65, 28, 2, 1));
 		
-		add(new EnemySpawner(200, 190, 5, 2));
+	//	add(new EnemySpawner(200, 190, 5, 2));
 	}
 	
 	private var player:Player;

@@ -7,19 +7,34 @@ class Parsing
 	static public function createBlock() 
 	{
 		var xmlString:String = sys.io.File.getContent("levels/testlevel.oel");
-		var xml:Xml = Xml.parse(xmlString);
+		var xml:Xml = Xml.parse(xmlString).firstElement();
 		
-		xml = xml.firstElement();
-		xml = xml.firstElement();
+		var it_1:Iterator<Xml> = xml.elementsNamed("Terrain");
+		var it_2:Iterator<Xml> = xml.elementsNamed("spawn");
 		
-		for ( elt in xml.elements())
+		var terrain:Xml = it_1.next();
+		var spawner:Xml = it_2.next();
+		
+		for (block in terrain.elements()) 
 		{
-			var x:Int = Std.parseInt(elt.get("x")) * 32;
-			var y:Int = Std.parseInt(elt.get("y")) * 32;
-			var ty:Int = Std.parseInt(elt.get("tx"));
-
-			if (ty == 1)
+			var x:Int = Std.parseInt(block.get("x")) * 32;
+			var y:Int = Std.parseInt(block.get("y")) * 32;
+			var tx:Int = Std.parseInt(block.get("tx"));
+			var ty:Int = Std.parseInt(block.get("ty"));
+			
+			if (tx == 1)
 				HXP.scene.add(new SolidBlock(x, y));
+		}
+		
+		for (spawn in spawner.elements())
+		{
+			trace(spawn);
+			var x:Int = Std.parseInt(spawn.get("x"));
+			var y:Int = Std.parseInt(spawn.get("y"));
+			var enemy_1_timer:Float = Std.parseInt(spawn.get("enemy_1_timer"));
+			var enemy_1_number:Int = Std.parseInt(spawn.get("enemy_1_number"));
+			
+			HXP.scene.add(new EnemySpawner(x, y, enemy_1_timer, enemy_1_number));
 		}
 	}	
 }
