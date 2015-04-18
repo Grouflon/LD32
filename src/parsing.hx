@@ -1,10 +1,10 @@
 import haxe.xml.Fast;
 import sys.io.File;
-
+import com.haxepunk.HXP;
 
 class Parsing
 {
-	static public function createBlock(scene) 
+	static public function createBlock() 
 	{
 		var xmlString:String = sys.io.File.getContent("levels/testlevel.oel");
 		var xml:Xml = Xml.parse(xmlString);
@@ -19,7 +19,7 @@ class Parsing
 			var ty:Int = Std.parseInt(elt.get("tx"));
 
 			if (ty == 1)
-				scene.add(new SolidBlock(x, y));
+				HXP.scene.add(new SolidBlock(x, y));
 		}
 	}	
 }

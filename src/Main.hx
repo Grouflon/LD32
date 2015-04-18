@@ -1,5 +1,6 @@
 import com.haxepunk.Engine;
 import com.haxepunk.HXP;
+import GameController;
 
 class Main extends Engine
 {
@@ -9,8 +10,16 @@ class Main extends Engine
 #if debug
 		HXP.console.enable();
 #end
-		HXP.scene = new MainScene();
+		gameController = new GameController();
 	}
-
+	
+	override public function update()
+	{
+		if (!gameController.isPlayer())
+			gameController.start();
+		super.update();
+	}
+	
 	public static function main() { new Main(); }
+	private var gameController:GameController;
 }
