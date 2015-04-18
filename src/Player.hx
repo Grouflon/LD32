@@ -101,7 +101,7 @@ class Player extends Entity
 		
 		_firedArm = false;
 	}
-	
+
 	
 	private function _fireArm()
 	{
@@ -195,7 +195,7 @@ class Player extends Entity
 			_speed = 4.;
 		}
 		
-		moveBy(_velocity.x * _direction, _velocity.y, ["block", "enemy"]);
+		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy"]);
 	}
 	
 	private function _initGraphics():Void
@@ -341,5 +341,4 @@ class Player extends Entity
 	private var _canFireArm:Bool = true;
 	
 	private var _text:Text;
-
 }
