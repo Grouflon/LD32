@@ -30,7 +30,7 @@ class MainScene extends Scene
 			u += 32;
 		}
 		
-		//add(new Enemy(HXP.screen.width / 2, HXP.screen.height / 2, Image.createRect(50, 100, 0xFF0000), EnemyState.PATROL));
+		add(new Enemy(HXP.screen.width / 2, HXP.screen.height / 2, Image.createRect(50, 100, 0xFF0000), EnemyState.PATROL));
 		
 	}
 }
