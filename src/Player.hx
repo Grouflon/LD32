@@ -326,6 +326,13 @@ class Player extends Entity
 			_chestSprite.flipped = true;
 		}
 	}
+
+	public function takeDamage()
+	{
+		trace("Player damage !");
+	}
+	
+	private var _sprite:Spritemap;
 	
 	public function getArmCount():Int { return _armCount; }
 	public function getLegCount():Int { return _legCount; }

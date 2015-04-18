@@ -9,6 +9,7 @@ import com.haxepunk.math.Vector;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 import Direction;
+import Player;
 
 /**
  * Enemy class
@@ -19,11 +20,20 @@ import Direction;
 class Enemy extends Entity
 {
 
-	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, defaultState : EnemyState, _speed : Int) 
+	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int) 
 	{
-		super(_xPos, _yPos, Image.createRect(_width, _height, 0xFF0000));
+		
+		var rect : Image = Image.createRect(30, 50, 0xFF0000);
+		rect.originX = cast(_width * 0.5, Int);
+		rect.originY = _height;	
+		
+		super(_xPos, _yPos, rect);
 	
-		setHitbox(_width, _height);
+		originX = cast(_width * 0.5, Int);
+		originY = _height;
+		
+		setHitbox(_width, _height, originX, originY);
+		
 		collidable = true;
 		
 		name = "enemy";
@@ -33,64 +43,31 @@ class Enemy extends Entity
 		
         velocity = new Vector(0,0);
 		speed = _speed;
-		playerSpotted = false;
-		moveDirection = Direction.RIGHT;
-		this.defaultState = defaultState;
+		direction = Direction.RIGHT;
 		onGround = false;
+		
+		visionRange = _visionRange;
+		
+		playerSpotted = false;
 		
 		owner = _owner;
 	}
 	
-	public override function update()
+	public function applyGravity()
 	{
-		// Gravité
 		velocity.y += 2;
-		
-		// Mise à jour de l'état de l'ennemi
-		if (isPlayerSpotted())
-		{
-			trace("Player is spotted");
-			playerSpotted = true;
-			state = EnemyState.CHASE;
-		}
-		else
-		{
-			playerSpotted = false;
-			state = defaultState;
-		}
-
-		// Si le joueur n'est pas vu, on fait l'action par défaut
-		if (!playerSpotted)
-		{
-			if (state == EnemyState.PATROL)
-			{
-				patrol();
-			}
-			else if (state == EnemyState.IDLE)
-			{
-				idle();
-			}
-			else
-			{
-				trace("This shouldn't happen : Enemy behavior isnt either patrol or idle when player is not spotted.");
-			}
-		}
-		// Le joueur est repéré, on le poursuit
-		else
-		{
-			chase();
-		}
-		
+	}
+	
+	public function applyMovement()
+	{
 		moveBy(velocity.x, velocity.y, ["block", "platform", "player"]);
 		
 		velocity.x = 0;
-		
-		super.update();
 	}
 	
 	private function canIGoLeft() : Bool
 	{
-		if (collide("block", x - this.width, y + 1) != null)
+		if (collideTypes(["block", "platform"], x - this.halfWidth, y + 1) != null)
 		{
 			return true;
 		}
@@ -102,7 +79,7 @@ class Enemy extends Entity
 	
 	private function canIGoRight() : Bool
 	{
-		if (collide("block", x + this.width, y + 1) != null)
+		if (collideTypes(["block", "platform"], x + this.halfWidth, y + 1) != null)
 		{
 			return true;
 		}
@@ -114,61 +91,29 @@ class Enemy extends Entity
 	
 	private function isPlayerSpotted() : Bool
 	{
-		return false;
-		var thisToPlayer:Vector = new Vector(0, 0);
+		var player : Entity = HXP.scene.getInstance("player");
 		
-		if (thisToPlayer.length > 200)
-			return false
+		var playerY : Float = player.y;
+		
+		if (distanceFrom(player, true) < 300)
+		{
+			if (bottom + 25 < player.top)
+			{
+				return false;
+			}
+			else if (top - 25 > player.bottom)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
 		else
-			return true;
-	}
-	
-	private function patrol()
-	{
-		// Si la direction actuelle est la gauche
-		if (moveDirection == Direction.LEFT)
 		{
-			// Puis-je aller encore à gauche ?
-			if (canIGoLeft())
-			{
-				velocity.x -= speed * HXP.elapsed;
-			}
-			// Sinon, puis-je aller à droite ?
-			else if (canIGoRight())
-			{
-				moveDirection = Direction.RIGHT;
-				velocity.x += speed * HXP.elapsed;
-			}
+			return false;
 		}
-		// Si la direction actuelle est la droite
-		else if (moveDirection == Direction.RIGHT)
-		{
-			// Puis-je aller encore à droite ?
-			if (canIGoRight())
-			{
-				velocity.x += speed * HXP.elapsed;
-			}
-			// Sinon, puis-je aller à droite ?
-			else if (canIGoLeft())
-			{
-				moveDirection = Direction.LEFT;
-				velocity.x -= speed * HXP.elapsed;
-			}
-		}
-		
-	}
-	
-	private function idle()
-	{
-		
-	}
-	
-	private function chase()
-	{
-	}
-	
-	private function distanceAttack()
-	{
 	}
 	
 	public override function moveCollideY(e:Entity):Bool
@@ -176,7 +121,7 @@ class Enemy extends Entity
 		var velocitySign:Int = HXP.sign(velocity.y);
 		if (velocitySign > 0)
 		{
-			if (e.type == "block")
+			if (e.type == "block" || e.type == "platform")
 			{
 				onGround = true;
 				velocity.y = 0;
@@ -193,12 +138,12 @@ class Enemy extends Entity
 			HXP.scene.remove(e);
 		}
 		
-		if (e.type == "block")
+		if (e.type == "block" || e.type == "platform")
 		{
-			if (moveDirection == Direction.RIGHT)
-				moveDirection = Direction.LEFT;
+			if (direction == Direction.RIGHT)
+				direction = Direction.LEFT;
 			else
-				moveDirection = Direction.RIGHT;
+				direction = Direction.RIGHT;
 		
 			velocity.x = 0;
 		}
@@ -215,12 +160,12 @@ class Enemy extends Entity
 	
 	private var speed:Float;
 	private var velocity:Vector;
-	private var moveDirection:Direction;
+	private var direction:Direction;
 	private var onGround:Bool;
+	private var visionRange:Int;
 	
 	private var playerSpotted:Bool;
 	private var state:EnemyState;
-	private var defaultState:EnemyState;
 	
 	private var owner : EnemySpawner;
 }
