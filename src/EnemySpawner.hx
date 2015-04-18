@@ -36,8 +36,7 @@ class EnemySpawner extends Entity
 			}
 			else
 			{
-				spawn -= 1;
-				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 400));
+				spawnMob();
 				effectiveTimer = respawnTimer;
 			}
 		}
@@ -49,6 +48,18 @@ class EnemySpawner extends Entity
 	{
 		effectiveTimer = respawnTimer;
 		spawn += 1;
+	}
+	
+	private function spawnMob()
+	{
+		spawn -= 1;
+		
+		var random : Float = Math.random();
+		if (random > 0.5)
+			HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 50));
+		else
+			HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200));
+		
 	}
 	
 	private var respawnTimer : Float;

@@ -20,10 +20,10 @@ import Player;
 class Enemy extends Entity
 {
 
-	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int) 
+	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _color : Int) 
 	{
 		
-		var rect : Image = Image.createRect(30, 50, 0xFF0000);
+		var rect : Image = Image.createRect(30, 50, _color);
 		rect.originX = cast(_width * 0.5, Int);
 		rect.originY = _height;	
 		
@@ -95,7 +95,7 @@ class Enemy extends Entity
 		
 		var playerY : Float = player.y;
 		
-		if (distanceFrom(player, true) < 300)
+		if (distanceFrom(player, true) < visionRange)
 		{
 			if (bottom + 25 < player.top)
 			{

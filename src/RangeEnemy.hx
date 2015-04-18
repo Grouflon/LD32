@@ -1,6 +1,7 @@
 package;
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
+import com.haxepunk.math.Vector;
 
 /**
  * ...
@@ -11,7 +12,7 @@ class RangeEnemy extends Enemy
 
 	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int) 
 	{
-		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange);
+		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange, 0xFFFF00);
 		
 		attackCooldown = 1;
 		attackTimer = 0;
@@ -106,15 +107,30 @@ class RangeEnemy extends Enemy
 	
 	private function combat()
 	{	
+		var player : Entity = HXP.scene.getInstance("player");
+		
+		var playerPosition : Vector = new Vector(player.x, player.y);
+		var thisPosition : Vector = new Vector(x, y);
+		
+		var thisToPlayer : Vector = playerPosition - thisPosition;
+		var playerDirection : Direction = Direction.RIGHT;
+		
+		if (thisToPlayer.x < 0)
+			playerDirection = Direction.LEFT;
+		else if (thisToPlayer.x > 0)
+			playerDirection = Direction.RIGHT;
+		
 		if (attackTimer <= 0)
-		{
-			var player : Entity = HXP.scene.getInstance("player");
-			
+		{	
+			direction = playerDirection;
+				
 			HXP.scene.add(new EnemyProjectile(x + halfWidth, y - 40, player.x, player.y - 40, 200, visionRange));
 			attackTimer = attackCooldown;
 		}
 		else
 		{
+			direction = playerDirection;
+				
 			attackTimer -= HXP.elapsed;
 		}
 	}

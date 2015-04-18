@@ -12,7 +12,7 @@ class MeleeEnemy extends Enemy
 
 	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int) 
 	{
-		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange);
+		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange, 0xFF0000);
 	}
 	
 	override public function update() 
