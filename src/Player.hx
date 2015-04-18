@@ -13,6 +13,7 @@ import com.haxepunk.utils.Draw;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Joystick;
+import com.haxepunk.graphics.Text;
 import hxmath.math.Vector2;
 import src.Arm;
 import src.Leg;
@@ -31,6 +32,8 @@ class Player extends Entity
 		
 		originX = cast(width * 0.5, Int);
 		originY = height;
+		
+		_text = new Text("vewrubvneriubvn");
 		
 		name = "player";
 		type = "player";
@@ -180,13 +183,13 @@ class Player extends Entity
 	
 	private function _playerMovement():Void
 	{
-		if (_short)
+		if (_short && _onGround)
 		{
-			_speed = 2;
+			_speed = 0;
 		}
 		else
 		{
-			_speed = 4;
+			_speed = 4.;
 		}
 		
 		moveBy(_velocity.x * _direction, _velocity.y, ["block", "enemy"]);
@@ -260,6 +263,9 @@ class Player extends Entity
 		}
 	}
 	
+	public function getArmCount():Int { return _armCount; }
+	public function getLegCount():Int { return _legCount; }
+	
 	private var _sprite:Spritemap;
 	
 	private var _gravity:Vector2 = new Vector2(0. , 20.);
@@ -278,5 +284,7 @@ class Player extends Entity
 	private var _legCount:Int = 2;
 	
 	private var _onGround:Bool = false;
+	
+	private var _text:Text;
 
 }
