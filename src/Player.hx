@@ -201,24 +201,32 @@ class Player extends Entity
 	private function _initGraphics():Void
 	{
 		_legsSprite = new Spritemap("graphics/player_legs_spritesheet.png", 78, 75);
-		_chestSprite = new Spritemap("graphics/player_chest_spritesheet.png", 78, 75);
 		_legsSprite.add("idle", [0], 10);
+		_legsSprite.add("walk", [10, 11, 12, 13, 14, 15, 16], 13);
+		_legsSprite.add("jump_ascend", [20, 21], 13, false);
+		_legsSprite.add("jump_ascend_loop", [22, 23], 13, true);
+		_legsSprite.add("jump_descent", [24, 25], 13, false);
+		_legsSprite.add("jump_descent_loop", [26, 27], 13, true);
+		
+		_chestSprite = new Spritemap("graphics/player_chest_spritesheet.png", 78, 75);
 		_chestSprite.add("idle", [0, 1, 2, 3], 10);
 		_chestSprite.add("idle_1arm", [70, 71, 72, 73], 10);
 		_chestSprite.add("idle_0arm", [80, 81, 82, 83], 10);
-		_legsSprite.add("walk", [10, 11, 12, 13, 14, 15, 16], 13);
 		_chestSprite.add("walk_1arm", [50, 51, 52, 53, 54, 55, 56], 13);
 		_chestSprite.add("walk_0arm", [60, 61, 62, 63, 64, 65, 66], 13);
 		_chestSprite.add("walk", [10, 11, 12, 13, 14, 15, 16], 13);
-		_legsSprite.add("jump_ascend", [20, 21], 13, false);
 		_chestSprite.add("jump_ascend", [20, 21], 13, false);
-		_legsSprite.add("jump_ascend_loop", [22, 23], 13, true);
+		_chestSprite.add("jump_ascend_1arm", [90, 91], 13, false);
+		_chestSprite.add("jump_ascend_0arm", [100, 101], 13, false);
 		_chestSprite.add("jump_ascend_loop", [22, 23], 13, true);
-		_legsSprite.add("jump_descent", [24, 25], 13, false);
+		_chestSprite.add("jump_ascend_loop_1arm", [92, 93], 13, true);
+		_chestSprite.add("jump_ascend_loop_0arm", [102, 103], 13, true);
 		_chestSprite.add("jump_descent", [24, 25], 13, false);
-		_legsSprite.add("jump_descent_loop", [26, 27], 13, true);
+		_chestSprite.add("jump_descent_1arm", [94, 95], 13, false);
+		_chestSprite.add("jump_descent_0arm", [104, 105], 13, false);
 		_chestSprite.add("jump_descent_loop", [26, 27], 13, true);
-		
+		_chestSprite.add("jump_descent_loop_1arm", [96, 97], 13, true);
+		_chestSprite.add("jump_descent_loop_0arm", [106, 107], 13, true);
 		_chestSprite.add("arm1_tearing", [30, 31, 32, 33], 13, false);
 		_chestSprite.add("arm2_tearing", [40, 41, 42, 43], 13, false);
 
@@ -247,25 +255,25 @@ class Player extends Entity
 		{
 			if (!_onGround)
 			{
-				if (_chestSprite.currentAnim != "jump_ascend" &&
-					_chestSprite.currentAnim != "jump_ascend_loop" &&
-					_chestSprite.currentAnim != "jump_descent" &&
-					_chestSprite.currentAnim != "jump_descent_loop")
+				if ((_chestSprite.currentAnim != "jump_ascend" && _chestSprite.currentAnim != "jump_ascend_1arm" && _chestSprite.currentAnim != "jump_ascend_0arm") &&
+					(_chestSprite.currentAnim != "jump_ascend_loop" && _chestSprite.currentAnim != "jump_ascend_loop_1arm" && _chestSprite.currentAnim != "jump_ascend_loop_0arm") &&
+					(_chestSprite.currentAnim != "jump_descent" && _chestSprite.currentAnim != "jump_descent_1arm" && _chestSprite.currentAnim != "jump_descent_0arm") &&
+					(_chestSprite.currentAnim != "jump_descent_loop" && _chestSprite.currentAnim != "jump_descent_loop_1arm" && _chestSprite.currentAnim != "jump_descent_loop_0arm"))
 				{
-					_chestSprite.play("jump_ascend");
+					_chestSprite.play("jump_ascend" + armStr);
 				}
-				else if (_chestSprite.currentAnim == "jump_ascend" && _chestSprite.complete)
+				else if ((_chestSprite.currentAnim == "jump_ascend" && _chestSprite.currentAnim == "jump_ascend_1arm" && _chestSprite.currentAnim == "jump_ascend_0arm") && _chestSprite.complete)
 				{
-					_chestSprite.play("jump_ascend_loop");
+					_chestSprite.play("jump_ascend_loop" + armStr);
 				}
 				
-				if (_velocity.y > -1 && _chestSprite.currentAnim != "jump_descent" && _chestSprite.currentAnim != "jump_descent_loop")
+				if (_velocity.y > -1 && (_chestSprite.currentAnim != "jump_descent" && _chestSprite.currentAnim != "jump_descent_1arm" && _chestSprite.currentAnim != "jump_descent_0arm") && (_chestSprite.currentAnim != "jump_descent_loop" && _chestSprite.currentAnim != "jump_descent_loop_1arm" && _chestSprite.currentAnim != "jump_descent_loop_0arm"))
 				{
-					_chestSprite.play("jump_descent");
+					_chestSprite.play("jump_descent" + armStr);
 				}
-				else if (_chestSprite.currentAnim == "jump_descent" && _chestSprite.complete)
+				else if ((_chestSprite.currentAnim == "jump_descent" || _chestSprite.currentAnim == "jump_descent_1arm" || _chestSprite.currentAnim == "jump_descent_0arm") && _chestSprite.complete)
 				{
-					_chestSprite.play("jump_descent_loop");
+					_chestSprite.play("jump_descent_loop" + armStr);
 				}
 			}
 			else if (Math.abs(_velocity.x) > 0)
