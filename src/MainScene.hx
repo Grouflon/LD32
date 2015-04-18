@@ -4,6 +4,7 @@ import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.utils.Draw;
 import Enemy;
+import EnemyState;
 import Parsing;
 
 class MainScene extends Scene
@@ -19,8 +20,8 @@ class MainScene extends Scene
 
 		Parsing.createBlock(this);
 		
-		add(new Enemy(HXP.screen.width / 2 - 100, 50, 30, 50, EnemyState.PATROL, 50));
+		add(new EnemySpawner(65, 28, 2, 1));
 		
-		add(new Enemy(HXP.screen.width / 2 + 150, 50, 30, 50, EnemyState.IDLE, 50));
+		add(new EnemySpawner(200, 190, 5, 2));
 	}
 }
