@@ -24,7 +24,8 @@ class Enemy extends Entity
 		setHitbox(_width, _height);
 		collidable = true;
 		
-		name = "Enemy";
+		name = "enemy";
+		type = "enemy";
 		
         velocity = new Vector(0,0);
 		speed = _speed;
