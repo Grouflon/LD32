@@ -7,6 +7,8 @@ import com.haxepunk.Mask;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.atlas.TextureAtlas;
+import com.haxepunk.tweens.misc.Alarm;
+import com.haxepunk.Tween;
 import com.haxepunk.utils.Draw;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
@@ -95,6 +97,9 @@ class Player extends Entity
 			_height = 72;
 		}
 		
+		trace("Do I have a tween ? " + hasTween);
+		trace("I have " + _armCount + " arms and " + _legCount + " legs...");
+		
 		_playerMovement();
 		_applyGravity();
 		
@@ -108,6 +113,7 @@ class Player extends Entity
 		{
 			HXP.scene.add(new Arm(x, y, _direction, _height));
 			_armCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
 		}
 	}
 	
@@ -118,6 +124,7 @@ class Player extends Entity
 		{
 			HXP.scene.add(new Leg(x, y, _direction, _height));
 			_legCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
 		}
 	}
 	
