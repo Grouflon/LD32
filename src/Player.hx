@@ -71,14 +71,18 @@ class Player extends Entity
 	{
 		if (!_onGround) return;
 		
+		_onGround = false;
 		_velocity.y = -7;
 	}
 	
 	
 	override public function moveCollideY(e:Entity):Bool
 	{
-		_onGround = true;
-		_velocity.y = 0;
+		if (_velocity.y >= 0)
+		{
+			_onGround = true;
+			_velocity.y = 0;
+		}
 		
 		return true;
 	}
@@ -91,7 +95,6 @@ class Player extends Entity
 	
 	private function _playerMovement():Void
 	{
-		_onGround = false;
 		moveBy(_velocity.x, _velocity.y, "block");
 	}
 	
