@@ -6,6 +6,8 @@ import com.haxepunk.Screen;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.math.Vector;
+import com.haxepunk.utils.Input;
+import com.haxepunk.utils.Key;
 import Direction;
 
 /**
@@ -17,14 +19,15 @@ import Direction;
 class Enemy extends Entity
 {
 
-	public function new(_xPos : Float, _yPos : Float, _width : Int, _height : Int, defaultState : EnemyState, _speed : Int) 
+	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, defaultState : EnemyState, _speed : Int) 
 	{
-		super(_xPos, _yPos, Image.createRect(_width, _height, 0xFF1100));
+		super(_xPos, _yPos, Image.createRect(_width, _height, 0xFF0000));
 	
 		setHitbox(_width, _height);
 		collidable = true;
 		
 		name = "Enemy";
+		layer = 20;
 		
         velocity = new Vector(0,0);
 		speed = _speed;
@@ -32,10 +35,12 @@ class Enemy extends Entity
 		moveDirection = Direction.RIGHT;
 		this.defaultState = defaultState;
 		onGround = false;
+		
+		owner = _owner;
 	}
 	
 	public override function update()
-	{	
+	{
 		// Gravité
 		velocity.y += 2;
 		
@@ -77,6 +82,8 @@ class Enemy extends Entity
 		moveBy(velocity.x, velocity.y, "block");
 		
 		velocity.x = 0;
+		
+		super.update();
 	}
 	
 	private function canIGoLeft() : Bool
@@ -192,6 +199,13 @@ class Enemy extends Entity
 		return true;
 	}
 	
+	public override function removed():Void 
+	{
+		super.removed();
+		
+		owner.notifyEnemyDeath();
+	}
+	
 	private var speed:Float;
 	private var velocity:Vector;
 	private var moveDirection:Direction;
@@ -200,4 +214,6 @@ class Enemy extends Entity
 	private var playerSpotted:Bool;
 	private var state:EnemyState;
 	private var defaultState:EnemyState;
+	
+	private var owner : EnemySpawner;
 }
