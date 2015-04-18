@@ -22,20 +22,4 @@ class MainScene extends Scene
 		
 		add(new Enemy(HXP.screen.width / 2, HXP.screen.height / 2, Image.createRect(50, 100, 0xFF0000), EnemyState.PATROL));
 	}
-	
-	
-	override public function render():Void
-	{
-		super.render();
-		
-		var entities:Array<Entity> = [];
-		getAll(entities);
-		
-		for (entity in entities)
-		{
-			trace("entity name : " + entity.name);
-			Draw.hitbox(entity, true, 0x00FF00, 1);
-		}
-
-	}
 }
