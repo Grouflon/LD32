@@ -99,7 +99,7 @@ class Player extends Entity
 		
 		_updateGraphics();
 	}
-	
+
 	
 	private function _fireArm()
 	{
