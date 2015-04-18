@@ -19,6 +19,8 @@ class MainScene extends Scene
 
 		Parsing.createBlock(this);
 		
-		add(new Enemy(HXP.screen.width / 2, HXP.screen.height / 2, Image.createRect(50, 100, 0xFF0000), EnemyState.PATROL));
+		add(new Enemy(HXP.screen.width / 2 - 100, 50, 30, 50, EnemyState.PATROL, 50));
+		
+		add(new Enemy(HXP.screen.width / 2 + 150, 50, 30, 50, EnemyState.IDLE, 50));
 	}
 }

@@ -17,16 +17,17 @@ import Direction;
 class Enemy extends Entity
 {
 
-	public function new(x : Float, y : Float, img : Graphic, defaultState : EnemyState) 
+	public function new(_xPos : Float, _yPos : Float, _width : Int, _height : Int, defaultState : EnemyState, _speed : Int) 
 	{
-		super(x, y, img);
+		super(_xPos, _yPos, Image.createRect(_width, _height, 0xFF1100));
 	
-		setHitbox(50, 100);
-		
+		setHitbox(_width, _height);
 		collidable = true;
+		
 		name = "Enemy";
+		
         velocity = new Vector(0,0);
-		speed = 50;
+		speed = _speed;
 		playerSpotted = false;
 		moveDirection = Direction.RIGHT;
 		this.defaultState = defaultState;
@@ -80,24 +81,26 @@ class Enemy extends Entity
 	
 	private function canIGoLeft() : Bool
 	{
-		return true;
-		if (x < 50)
+		if (collide("block", x - this.width, y + 1) != null)
 		{
-			return false;
+			return true;
 		}
 		else
 		{
-			return true;
+			return false;
 		}
 	}
 	
 	private function canIGoRight() : Bool
 	{
-		return true;
-		if (x > HXP.screen.width - 50 - width)
-			return false;
-		else
+		if (collide("block", x + this.width, y + 1) != null)
+		{
 			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 	private function isPlayerSpotted() : Bool
