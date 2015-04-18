@@ -81,7 +81,7 @@ class Enemy extends Entity
 			chase();
 		}
 		
-		moveBy(velocity.x, velocity.y, ["block", "player"]);
+		moveBy(velocity.x, velocity.y, ["block", "platform", "player"]);
 		
 		velocity.x = 0;
 		

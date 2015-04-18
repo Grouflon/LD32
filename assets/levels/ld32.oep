@@ -38,11 +38,23 @@
       </ScrollFactor>
       <ExportMode>XMLCoords</ExportMode>
     </LayerDefinition>
+    <LayerDefinition xsi:type="TileLayerDefinition">
+      <Name>platform</Name>
+      <Grid>
+        <Width>32</Width>
+        <Height>16</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+      <ExportMode>XMLCoords</ExportMode>
+    </LayerDefinition>
     <LayerDefinition xsi:type="EntityLayerDefinition">
       <Name>spawn</Name>
       <Grid>
         <Width>32</Width>
-        <Height>32</Height>
+        <Height>16</Height>
       </Grid>
       <ScrollFactor>
         <X>1</X>
