@@ -260,6 +260,11 @@ class Player extends Entity
 		}
 	}
 	
+	public function takeDamage()
+	{
+		trace("Player damage !");
+	}
+	
 	private var _sprite:Spritemap;
 	
 	private var _gravity:Vector2 = new Vector2(0. , 20.);

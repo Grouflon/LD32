@@ -37,7 +37,7 @@ class EnemySpawner extends Entity
 			else
 			{
 				spawn -= 1;
-				HXP.scene.add(new Enemy(this, x, y, 30, 50, EnemyState.PATROL, 100));
+				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 400));
 				effectiveTimer = respawnTimer;
 			}
 		}

@@ -6,9 +6,7 @@ package;
 
 enum EnemyState
 {
-	IDLE;
+	CHILL;
 	
-	PATROL;
-	
-	CHASE;
+	COMBAT;
 }
