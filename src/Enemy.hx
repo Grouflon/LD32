@@ -81,7 +81,7 @@ class Enemy extends Entity
 			chase();
 		}
 		
-		moveBy(velocity.x, velocity.y, "block");
+		moveBy(velocity.x, velocity.y, ["block", "player"]);
 		
 		velocity.x = 0;
 		
@@ -188,6 +188,11 @@ class Enemy extends Entity
 
 	public override function moveCollideX(e:Entity):Bool
 	{
+		if (e.type == "player")
+		{
+			HXP.scene.remove(e);
+		}
+		
 		if (e.type == "block")
 		{
 			if (moveDirection == Direction.RIGHT)
