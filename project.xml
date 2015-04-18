@@ -17,6 +17,7 @@
 	<assets path="assets/audio" rename="audio" include="*.mp3" if="flash" />
 	<assets path="assets/audio" rename="audio" include="*.wav|*.ogg" unless="flash" />
 	<assets path="assets/font" rename="font" include="*.ttf" />
-
+	<assets path="assets/levels" rename="levels" include="*.oel|*.xml" />
+	
 	<icon path="assets/HaxePunk.svg" />
 </project>
