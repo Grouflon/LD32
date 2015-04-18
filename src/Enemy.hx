@@ -24,13 +24,13 @@ class Enemy extends Entity
 		setHitbox(50, 100);
 		
 		collidable = true;
-		
+		name = "Enemy";
         velocity = new Vector(0,0);
 		speed = 50;
 		playerSpotted = false;
 		moveDirection = Direction.RIGHT;
 		this.defaultState = defaultState;
-		onGround = true;
+		onGround = false;
 		
 		playerPos = new Vector(55, HXP.screen.height / 2);
 	}
@@ -77,16 +77,15 @@ class Enemy extends Entity
 		{
 			chase();
 		}
-			
-		set_x(x + velocity.x);
-		set_y(y + velocity.y);
 		
+		moveBy(velocity.x, velocity.y, "block");
 		
 		velocity.x = 0;
 	}
 	
 	private function canIGoLeft() : Bool
 	{
+		return true;
 		if (x < 50)
 		{
 			return false;
@@ -99,6 +98,7 @@ class Enemy extends Entity
 	
 	private function canIGoRight() : Bool
 	{
+		return true;
 		if (x > HXP.screen.width - 50 - width)
 			return false;
 		else
@@ -107,6 +107,7 @@ class Enemy extends Entity
 	
 	private function isPlayerSpotted() : Bool
 	{
+		return false;
 		var thisToPlayer:Vector = new Vector(playerPos.x - x, playerPos.y - y);
 		
 		if (thisToPlayer.length > 200)
@@ -165,7 +166,7 @@ class Enemy extends Entity
 	
 	private function chase()
 	{
-		var thisToPlayer:Vector = new Vector(playerPos.x - x, playerPos.y - y);
+		/*var thisToPlayer:Vector = new Vector(playerPos.x - x, playerPos.y - y);
 			
 		if (thisToPlayer.x < 0 && canIGoLeft())
 		{
@@ -173,7 +174,43 @@ class Enemy extends Entity
 			
 		}
 			
-		moveTowards(playerPos.x, playerPos.y, speed * HXP.elapsed);
+		moveTowards(playerPos.x, playerPos.y, speed * HXP.elapsed, "block");*/
+	}
+	
+	private function distanceAttack()
+	{
+	}
+	
+	public override function moveCollideY(e:Entity):Bool
+	{
+		var velocitySign:Int = HXP.sign(velocity.y);
+		if (velocitySign > 0)
+		{
+			if (e.type == "block")
+			{
+				onGround = true;
+				
+				velocity.y = 0;
+			}
+		}
+		
+		return true;
+	}
+
+	public override function moveCollideX(e:Entity):Bool
+	{
+		if (e.type == "block")
+		{
+			if (moveDirection == Direction.RIGHT)
+				moveDirection = Direction.LEFT;
+			else
+				moveDirection = Direction.RIGHT;
+				
+		
+			velocity.x = 0;
+		}
+		
+		return true;
 	}
 	
 	private var speed:Float;
@@ -185,6 +222,5 @@ class Enemy extends Entity
 	private var state:EnemyState;
 	private var defaultState:EnemyState;
 	
-	// TEMP
 	private var playerPos:Vector;
 }
