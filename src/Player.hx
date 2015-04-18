@@ -175,6 +175,10 @@ class Player extends Entity
 		_sprite = new Spritemap("graphics/player_spritesheet.png", 78, 75);
 		_sprite.add("idle", [0, 1, 2, 3], 10);
 		_sprite.add("walk", [10, 11, 12, 13, 14, 15, 16], 13);
+		_sprite.add("jump_ascend", [20, 21], 13, false);
+		_sprite.add("jump_ascend_loop", [22, 23], 13, true);
+		_sprite.add("jump_descent", [24, 25], 13, false);
+		_sprite.add("jump_descent_loop", [26, 27], 13, true);
 		
 		graphic = _sprite;
 		_sprite.play("idle");
@@ -194,7 +198,28 @@ class Player extends Entity
 		}
 		*/
 		
-		if (Math.abs(_velocity.x) > 0)
+		if (!_onGround)
+		{
+			if (_sprite.currentAnim != "jump_ascend" && _sprite.currentAnim != "jump_ascend_loop" && _sprite.currentAnim != "jump_descent" && _sprite.currentAnim != "jump_descent_loop")
+			{
+				_sprite.play("jump_ascend");
+			}
+			else if (_sprite.currentAnim == "jump_ascend" && _sprite.complete)
+			{
+				_sprite.play("jump_ascend_loop");	
+			}
+			
+			if (_velocity.y > -1 && _sprite.currentAnim != "jump_descent" && _sprite.currentAnim != "jump_descent_loop")
+			{
+				_sprite.play("jump_descent");
+			}
+			else if (_sprite.currentAnim == "jump_descent" && _sprite.complete)
+			{
+				_sprite.play("jump_descent_loop");
+			}
+		}
+		
+		else if (Math.abs(_velocity.x) > 0)
 		{
 			_sprite.play("walk");
 		}
