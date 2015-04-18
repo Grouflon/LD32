@@ -17,7 +17,7 @@ class EnemySpawner extends Entity
 
 	public function new(_x : Int, _y : Int, _respawnTimer : Float, _spawnNumber : Int)
 	{
-		super(_x, _y, Image.createRect(50, 100, 0xFF99FD));
+		super(_x, _y, Image.createRect(32, 64, 0xFF99FD));
 		
 		layer = 50;
 		spawn = _spawnNumber;
