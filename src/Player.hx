@@ -15,10 +15,6 @@ import hxmath.math.Vector2;
 import src.Arm;
 import src.Leg;
 
-/**
- * ...
- * @author ...
- */
 class Player extends Entity
 {
 
@@ -131,6 +127,11 @@ class Player extends Entity
 	
 	override public function moveCollideY(e:Entity):Bool
 	{
+		if (e.type == "enemy")
+		{
+			HXP.scene.remove(this);
+		}
+		
 		if (_velocity.y >= 0)
 		{
 			_onGround = true;
@@ -141,6 +142,16 @@ class Player extends Entity
 		return true;
 	}
 	
+	override public function moveCollideX(e:Entity):Bool
+	{
+		if (e.type == "enemy")
+		{
+			HXP.scene.remove(this);
+		}
+		
+		
+		return true;
+	}
 	
 	override public function render():Void
 	{
@@ -156,7 +167,7 @@ class Player extends Entity
 	
 	private function _playerMovement():Void
 	{
-		moveBy(_velocity.x * _direction, _velocity.y, "block");
+		moveBy(_velocity.x * _direction, _velocity.y, ["block", "enemy"]);
 	}
 	
 	private function _initGraphics():Void
