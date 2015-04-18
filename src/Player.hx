@@ -41,12 +41,12 @@ class Player extends Entity
 		
 		if (Input.check(Key.LEFT))
 		{
-			_velocity.x = -5;
+			_velocity.x = -_speed;
 		}
 		
 		if (Input.check(Key.RIGHT))
 		{
-			_velocity.x = 5;
+			_velocity.x = _speed;
 		}
 		
 		if (!Input.check(Key.RIGHT) && !Input.check(Key.LEFT))
@@ -72,7 +72,7 @@ class Player extends Entity
 		if (!_onGround) return;
 		
 		_onGround = false;
-		_velocity.y = -7;
+		_velocity.y = -_reach;
 	}
 	
 	
@@ -81,8 +81,9 @@ class Player extends Entity
 		if (_velocity.y >= 0)
 		{
 			_onGround = true;
-			_velocity.y = 0;
 		}
+		
+		_velocity.y = 0;
 		
 		return true;
 	}
@@ -100,6 +101,9 @@ class Player extends Entity
 	
 	private var _gravity:Vector2 = new Vector2(0. , 20.);
 	private var _velocity:Vector2 = new Vector2(0., 0.);
+	
+	private var _speed:Float = 5.;
+	private var _reach:Float = 7.;
 	
 	private var _onGround:Bool = false;
 
