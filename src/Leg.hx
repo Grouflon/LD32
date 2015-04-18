@@ -15,11 +15,11 @@ class Leg extends Limb
 	{
 		super(x, y - (playerHeight / 3) * 1, direction);
 		
-		addGraphic(Image.createRect(10, 5, 0x3366FF, 1));
+		addGraphic(Image.createRect(25, 8, 0x3366FF, 1));
 		
-		setHitbox(10, 5); //temporary
-		width 	= 10; //temporary
-		height 	= 5; //temporary
+		setHitbox(25, 8); //temporary
+		width 	= 25; //temporary
+		height 	= 8; //temporary
 	}
 	
 }

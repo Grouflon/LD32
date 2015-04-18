@@ -33,8 +33,6 @@ class Player extends Entity
 		originX = cast(width * 0.5, Int);
 		originY = height;
 		
-		_text = new Text("vewrubvneriubvn");
-		
 		name = "player";
 		type = "player";
 		
