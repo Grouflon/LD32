@@ -13,9 +13,11 @@ import Player;
 class Ammunition extends Entity
 {
 
-	public function new(x:Float, y:Float) 
+	public function new(x:Float, y:Float, width:Int, height:Int) 
 	{
 		super(x, y);
+		collidable = true;
+		setHitbox(width, height, 0, 0);
 	}
 
 	

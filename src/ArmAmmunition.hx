@@ -14,8 +14,8 @@ class ArmAmmunition extends Ammunition
 
 	public function new(x:Float, y:Float) 
 	{
-		super(x, y);
-				
+		super(x, y, 7, 18);
+		
 		addGraphic(Image.createRect(7, 18, 0x33CC33, 1));
 	}
 		

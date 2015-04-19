@@ -14,7 +14,7 @@ class LegAmmunition extends Ammunition
 
 	public function new(x:Float, y:Float) 
 	{
-		super(x, y);
+		super(x, y, 10, 25);
 		
 		addGraphic(Image.createRect(10, 25, 0x009933, 1));
 	}
