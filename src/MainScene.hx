@@ -20,24 +20,11 @@ class MainScene extends Scene
 	{
 		var level:Parsing = new Parsing("levels/layers_testlevel.oel", this);
 		
-		player = new Player(200, HXP.screen.height - 100);
-		add(player);
+		player = level._player;
 		add(new PlayerGUI());
-<<<<<<< HEAD
-=======
-		
-		add(new LegAmmunition(300, HXP.screen.height - 130));
-		add(new LegAmmunition(320, HXP.screen.height - 130));
-		
-		add(new ArmAmmunition(340, HXP.screen.height - 130));
-		add(new ArmAmmunition(360, HXP.screen.height - 130));
->>>>>>> a7443da2195e24ebfa389aed7649ad9cb79e5e07
 
 		levelHeight = level._height;
 		levelWidth = level._width;
-		
-		var boss : BossEnemy = new BossEnemy(null, 100, HXP.height - 100, 50, 50, 50, 200, 10);
-		add(boss);
 	}
 	
 	public override function update()

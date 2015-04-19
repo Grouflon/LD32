@@ -78,8 +78,30 @@ class Parsing
 			if (name == "spawn")
 				createSpawn(item);
 			else if (name == "ammo")
-			createAmmo(item);
+				createAmmo(item);
+			else if (name == "player")
+				createPlayer(item);
+			else if (name == "boss")
+				createBoss(item);
 		}
+	}
+	
+	private function createBoss(boss)
+	{
+		var x:Int = Std.parseInt(boss.get("x"));
+		var y:Int = Std.parseInt(boss.get("y"));
+		var speed:Int = Std.parseInt(boss.get("speed"));
+		var range:Int = Std.parseInt(boss.get("visionRange"));
+		var life:Int = Std.parseInt(boss.get("life"));
+		_scene.add(new BossEnemy(null, x, y, 50, 50, speed, range, life));
+	}
+	
+	private function createPlayer(player)
+	{
+		var x:Int = Std.parseInt(player.get("x"));
+		var y:Int = Std.parseInt(player.get("y"));
+		_player = new Player(x, y);
+		_scene.add(_player);
 	}
 	
 	private function createAmmo(spawn)
@@ -216,6 +238,7 @@ class Parsing
 
 	public var _width:Int;
 	public var _height:Int;
+	public var _player:Player;
 	
 	private var _scene:Scene = null;
 }

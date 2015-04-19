@@ -412,6 +412,8 @@
     <ammo id="2" x="420" y="480" limb="LEG" />
     <ammo id="3" x="660" y="360" limb="ARM" />
     <ammo id="4" x="750" y="360" limb="ARM" />
+    <player id="6" x="600" y="375" />
+    <boss id="5" x="810" y="390" speed="50" visionRange="200" life="10" />
   </item>
   <background tileset="background" exportMode="XMLCoords">
     <tile x="0" y="0" tx="1" ty="7" />
