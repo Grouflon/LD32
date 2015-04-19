@@ -24,7 +24,7 @@ import Leg;
 class Player extends Entity
 {
 
-	public function new(x:Float=0, y:Float=0)
+	public function new(x:Float=0, y:Float=0, arms:Int, legs:Int)
 	{
 		super(x, y);
 		
@@ -45,11 +45,18 @@ class Player extends Entity
 		Input.define("MoveDown", [Key.CONTROL, Key.DOWN]);
 		Input.define("FireArm", [Key.Q]);
 		Input.define("FireLeg", [Key.E]);
+		
+		_armCount = arms;
+		_maxArmCount = arms;
+		_legCount = legs;
+		_maxLegCount = legs;
 	}
 	
 	
 	override public function update():Void
 	{
+		//trace(_legCount);
+		
 		super.update();
 		
 		_checkGround();

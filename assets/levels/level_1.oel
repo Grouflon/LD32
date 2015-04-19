@@ -526,9 +526,10 @@
     <tile x="32" y="30" tx="1" ty="0" />
     <tile x="32" y="34" tx="1" ty="0" />
     <tile x="33" y="18" tx="1" ty="0" />
+    <tile x="54" y="21" tx="1" ty="0" />
   </platform>
   <item>
-    <player id="0" x="90" y="540" />
+    <player id="0" x="90" y="540" arms="2" legs="0" />
     <spawn id="1" x="780" y="450" timer="4,5" number="1" DamageType="MELEE" Resitance="LEG" />
     <spawn id="2" x="1320" y="450" timer="4,5" number="2" DamageType="RANGE" Resitance="ARM" />
     <ammo id="3" x="1800" y="180" limb="LEG" />
@@ -2034,10 +2035,26 @@
     <tile x="51" y="15" tx="4" ty="2" />
     <tile x="51" y="16" tx="4" ty="2" />
     <tile x="51" y="17" tx="4" ty="7" />
+    <tile x="53" y="9" tx="0" ty="3" />
+    <tile x="53" y="10" tx="0" ty="3" />
+    <tile x="53" y="11" tx="0" ty="3" />
+    <tile x="53" y="12" tx="0" ty="3" />
+    <tile x="53" y="13" tx="0" ty="7" />
     <tile x="54" y="1" tx="5" ty="1" />
     <tile x="54" y="2" tx="5" ty="2" />
+    <tile x="54" y="8" tx="1" ty="0" />
+    <tile x="54" y="9" tx="1" ty="2" />
+    <tile x="54" y="10" tx="1" ty="3" />
+    <tile x="54" y="11" tx="1" ty="2" />
+    <tile x="54" y="12" tx="1" ty="2" />
+    <tile x="54" y="13" tx="1" ty="7" />
     <tile x="55" y="1" tx="6" ty="1" />
     <tile x="55" y="2" tx="6" ty="2" />
+    <tile x="55" y="8" tx="1" ty="0" />
+    <tile x="55" y="9" tx="4" ty="2" />
+    <tile x="55" y="10" tx="4" ty="2" />
+    <tile x="55" y="11" tx="4" ty="2" />
+    <tile x="55" y="12" tx="4" ty="2" />
     <tile x="56" y="1" tx="7" ty="1" />
     <tile x="56" y="2" tx="7" ty="2" />
     <tile x="56" y="17" tx="3" ty="7" />
