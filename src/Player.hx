@@ -255,9 +255,17 @@ class Player extends Entity
 		_legsSprite.add("walk", [10, 11, 12, 13, 14, 15, 16], 13);
 		_legsSprite.add("walk_1leg", [50, 51, 52, 53, 54, 55, 56], 13);
 		_legsSprite.add("jump_ascend", [20, 21], 13, false);
+		_legsSprite.add("jump_ascend_1leg", [90, 91], 13, false);
+		_legsSprite.add("jump_ascend_0leg", [100, 101], 13, false);
 		_legsSprite.add("jump_ascend_loop", [22, 23], 13, true);
+		_legsSprite.add("jump_ascend_loop_1leg", [92, 93], 13, true);
+		_legsSprite.add("jump_ascend_loop_0leg", [102, 103], 13, true);
 		_legsSprite.add("jump_descent", [24, 25], 13, false);
+		_legsSprite.add("jump_descent_1leg", [94, 95], 13, false);
+		_legsSprite.add("jump_descent_0leg", [104, 105], 13, false);
 		_legsSprite.add("jump_descent_loop", [26, 27], 13, true);
+		_legsSprite.add("jump_descent_loop_1leg", [96, 97], 13, true);
+		_legsSprite.add("jump_descent_loop_0leg", [106, 107], 13, true);
 		_legsSprite.add("leg1_tearing", [30, 31, 32, 33], 13, false);
 		_legsSprite.add("leg2_tearing", [40, 41, 42, 43], 13, false);
 		
@@ -396,22 +404,25 @@ class Player extends Entity
 		{
 			if (!_onGround)
 			{
-				if (_legsSprite.currentAnim != "jump_ascend" && _legsSprite.currentAnim != "jump_ascend_loop" && _legsSprite.currentAnim != "jump_descent" && _legsSprite.currentAnim != "jump_descent_loop")
+				if ((_legsSprite.currentAnim != "jump_ascend" && _legsSprite.currentAnim != "jump_ascend_1leg" && _legsSprite.currentAnim != "jump_ascend_0leg") &&
+					(_legsSprite.currentAnim != "jump_ascend_loop" && _legsSprite.currentAnim != "jump_ascend_loop_1leg" && _legsSprite.currentAnim != "jump_ascend_loop_0leg") &&
+					(_legsSprite.currentAnim != "jump_descent" && _legsSprite.currentAnim != "jump_descent_1leg" && _legsSprite.currentAnim != "jump_descent_0leg") &&
+					(_legsSprite.currentAnim != "jump_descent_loop" && _legsSprite.currentAnim != "jump_descent_loop_1leg" && _legsSprite.currentAnim != "jump_descent_loop_0leg"))
 				{
-					_legsSprite.play("jump_ascend");
+					_legsSprite.play("jump_ascend" + legStr);
 				}
-				else if (_legsSprite.currentAnim == "jump_ascend" && _legsSprite.complete)
+				else if ((_legsSprite.currentAnim == "jump_ascend" && _legsSprite.currentAnim == "jump_ascend_1leg" && _legsSprite.currentAnim == "jump_ascend_0leg") && _legsSprite.complete)
 				{
-					_legsSprite.play("jump_ascend_loop");	
+					_legsSprite.play("jump_ascend_loop" + legStr);
 				}
 				
-				if (_velocity.y > -1 && _legsSprite.currentAnim != "jump_descent" && _legsSprite.currentAnim != "jump_descent_loop")
+				if (_velocity.y > -1 && (_legsSprite.currentAnim != "jump_descent" && _legsSprite.currentAnim != "jump_descent_1leg" && _legsSprite.currentAnim != "jump_descent_0leg") && (_legsSprite.currentAnim != "jump_descent_loop" && _legsSprite.currentAnim != "jump_descent_loop_1leg" && _legsSprite.currentAnim != "jump_descent_loop_0leg"))
 				{
-					_legsSprite.play("jump_descent");
+					_legsSprite.play("jump_descent" + legStr);
 				}
-				else if (_legsSprite.currentAnim == "jump_descent" && _legsSprite.complete)
+				else if ((_legsSprite.currentAnim == "jump_descent" || _legsSprite.currentAnim == "jump_descent_1leg" || _legsSprite.currentAnim == "jump_descent_0leg") && _legsSprite.complete)
 				{
-					_legsSprite.play("jump_descent_loop");
+					_legsSprite.play("jump_descent_loop" + legStr);
 				}
 			}
 			else if (Math.abs(_velocity.x) > 0)
