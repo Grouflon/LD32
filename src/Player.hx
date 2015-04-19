@@ -250,10 +250,10 @@ class Player extends Entity
 		
 		else if (e.type == "block")
 		{
+			_velocity.y = 0;
 			if (_velocity.y >= 0)
 			{
 				setOnGround();
-				_velocity.y = 0;
 			}
 			return true;
 		}
