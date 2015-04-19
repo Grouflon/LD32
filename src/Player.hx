@@ -100,10 +100,6 @@ class Player extends Entity
 		
 		_updateGraphics();
 	
-		var velocitySign:Int = HXP.sign(_velocity.y);
-		if (velocitySign > 0)
-			_onGround = false;
-					trace(_onGround);	
 		_onKeyDown = false;
 		_firedArm = false;
 		_firedLeg = false;
@@ -179,8 +175,6 @@ class Player extends Entity
 		
 		if (e.type == "platform")
 		{
-			trace(_onGround);
-				
 			if ((e.top >= this.bottom || _onGround) && !_onKeyDown)
 			{
 				_onGround = true;

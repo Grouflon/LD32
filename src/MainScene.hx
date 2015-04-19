@@ -4,6 +4,7 @@ import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.utils.Draw;
 import PlayerGUI;
+import Parsing;
 
 class MainScene extends Scene
 {
@@ -14,7 +15,7 @@ class MainScene extends Scene
 	
 	public override function begin()
 	{
-		Parsing.createBlock();
+		var level:Parsing = new Parsing();
 		add(new Player(100, HXP.screen.height - 400));
 		add(new PlayerGUI());
 
