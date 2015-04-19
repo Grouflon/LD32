@@ -504,7 +504,6 @@ class Player extends Entity
 
 	public function takeDamage(type : DamageType)
 	{
-		trace("player took damage !");
 		if (type == DamageType.MELEE)
 		{
 			HXP.scene.remove(this);
