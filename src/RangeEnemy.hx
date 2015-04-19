@@ -142,7 +142,7 @@ class RangeEnemy extends Enemy
 		{	
 			direction = playerDirection;
 				
-			HXP.scene.add(new EnemyProjectile(x + halfWidth, y - 40, player.x, player.y - 40, 200, visionRange));
+			HXP.scene.add(new EnemyProjectile(x + halfWidth, y - 40, player.x, player.y - 40, GB.rangeEnemyProjectileSpeed, GB.rangeEnemyProjectileRange));
 			attackTimer = attackCooldown;
 		}
 		else
