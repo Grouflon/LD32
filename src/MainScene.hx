@@ -29,8 +29,6 @@ class MainScene extends Scene
 	{	
 		if (player != null)
 		{	
-			trace("player x : " + player.x + " y : " + player.y);
-
 			if (player.x - HXP.halfWidth < 0)
 				HXP.camera.x = 0;
 			else if (player.x + HXP.halfWidth > levelWidth)
