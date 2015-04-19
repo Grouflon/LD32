@@ -38,7 +38,7 @@ class MeleeEnemy extends Enemy
 		
 		applyGravity();
 		
-		if (HXP.scene.getInstance("player").y == y)
+		if (cast(HXP.scene, MainScene).player.y == y)
 			visionRange = 400;
 		else
 			visionRange = visionRangeDefault;
@@ -100,7 +100,7 @@ class MeleeEnemy extends Enemy
 	
 	private function combat()
 	{	
-		var player : Entity = HXP.scene.getInstance("player");
+		var player : Entity = cast(HXP.scene, MainScene).player;
 		
 		var playerPosition : Vector = new Vector(player.x, player.y);
 		var thisPosition : Vector = new Vector(x, y);
@@ -131,6 +131,21 @@ class MeleeEnemy extends Enemy
 			}
 		}
 	}
+	
+	
+	override public function moveCollideX(e:Entity):Bool
+	{
+		if (e.type == "player")
+		{
+			HXP.scene.remove(e);
+			GameController.playerJustDied(this, false);
+		}
+		
+		super.moveCollideX(e);
+		
+		return true;
+	}
+	
 	
 	private var stateCooldown : Int;
 	private var stateTimer : Float;

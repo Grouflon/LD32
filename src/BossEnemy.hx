@@ -53,7 +53,7 @@ class BossEnemy extends Enemy
 		
 		applyGravity();
 		
-		if (HXP.scene.getInstance("player").y == y)
+		if (cast(HXP.scene, MainScene).player.y == y)
 			visionRange = 400;
 		else
 			visionRange = visionRangeDefault;
@@ -118,7 +118,7 @@ class BossEnemy extends Enemy
 	
 	private function combat()
 	{	
-		var player : Entity = HXP.scene.getInstance("player");
+		var player:Player = cast(HXP.scene, MainScene).player;
 		
 		var playerPosition : Vector = new Vector(player.x, player.y);
 		var thisPosition : Vector = new Vector(x, y);
@@ -167,6 +167,21 @@ class BossEnemy extends Enemy
 				fireLeg(-1);
 		}
 	}
+	
+	
+	override public function moveCollideX(e:Entity):Bool
+	{
+		if (e.type == "player")
+		{
+			HXP.scene.remove(e);
+			GameController.playerJustDied(this, true);
+		}
+		
+		super.moveCollideX(e);
+		
+		return true;
+	}
+	
 	
 	private function fireArm(_direction : Int)
 	{
