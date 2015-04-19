@@ -11,20 +11,23 @@ import Parsing;
 
 class MainScene extends Scene
 {
-	public function new()
+	public function new(file:String)
     {
         super();
+		levelName = file;
     }
 	
 	public override function begin()
 	{
-		var level:Parsing = new Parsing("levels/level_1.oel", this);
+		var level:Parsing = new Parsing(levelName, this);
 		
 		player = level._player;
 		add(new PlayerGUI());
 
 		levelHeight = level._height;
 		levelWidth = level._width;
+		
+		add(new LevelChanger(50, 400, 50, 50, "levels/level_1.oel"));
 	}
 	
 	public override function update()
@@ -43,7 +46,7 @@ class MainScene extends Scene
 		
 		super.update();
 	}
-
+	private var levelName:String;
 	public var player:Player;
 	public var levelHeight:Int;
 	public var levelWidth:Int;

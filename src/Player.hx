@@ -256,6 +256,12 @@ class Player extends Entity
 			return true;
 		}
 		
+		else if (e.type == "levelChanger")
+		{
+			var levelchanger : LevelChanger = cast(e, LevelChanger);
+			levelchanger.changeLevel();
+		}
+		
 		return false;
 	}
 	
@@ -270,6 +276,12 @@ class Player extends Entity
 		{
 			_hitPlatform = true;
 			return false;
+		}
+		
+		if (e.type == "levelChanger")
+		{
+			var levelchanger : LevelChanger = cast(e, LevelChanger);
+			levelchanger.changeLevel();
 		}
 		
 		return true;
@@ -301,7 +313,7 @@ class Player extends Entity
 			_speed = GB.playerSpeed;
 		}
 		
-		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy"]);
+		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy", "levelChanger"]);
 	}
 	
 	private function _initGraphics():Void

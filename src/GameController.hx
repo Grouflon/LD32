@@ -18,11 +18,12 @@ class GameController
 	}
 
 	
-	static public function startGame():Void
+	static public function startGame(file:String):Void
 	{
 		if (!_inGame) _inGame = true;
 		HXP.scene.removeAll();
-		HXP.scene = new MainScene();
+		HXP.scene = new MainScene(file);
+		_levelName = file;
 		_isPlayerAlive = true;
 	}
 	
@@ -31,7 +32,6 @@ class GameController
 	{
 		HXP.scene.removeAll();
 	}
-	
 	
 	static public function playerJustDied(e:Entity, boss:Bool):Void
 	{
@@ -56,10 +56,9 @@ class GameController
 		}
 		
 		HXP.scene.addTween(new Alarm(2., function (e:Dynamic) {
-			startGame();
+			startGame(_levelName);
 		}, TweenType.OneShot), true);
 	}
-	
 	
 	static public function isPlayerAlive():Bool
 	{
@@ -75,10 +74,16 @@ class GameController
 		if (Input.pressed(Key.P))
 		{
 			clean();
-			startGame();
+			startGame(_levelName);
 		}
 	}
 	
+	static public function switchLevel(file:String):Void
+	{
+		startGame(file);
+	}
+	
+	static private var _levelName:String;
 	static private var _isPlayerAlive:Bool;
 	static private var _inGame:Bool = false;
 }
