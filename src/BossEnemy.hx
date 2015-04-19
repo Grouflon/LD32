@@ -3,11 +3,13 @@ import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.math.Vector;
 import com.haxepunk.graphics.Spritemap;
+import com.haxepunk.graphics.Image;
 import com.haxepunk.tweens.misc.Alarm;
 import com.haxepunk.Tween;
 
 import Arm;
 import Leg;
+import GB;
 
 /**
  * ...
@@ -32,18 +34,18 @@ class BossEnemy extends Enemy
 		
 		visionRangeDefault = _visionRange;
 		
-		armCount = 0;
-		legCount = 0;
+		armCount = GB.initialBossArm;
+		legCount = GB.initialBossLeg;
 		
 		canFire = true;
 		canFireArm = true;
 		canFireLeg = true;
 		
-		fireLegCooldown = 7;
-		fireArmCooldown = 5;
-		fireCooldown = 3;
+		fireLegCooldown = GB.bossFireLegCooldown;
+		fireArmCooldown = GB.bossFireArmCooldown;
+		fireCooldown = GB.bossFireCooldown;
 		
-		fireArmHeight = _height;
+		fireArmHeight = _height - 50;
 		fireLegHeight = _height;
 	}
 	
@@ -188,6 +190,12 @@ class BossEnemy extends Enemy
 		canFireArm = false;
 		canFire = false;
 		armCount--;
+		
+		if (armCount < GB.limbToResist)
+		{
+			armResistance = false;
+		}
+		
 		HXP.scene.add(new Arm(x, y, _direction, fireArmHeight, false));
 		addTween(new Alarm(fireArmCooldown, function (e:Dynamic = null):Void { canFireArm = true; }, TweenType.OneShot), true);
 		addTween(new Alarm(fireCooldown, function (e:Dynamic = null):Void { canFire = true; }, TweenType.OneShot), true);
@@ -198,6 +206,12 @@ class BossEnemy extends Enemy
 		canFireLeg = false;
 		canFire = false;
 		legCount--;
+		
+		if (legCount < GB.limbToResist)
+		{
+			legResistance = false;
+		}
+		
 		HXP.scene.add(new Leg(x, y, _direction, fireLegHeight, false));
 		addTween(new Alarm(fireLegCooldown, function (e:Dynamic = null):Void { canFireLeg = true; }, TweenType.OneShot), true);
 		addTween(new Alarm(fireCooldown, function (e:Dynamic = null):Void { canFire = true; }, TweenType.OneShot), true);
@@ -205,22 +219,41 @@ class BossEnemy extends Enemy
 	
 	public override function notifyDamage(projectileType : EnemyResistance)
 	{
-		if (projectileType != resistance)
+		if ((projectileType == EnemyResistance.ARM && !armResistance) || (projectileType == EnemyResistance.LEG && !legResistance))
 		{
 			life--;
 			
 			if (life <= 0)
 				HXP.scene.remove(this);
 		}
+		else
+		{
+			trace("PAS DE DEGAT SUR CE PROJECTILE");
+		}
 		
-		if (projectileType == EnemyResistance.ARM)
+		
+		if (projectileType == EnemyResistance.ARM && !armResistance)
 		{
 			armCount++;
+			
+			if (armCount == GB.limbToResist)
+			{
+				armResistance = true;
+				trace("boss resistant to arms");
+			}
 		}
-		else if (projectileType == EnemyResistance.LEG)
+		else if (projectileType == EnemyResistance.LEG && !legResistance)
 		{
 			legCount++;
+			
+			if (legCount == GB.limbToResist)
+			{
+				legResistance = true;
+				trace("boss resistant to legs");
+			}
 		}
+			
+	
 	}
 	
 	private var stateCooldown : Int;
@@ -241,4 +274,7 @@ class BossEnemy extends Enemy
 	private var fireCooldown : Float;
 	
 	private var visionRangeDefault : Int;
+	
+	private var armResistance : Bool;
+	private var legResistance : Bool;
 }
