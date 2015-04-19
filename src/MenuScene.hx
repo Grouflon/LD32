@@ -83,12 +83,10 @@ class MenuScene extends Scene
 	{
 		if (_upPressed && _currentButton > 1)
 		{
-			trace("removing to current button");
 			_currentButton--;
 		}
 		else if (_downPressed && _currentButton < _buttonCount)
 		{
-			trace("adding to current button");
 			_currentButton++;
 		}
 		

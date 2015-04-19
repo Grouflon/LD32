@@ -204,6 +204,10 @@ class Enemy extends Entity
 			if (life <= 0)
 				HXP.scene.remove(this);
 		}
+		else
+		{
+			
+		}
 	}
 	
 	private var speed:Float;
