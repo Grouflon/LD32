@@ -3,8 +3,11 @@ import com.haxepunk.HXP;
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.Screen;
+import com.haxepunk.graphics.Text;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
+import com.haxepunk.tweens.misc.Alarm;
+import com.haxepunk.Tween;
 import com.haxepunk.math.Vector;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
@@ -52,6 +55,15 @@ class Enemy extends Entity
 		isBoss = _isBoss;
 		
 		owner = _owner;
+		
+		resistArm = new Text("This arm is way too weak to hurt me !", x - 80, y - 60, 0, 0);
+		resistLeg = new Text("Nope, I didn't skip leg day !", x - 60, y - 80, 0, 0);
+		
+		resistArm.visible = false;
+		resistLeg.visible = false;
+		
+		HXP.scene.addGraphic(resistArm);
+		HXP.scene.addGraphic(resistLeg);
 	}
 	
 	public function applyGravity()
@@ -206,7 +218,21 @@ class Enemy extends Entity
 		}
 		else
 		{
-			
+			if (resistance == EnemyResistance.ARM)
+			{
+				resistArm.visible = true;
+				this.addTween(new Alarm(2., function (e:Dynamic) {
+					resistArm.visible = false;
+				}, TweenType.OneShot), true);
+			}
+			else if (resistance == EnemyResistance.LEG)
+			{
+				resistLeg.visible = true;
+				this.addTween(new Alarm(2., function (e:Dynamic) {
+					resistLeg.visible = false;
+				}, TweenType.OneShot), true);
+			}
+
 		}
 	}
 	
@@ -223,4 +249,7 @@ class Enemy extends Entity
 	
 	private var sprite : Spritemap;
 	private var owner : EnemySpawner;
+	
+	private var resistLeg:Text;
+	private var resistArm:Text;
 }
