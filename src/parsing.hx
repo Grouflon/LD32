@@ -93,7 +93,7 @@ class Parsing
 		var speed:Int = Std.parseInt(boss.get("speed"));
 		var range:Int = Std.parseInt(boss.get("visionRange"));
 		var life:Int = Std.parseInt(boss.get("life"));
-		_scene.add(new BossEnemy(null, x, y, 50, 50, speed, range, life));
+		_scene.add(new BossEnemy(null, x, y, 150, 150, speed, range, life));
 	}
 	
 	private function createPlayer(player)
@@ -183,8 +183,8 @@ class Parsing
 		var e:Entity = new Entity();
 		var m:Grid = new Grid(_width, _height, 30, 15);
 		e.setHitbox(_width, _height);
-		e.type = "block";
-		e.name = "block";
+		e.type = "platform";
+		e.name = "platform";
 		e.mask = m;
 		
 		for (miblock in platformer.elements()) 
