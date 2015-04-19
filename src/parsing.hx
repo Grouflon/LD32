@@ -35,7 +35,7 @@ class Parsing
 			var enemy_1_timer:Float = Std.parseInt(spawn.get("enemy_1_timer"));
 			var enemy_1_number:Int = Std.parseInt(spawn.get("enemy_1_number"));
 			
-			HXP.scene.add(new EnemySpawner(x, y, enemy_1_timer, enemy_1_number));
+			HXP.scene.add(new EnemySpawner(x, y, enemy_1_timer, enemy_1_number, EnemyResistance.BOTH, DamageType.BOTH));
 		}
 		
 		for (miblock in platformer.elements()) 

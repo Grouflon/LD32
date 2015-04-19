@@ -8,4 +8,5 @@ enum DamageType
 {
 	MELEE;
 	RANGE;
+	BOTH;
 }
