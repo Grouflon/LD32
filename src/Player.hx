@@ -113,7 +113,7 @@ class Player extends Entity
 			_firedArm = true;
 			_canFireArm = false;
 			_armCount--;
-			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height)); }, TweenType.OneShot), true);
+			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height, true)); }, TweenType.OneShot), true);
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireArm = true; }, TweenType.OneShot), true);
 		}
@@ -127,7 +127,7 @@ class Player extends Entity
 			_firedLeg = true;
 			_canFireLeg = false;
 			_legCount--;
-			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Leg(x, y, _direction, _height)); }, TweenType.OneShot), true);
+			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Leg(x, y, _direction, _height, true)); }, TweenType.OneShot), true);
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireLeg = true; }, TweenType.OneShot), true);
 		}
@@ -443,6 +443,7 @@ class Player extends Entity
 
 	public function takeDamage(type : DamageType)
 	{
+		trace("player took damage !");
 		if (type == DamageType.MELEE)
 		{
 			HXP.scene.remove(this);
