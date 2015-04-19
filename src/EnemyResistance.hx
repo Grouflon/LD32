@@ -8,4 +8,5 @@ enum EnemyResistance
 {
 	LEG;
 	ARM;
+	BOTH;
 }

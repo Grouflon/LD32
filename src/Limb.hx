@@ -37,7 +37,7 @@ class Limb extends Entity
 	
 	override public function update():Void
 	{
-		moveBy(_velocity.x, _velocity.y, "enemy");
+		moveBy(_velocity.x, _velocity.y, ["enemy", "block", "platform"]);
 		
 		if (!onCamera)
 		{
