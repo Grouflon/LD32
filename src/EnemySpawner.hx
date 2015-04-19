@@ -97,7 +97,7 @@ class EnemySpawner extends Entity
 			
 			if (randomType > 0.5)
 			{
-				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, 1, enemyResist));
+				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 60, 150, 1, enemyResist));
 			}
 			else
 			{
@@ -106,7 +106,7 @@ class EnemySpawner extends Entity
 		}
 		else if (enemyDamageType == DamageType.MELEE)
 		{
-			HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, 1, enemyResist));
+			HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 60, 150, 1, enemyResist));
 		}
 		else if (enemyDamageType == DamageType.RANGE)
 		{

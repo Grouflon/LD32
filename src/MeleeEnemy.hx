@@ -11,23 +11,28 @@ import com.haxepunk.graphics.Spritemap;
 class MeleeEnemy extends Enemy
 {
 
-	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _life : Int, _resistance : EnemyResistance) 
-	{
+	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _speed : Int, _visionRange : Int, _life : Int, _resistance : EnemyResistance) 
+	{				
+		sprite = new Spritemap("graphics/enemy_man_spritesheet.png", 84, 81);
+		super(_owner, false, _xPos, _yPos, 18, 69, _speed, _visionRange, _resistance, _life, sprite);
+		sprite.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 13);
+		
 		if (_resistance == EnemyResistance.ARM)
 		{
-			sprite = new Spritemap("graphics/melee_arm.png", 32, 50);
+			sprite.play("walk");
+		}
+		else if (_resistance == EnemyResistance.LEG)
+		{
+			sprite.play("walk");
 		}
 		else
 		{
-			sprite = new Spritemap("graphics/melee_leg.png", 32, 50);
+			sprite.play("walk");
 		}
 		
-		sprite.originX = cast(_width * 0.5, Int);
-		sprite.originY = _height;
+		sprite.originX = cast(sprite.width * 0.5, Int);
+		sprite.originY = sprite.height;
 		
-		sprite.add("normal", [0]);
-		
-		super(_owner, false, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life, sprite);
 		
 		visionRangeDefault = _visionRange;
 	}
@@ -61,6 +66,15 @@ class MeleeEnemy extends Enemy
 		}
 		
 		applyMovement();
+		
+		if (direction == Direction.LEFT)
+		{
+			sprite.flipped = true;
+		}
+		else
+		{
+			sprite.flipped = false;
+		}
 	}
 	
 	
