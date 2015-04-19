@@ -50,64 +50,67 @@ class Player extends Entity
 	
 	override public function update():Void
 	{
-		super.update();
-		
-		_checkGround();
-		
-		if (Input.check("MoveLeft"))
+		if (GameController.isPlayerAlive())
 		{
-			_direction = -1;
-			_velocity.x = _speed;
-		}
-		
-		if (Input.check("MoveRight"))
-		{
-			_direction = 1;
-			_velocity.x = _speed;
-		}
-		
-		if (!Input.check("MoveLeft") && !Input.check("MoveRight"))
-		{
-			_velocity.x = 0;
-		}
-		
-		if (Input.check("MoveDown"))
-		{
-			_onKeyDown = true;
-		}
-		
-		if (Input.pressed("Jump"))
-		{
-			if (_onGround)
-			{
-				_doJump();
-			}
-		}
+			super.update();
 			
-		if (Input.pressed("FireArm"))
-		{
-			_fireArm();
-		}
-		
-		if (Input.pressed("FireLeg"))
-		{
-			_fireLeg();
-		}
-		_updateSize();
-
-		
-		_playerMovement();
-		_applyGravity();
-		
-		_updateGraphics();
+			_checkGround();
+			
+			if (Input.check("MoveLeft"))
+			{
+				_direction = -1;
+				_velocity.x = _speed;
+			}
+			
+			if (Input.check("MoveRight"))
+			{
+				_direction = 1;
+				_velocity.x = _speed;
+			}
+			
+			if (!Input.check("MoveLeft") && !Input.check("MoveRight"))
+			{
+				_velocity.x = 0;
+			}
+			
+			if (Input.check("MoveDown"))
+			{
+				_onKeyDown = true;
+			}
+			
+			if (Input.pressed("Jump"))
+			{
+				if (_onGround)
+				{
+					_doJump();
+				}
+			}
+				
+			if (Input.pressed("FireArm"))
+			{
+				_fireArm();
+			}
+			
+			if (Input.pressed("FireLeg"))
+			{
+				_fireLeg();
+			}
+			_updateSize();
 	
-		_onKeyDown = false;
-		_firedArm = false;
-		_firedLeg = false;
-		_hitPlatformLastFrame = _hitPlatform;
-		_hitPlatform = false;
-		_lastFramePosition.x = x;
-		_lastFramePosition.y = y;
+			
+			_playerMovement();
+			_applyGravity();
+			
+			_updateGraphics();
+		
+			_onKeyDown = false;
+			_firedArm = false;
+			_firedLeg = false;
+			_hitPlatformLastFrame = _hitPlatform;
+			_hitPlatform = false;
+			_lastFramePosition.x = x;
+			_lastFramePosition.y = y;
+		}
 	}
 
 	
@@ -223,7 +226,7 @@ class Player extends Entity
 					var e:Entity = collide("platform", x, startY);
 					if (e == null)
 					{
-						_onGround = true;
+						setOnGround();
 						_velocity.y = 0;
 						return true;
 					}
@@ -235,22 +238,22 @@ class Player extends Entity
 			{
 				return false;
 			}
-			/*if ((e.top >= this.bottom || _onGround) && !_onKeyDown)
-			{
-				_onGround = true;
-				_velocity.y = 0;
-				return true;
-			}*/
 		}
 		
 		else if (e.type == "block")
 		{
 			if (_velocity.y >= 0)
 			{
-				_onGround = true;
+				setOnGround();
 				_velocity.y = 0;
 			}
 			return true;
+		}
+		
+		else if (e.type == "levelChanger")
+		{
+			var levelchanger : LevelChanger = cast(e, LevelChanger);
+			levelchanger.changeLevel();
 		}
 		
 		return false;
@@ -267,6 +270,12 @@ class Player extends Entity
 		{
 			_hitPlatform = true;
 			return false;
+		}
+		
+		if (e.type == "levelChanger")
+		{
+			var levelchanger : LevelChanger = cast(e, LevelChanger);
+			levelchanger.changeLevel();
 		}
 		
 		return true;
@@ -298,7 +307,7 @@ class Player extends Entity
 			_speed = GB.playerSpeed;
 		}
 		
-		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy"]);
+		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy", "levelChanger"]);
 	}
 	
 	private function _initGraphics():Void
@@ -506,7 +515,6 @@ class Player extends Entity
 	{
 		if (type == DamageType.MELEE)
 		{
-			HXP.scene.remove(this);
 			GameController.playerJustDied(this, false);
 		}
 		else if (type == DamageType.RANGE)
@@ -540,7 +548,7 @@ class Player extends Entity
 	
 	private function _checkGround():Void
 	{
-		_onGround = false;
+		var settedOnGround : Bool = false;
 		if (_velocity.y >= 0)
 		{
 			var types:Dynamic = ["block", "platform"];
@@ -549,11 +557,33 @@ class Player extends Entity
 				var e:Entity = scene.collideRect(types[i], x - halfWidth, y, width, 1);
 				if (e != null)
 				{
-					_onGround = true;
+					setOnGround();
+					settedOnGround = true;
 					break;
 				}
 			}
 		}
+		
+		if (!settedOnGround)
+			_onGround = false;
+	}
+	
+	private function setOnGround()
+	{
+		if (!_onGround)
+		{
+			if (_legCount == 0)
+			{
+				HXP.screen.shake(GB.playerTouchesGroundShakeIntensity, GB.playerTouchesGroundShakeDuration);
+			}
+			
+			_onGround = true;
+		}
+	}
+	
+	public function stopSprite()
+	{
+		_sprite.stop();
 	}
 	
 	private var _sprite:Spritemap;

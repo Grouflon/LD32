@@ -29,15 +29,17 @@ class RangeEnemy extends Enemy
 		
 		super(_owner, false, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life,  sprite);
 		
-		attackCooldown = 1;
+		attackCooldown = GB.rangeAttackCooldown;
 		attackTimer = 0;
 		
-		stateCooldown = 3;
+		stateCooldown = GB.rangeStateChangeCooldown;
 		stateTimer = 0;
 	}
 	
 	override public function update() 
 	{
+		if (GameController.isPlayerAlive())
+		{
 		super.update();
 		
 		applyGravity();
@@ -81,6 +83,7 @@ class RangeEnemy extends Enemy
 		}
 		
 		applyMovement();
+		}
 	}
 	
 	
@@ -122,7 +125,7 @@ class RangeEnemy extends Enemy
 	
 	private function combat()
 	{	
-		var player : Entity = HXP.scene.getInstance("player");
+		var player:Player = cast(HXP.scene, MainScene).player;
 		
 		var playerPosition : Vector = new Vector(player.x, player.y);
 		var thisPosition : Vector = new Vector(x, y);
@@ -139,7 +142,7 @@ class RangeEnemy extends Enemy
 		{	
 			direction = playerDirection;
 				
-			HXP.scene.add(new EnemyProjectile(x + halfWidth, y - 40, player.x, player.y - 40, 200, visionRange));
+			HXP.scene.add(new EnemyProjectile(x + halfWidth, y - 40, player.x, player.y - 40, GB.rangeEnemyProjectileSpeed, GB.rangeEnemyProjectileRange));
 			attackTimer = attackCooldown;
 		}
 		else
@@ -155,7 +158,6 @@ class RangeEnemy extends Enemy
 	{
 		if (e.type == "player")
 		{
-			HXP.scene.remove(e);
 			GameController.playerJustDied(this, false);
 		}
 		

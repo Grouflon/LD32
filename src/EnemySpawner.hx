@@ -6,6 +6,8 @@ import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
 import com.haxepunk.tweens.misc.Alarm;
 import com.haxepunk.Tween.TweenType;
+import com.haxepunk.utils.Data;
+import com.haxepunk.utils.Draw;
 import Enemy;
 import EnemyState;
 import EnemyResistance;
@@ -97,20 +99,20 @@ class EnemySpawner extends Entity
 			
 			if (randomType > 0.5)
 			{
-				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 60, 150, 1, enemyResist));
+				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, GB.meleeSpeed, GB.meleeVisionRange, 1, enemyResist));
 			}
 			else
 			{
-				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, 1, enemyResist));
+				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, GB.rangeSpeed, GB.rangeVisionRange, 1, enemyResist));
 			}
 		}
 		else if (enemyDamageType == DamageType.MELEE)
 		{
-			HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 60, 150, 1, enemyResist));
+			HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, GB.meleeSpeed, GB.meleeVisionRange, 1, enemyResist));
 		}
 		else if (enemyDamageType == DamageType.RANGE)
 		{
-			HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, 1, enemyResist));
+			HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, GB.rangeSpeed, GB.rangeVisionRange, 1, enemyResist));
 		}
 	}
 	

@@ -3,6 +3,7 @@ import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.math.Vector;
 import com.haxepunk.graphics.Spritemap;
+import com.haxepunk.utils.Draw;
 
 /**
  * ...
@@ -14,7 +15,7 @@ class MeleeEnemy extends Enemy
 	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _speed : Int, _visionRange : Int, _life : Int, _resistance : EnemyResistance) 
 	{				
 		sprite = new Spritemap("graphics/enemy_man_spritesheet.png", 84, 81);
-		super(_owner, false, _xPos, _yPos, 18, 69, _speed, _visionRange, _resistance, _life, sprite);
+		super(_owner, false, _xPos, _yPos, 44, 69, _speed, _visionRange, _resistance, _life, sprite);
 		sprite.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 13);
 		
 		if (_resistance == EnemyResistance.ARM)
@@ -44,7 +45,7 @@ class MeleeEnemy extends Enemy
 		applyGravity();
 		
 		if (cast(HXP.scene, MainScene).player.y == y)
-			visionRange = 400;
+			visionRange = GB.meleeSameYVisionRange;
 		else
 			visionRange = visionRangeDefault;
 			
@@ -69,14 +70,15 @@ class MeleeEnemy extends Enemy
 		
 		if (direction == Direction.LEFT)
 		{
+			originX = cast(width * 0.5, Int) + 12;
 			sprite.flipped = true;
 		}
 		else
 		{
+			originX = cast(width * 0.5, Int) - 12;
 			sprite.flipped = false;
 		}
 	}
-	
 	
 	private function patrol()
 	{
@@ -132,7 +134,7 @@ class MeleeEnemy extends Enemy
 		{
 			if (canIGoLeft())
 			{
-				velocity.x -= speed * 2 * HXP.elapsed;
+				velocity.x -= GB.meleeChargeSpeed * HXP.elapsed;
 				direction = playerDirection;
 			}
 		}
@@ -141,17 +143,15 @@ class MeleeEnemy extends Enemy
 			if (canIGoRight())
 			{
 				direction = playerDirection;
-				velocity.x += speed * 2 * HXP.elapsed;
+				velocity.x += GB.meleeChargeSpeed * HXP.elapsed;
 			}
 		}
 	}
-	
 	
 	override public function moveCollideX(e:Entity):Bool
 	{
 		if (e.type == "player")
 		{
-			HXP.scene.remove(e);
 			GameController.playerJustDied(this, false);
 		}
 		
@@ -159,7 +159,14 @@ class MeleeEnemy extends Enemy
 		
 		return true;
 	}
-	
+	/*
+	override public function render()
+	{
+		Draw.hitbox(this);
+		Draw.circle(cast(x, Int), cast(y, Int), 5, 0x00FF00);
+		super.render();
+	}
+	*/
 	
 	private var stateCooldown : Int;
 	private var stateTimer : Float;
