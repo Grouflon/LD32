@@ -36,6 +36,9 @@ class Player extends Entity
 		originX = cast(width * 0.5, Int);
 		originY = height;
 		
+		_blood = new BloodSquirt();
+		HXP.scene.add(_blood);
+		
 		name = "player";
 		type = "player";
 		
@@ -580,6 +583,7 @@ class Player extends Entity
 			if (_legCount == 0)
 			{
 				HXP.screen.shake(GB.playerTouchesGroundShakeIntensity, GB.playerTouchesGroundShakeDuration);
+				_blood.squirt(x, y);
 			}
 			
 			_onGround = true;
@@ -590,6 +594,8 @@ class Player extends Entity
 	{
 		_sprite.stop();
 	}
+	
+	private var _blood:BloodSquirt;
 	
 	private var _sprite:Spritemap;
 	
