@@ -226,7 +226,7 @@ class Player extends Entity
 					var e:Entity = collide("platform", x, startY);
 					if (e == null)
 					{
-						_onGround = true;
+						setOnGround();
 						_velocity.y = 0;
 						return true;
 					}
@@ -238,19 +238,13 @@ class Player extends Entity
 			{
 				return false;
 			}
-			/*if ((e.top >= this.bottom || _onGround) && !_onKeyDown)
-			{
-				_onGround = true;
-				_velocity.y = 0;
-				return true;
-			}*/
 		}
 		
 		else if (e.type == "block")
 		{
 			if (_velocity.y >= 0)
 			{
-				_onGround = true;
+				setOnGround();
 				_velocity.y = 0;
 			}
 			return true;
@@ -554,7 +548,7 @@ class Player extends Entity
 	
 	private function _checkGround():Void
 	{
-		_onGround = false;
+		var settedOnGround : Bool = false;
 		if (_velocity.y >= 0)
 		{
 			var types:Dynamic = ["block", "platform"];
@@ -563,10 +557,27 @@ class Player extends Entity
 				var e:Entity = scene.collideRect(types[i], x - halfWidth, y, width, 1);
 				if (e != null)
 				{
-					_onGround = true;
+					setOnGround();
+					settedOnGround = true;
 					break;
 				}
 			}
+		}
+		
+		if (!settedOnGround)
+			_onGround = false;
+	}
+	
+	private function setOnGround()
+	{
+		if (!_onGround)
+		{
+			if (_legCount == 0)
+			{
+				HXP.screen.shake(GB.playerTouchesGroundShakeIntensity, GB.playerTouchesGroundShakeDuration);
+			}
+			
+			_onGround = true;
 		}
 	}
 	
