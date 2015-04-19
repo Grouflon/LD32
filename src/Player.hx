@@ -149,16 +149,30 @@ class Player extends Entity
 		if (e.type == "enemy")
 		{
 			HXP.scene.remove(this);
-		}
+			return true;
+		}		
 		
-		if (_velocity.y >= 0)
+		if (e.type == "platform")
 		{
-			_onGround = true;
+			if (e.top >= this.bottom)
+			{
+				_onGround = true;
+				_velocity.y = 0;
+				return true;
+			}
 		}
 		
-		_velocity.y = 0;
+		if (e.type == "block")
+		{
+			if (_velocity.y >= 0)
+			{
+				_onGround = true;
+				_velocity.y = 0;
+				return true;
+			}
+		}
 		
-		return true;
+		return false;
 	}
 	
 	override public function moveCollideX(e:Entity):Bool
@@ -168,6 +182,10 @@ class Player extends Entity
 			HXP.scene.remove(this);
 		}
 		
+		if (e.type == "platform")
+		{
+			return false;
+		}
 		
 		return true;
 	}
