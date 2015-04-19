@@ -4,7 +4,6 @@ import com.haxepunk.HXP;
 import com.haxepunk.Entity;
 import com.haxepunk.Scene;
 import com.haxepunk.graphics.Text;
-import src.GB;
 import Player;
 
 /**
@@ -36,8 +35,8 @@ class PlayerGUI extends Entity
 		
 		//var player:Player = new HXP.scene.getInstance("player");
 		
-		_playerArmCount = GB.playerArmCount;
-		_playerLegCount = GB.playerLegCount;
+		_playerArmCount = cast(HXP.scene.getInstance("player"), Player).getArmCount();
+		_playerLegCount = cast(HXP.scene.getInstance("player"), Player).getLegCount();
 		
 		_displayStats();
 	}

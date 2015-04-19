@@ -18,7 +18,7 @@ import com.haxepunk.graphics.Text;
 import hxmath.math.Vector2;
 
 // Local Imports
-import src.GB;
+import GB;
 import Arm;
 import Leg;
 
@@ -46,11 +46,6 @@ class Player extends Entity
 		Input.define("MoveDown", [Key.CONTROL, Key.DOWN]);
 		Input.define("FireArm", [Key.Q]);
 		Input.define("FireLeg", [Key.E]);
-		
-		GB.playerArmCount 	= 2;
-		GB.playerLegCount 	= 2;
-		GB.playerReach		= 9.5;
-		GB.playerSpeed		= 4.;
 	}
 	
 	
@@ -87,7 +82,7 @@ class Player extends Entity
 				_doJump();
 			}
 		}
-				
+			
 		if (Input.pressed("FireArm"))
 		{
 			_fireArm();
@@ -97,17 +92,8 @@ class Player extends Entity
 		{
 			_fireLeg();
 		}
-		
-		if (GB.playerLegCount == 0)
-		{
-			_short = true;
-			_height = 57;
-		}
-		else
-		{
-			_short = false;
-			_height = 72;
-		}
+		_updateSize();
+
 		
 		_playerMovement();
 		_applyGravity();
@@ -116,48 +102,52 @@ class Player extends Entity
 		
 		_onKeyDown = false;
 		_firedArm = false;
+		_firedLeg = false;
 	}
 
 	
 	private function _fireArm()
 	{
-		if (GB.playerArmCount > 0 && _canFireArm)
+		if (_armCount > 0 && _canFireArm)
 		{
 			_firedArm = true;
 			_canFireArm = false;
-			GB.playerArmCount--;
-			addTween(new Alarm(.15, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height)); }, TweenType.OneShot), true);
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerArmCount < 2) GB.playerArmCount++; }, TweenType.OneShot), true);
-			addTween(new Alarm(.3, function (e:Dynamic = null):Void { _canFireArm = true; }, TweenType.OneShot), true);
+			_armCount--;
+			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height)); }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
+			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireArm = true; }, TweenType.OneShot), true);
 		}
 	}
 	
 	
 	private function _fireLeg()
 	{
-		if (GB.playerLegCount > 0)
+		if (_legCount > 0 && _canFireLeg)
 		{
-			HXP.scene.add(new Leg(x, y, _direction, _height));
-			GB.playerLegCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerLegCount < 2) GB.playerLegCount++; }, TweenType.OneShot), true);
+			_firedLeg = true;
+			_canFireLeg = false;
+			_legCount--;
+			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Leg(x, y, _direction, _height)); }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
+			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireLeg = true; }, TweenType.OneShot), true);
 		}
 	}
 	
 	private function _looseLeg()
 	{
-		if (GB.playerLegCount > 0)
+		if (_legCount > 0)
 		{
-			GB.playerLegCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerLegCount < 2) GB.playerLegCount++; }, TweenType.OneShot), true);
+			_legCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
 		}
 	}
 	
 	private function _looseArm()
 	{
-		if (GB.playerArmCount > 0)
+		if (_armCount > 0)
 		{
-			GB.playerArmCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerArmCount < 2) GB.playerArmCount++; }, TweenType.OneShot), true);
+			_armCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
 		}
 	}
 	
@@ -233,7 +223,10 @@ class Player extends Entity
 	override public function render():Void
 	{
 		super.render();
-		//Draw.hitbox(this, true);
+		/*var xI:Int = cast(Math.round(x), Int);
+		var yI:Int = cast(Math.round(y), Int);
+		Draw.circle(xI, yI, 5, 0x00FF00);
+		Draw.hitbox(this, true);*/
 	}
 	
 	
@@ -260,11 +253,16 @@ class Player extends Entity
 	{
 		_legsSprite = new Spritemap("graphics/player_legs_spritesheet.png", 78, 75);
 		_legsSprite.add("idle", [0], 10);
+		_legsSprite.add("idle_1leg", [70], 10);
+		_legsSprite.add("idle_0leg", [80], 10);
 		_legsSprite.add("walk", [10, 11, 12, 13, 14, 15, 16], 13);
+		_legsSprite.add("walk_1leg", [50, 51, 52, 53, 54, 55, 56], 13);
 		_legsSprite.add("jump_ascend", [20, 21], 13, false);
 		_legsSprite.add("jump_ascend_loop", [22, 23], 13, true);
 		_legsSprite.add("jump_descent", [24, 25], 13, false);
 		_legsSprite.add("jump_descent_loop", [26, 27], 13, true);
+		_legsSprite.add("leg1_tearing", [30, 31, 32, 33], 13, false);
+		_legsSprite.add("leg2_tearing", [40, 41, 42, 43], 13, false);
 		
 		_chestSprite = new Spritemap("graphics/player_chest_spritesheet.png", 78, 75);
 		_chestSprite.add("idle", [0, 1, 2, 3], 10);
@@ -299,15 +297,60 @@ class Player extends Entity
 		_chestSprite.originY = _chestSprite.height;
 	}
 	
+	private function _updateSize():Void
+	{
+		if (_legCount == 0)
+		{
+			if (!_short)
+			{
+				_short = true;
+				_shortAlarm = new Alarm(_limbFireDelay, function (e:Dynamic = null):Void {
+					height = _shortHeight;
+					originY = height;
+					
+					_legsSprite.originY = _legsSprite.height - (_height - _shortHeight);
+					_chestSprite.originY = _chestSprite.height - (_height - _shortHeight);
+					
+					if (_onGround)
+					{
+						moveBy(0, -_height + _shortHeight, ["block", "platform", "enemy"]);
+					}
+					
+					_shortAlarm = null;
+				}, TweenType.OneShot);
+				
+				addTween(_shortAlarm, true);
+			}
+		}
+		else
+		{
+			if (_short)
+			{
+				if (_shortAlarm != null) _shortAlarm.cancel();
+				_short = false;
+				height = _height;
+				originY = height; 
+				
+				_legsSprite.originY = _legsSprite.height;
+				_chestSprite.originY = _chestSprite.height;
+				
+				if (!_onGround)
+				{
+					moveBy(0, _height - _shortHeight, ["block", "platform", "enemy"]);
+				}
+			}
+		}
+	}
+	
 	private function _updateGraphics():Void
 	{
 		// CHEST
-		if (_firedArm && (GB.playerArmCount == 1)) _chestSprite.play("arm1_tearing");
-		if (_firedArm && (GB.playerArmCount == 0)) _chestSprite.play("arm2_tearing");
+		if (_firedArm && (_armCount == 1)) _chestSprite.play("arm1_tearing");
+		if (_firedArm && (_armCount== 0)) _chestSprite.play("arm2_tearing");
 		
 		var armStr:String = "";
-		if (GB.playerArmCount == 1) armStr = "_1arm";
-		else if (GB.playerArmCount == 0) armStr = "_0arm";
+		if (_armCount == 1) armStr = "_1arm";
+		else if (_armCount== 0) armStr = "_0arm";
 		
 		if ((_chestSprite.currentAnim != "arm1_tearing" && _chestSprite.currentAnim != "arm2_tearing") || _chestSprite.complete)
 		{
@@ -344,33 +387,44 @@ class Player extends Entity
 			}
 		}
 		
-		if (!_onGround)
+		// LEGS
+		if (_firedLeg && (_legCount == 1)) _legsSprite.play("leg1_tearing");
+		if (_firedLeg && (_legCount == 0)) _legsSprite.play("leg2_tearing");
+		
+		var legStr:String = "";
+		if (_legCount == 1) legStr = "_1leg";
+		else if (_legCount == 0) legStr = "_0leg";
+		
+		if ((_legsSprite.currentAnim != "leg1_tearing" && _legsSprite.currentAnim != "leg2_tearing") || _legsSprite.complete)
 		{
-			if (_legsSprite.currentAnim != "jump_ascend" && _legsSprite.currentAnim != "jump_ascend_loop" && _legsSprite.currentAnim != "jump_descent" && _legsSprite.currentAnim != "jump_descent_loop")
+			if (!_onGround)
 			{
-				_legsSprite.play("jump_ascend");
+				if (_legsSprite.currentAnim != "jump_ascend" && _legsSprite.currentAnim != "jump_ascend_loop" && _legsSprite.currentAnim != "jump_descent" && _legsSprite.currentAnim != "jump_descent_loop")
+				{
+					_legsSprite.play("jump_ascend");
+				}
+				else if (_legsSprite.currentAnim == "jump_ascend" && _legsSprite.complete)
+				{
+					_legsSprite.play("jump_ascend_loop");	
+				}
+				
+				if (_velocity.y > -1 && _legsSprite.currentAnim != "jump_descent" && _legsSprite.currentAnim != "jump_descent_loop")
+				{
+					_legsSprite.play("jump_descent");
+				}
+				else if (_legsSprite.currentAnim == "jump_descent" && _legsSprite.complete)
+				{
+					_legsSprite.play("jump_descent_loop");
+				}
 			}
-			else if (_legsSprite.currentAnim == "jump_ascend" && _legsSprite.complete)
+			else if (Math.abs(_velocity.x) > 0)
 			{
-				_legsSprite.play("jump_ascend_loop");	
+				_legsSprite.play("walk" + legStr);
 			}
-			
-			if (_velocity.y > -1 && _legsSprite.currentAnim != "jump_descent" && _legsSprite.currentAnim != "jump_descent_loop")
+			else
 			{
-				_legsSprite.play("jump_descent");
+				_legsSprite.play("idle" + legStr);
 			}
-			else if (_legsSprite.currentAnim == "jump_descent" && _legsSprite.complete)
-			{
-				_legsSprite.play("jump_descent_loop");
-			}
-		}
-		else if (Math.abs(_velocity.x) > 0)
-		{
-			_legsSprite.play("walk");
-		}
-		else
-		{
-			_legsSprite.play("idle");
 		}
 		
 		if (_direction > 0)
@@ -393,11 +447,11 @@ class Player extends Entity
 		}
 		else if (type == DamageType.RANGE)
 		{
-			if (GB.playerLegCount == 0)
+			if (_legCount == 0)
 			{
 				_looseArm();
 			}
-			else if (GB.playerArmCount == 0)
+			else if (_armCount == 0)
 			{
 				_looseLeg();
 			}
@@ -416,6 +470,11 @@ class Player extends Entity
 		}
 	}
 	
+	
+	public function getArmCount():Int { return _armCount; }
+	public function getLegCount():Int { return _legCount; }
+	
+	
 	private var _sprite:Spritemap;
 	
 	private var _legsSprite:Spritemap;
@@ -425,14 +484,23 @@ class Player extends Entity
 	
 	private var _short:Bool = false;
 	private var _height:Int = 72;
+	private var _shortHeight:Int = 54;
+	private var _shortAlarm:Alarm = null;
 	
 	private var _direction:Int = 1;
 
 	private var _onKeyDown:Bool = false;
 	
+	private var _armCount:Int = 2;
+	private var _legCount:Int = 2;
+	
 	private var _onGround:Bool = false;
 	private var _firedArm:Bool = false;
+	private var _firedLeg:Bool = false;
 	private var _canFireArm:Bool = true;
+	private var _canFireLeg:Bool = true;
+	private var _limbFireCooldown:Float = .3;
+	private var _limbFireDelay:Float = .15;
 	
 	private var _text:Text;
 }

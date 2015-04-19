@@ -5,6 +5,11 @@ import GameController;
 class Main extends Engine
 {
 
+	public function new()
+	{
+		super(992, 576);
+	}
+	
 	override public function init()
 	{
 #if debug
