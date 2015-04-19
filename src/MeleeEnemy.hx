@@ -17,14 +17,16 @@ class MeleeEnemy extends Enemy
 		sprite = new Spritemap("graphics/enemy_man_spritesheet.png", 84, 81);
 		super(_owner, false, _xPos, _yPos, 44, 69, _speed, _visionRange, _resistance, _life, sprite);
 		sprite.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 13);
+		sprite.add("walk_arm", [10, 11, 12, 13, 14, 15, 16, 17], 13);
+		sprite.add("walk_leg", [20, 21, 22, 23, 24, 25, 26, 27], 13);
 		
 		if (_resistance == EnemyResistance.ARM)
 		{
-			sprite.play("walk");
+			sprite.play("walk_arm");
 		}
 		else if (_resistance == EnemyResistance.LEG)
 		{
-			sprite.play("walk");
+			sprite.play("walk_leg");
 		}
 		else
 		{
