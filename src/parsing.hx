@@ -113,8 +113,6 @@ class Parsing
 		var y:Int = Std.parseInt(player.get("y"));
 		var arms:Int = Std.parseInt(player.get("arms"));
 		var legs:Int = Std.parseInt(player.get("legs"));
-		
-		trace(legs);
 
 		_player = new Player(x, y, arms, legs);
 		_scene.add(_player);

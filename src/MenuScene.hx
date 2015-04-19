@@ -73,7 +73,7 @@ class MenuScene extends Scene
 			case 1:
 			{
 				GameController.clean();
-				GameController.startGame("levels/level_2.oel");
+				GameController.startGame("levels/level_1.oel");
 			}
 		}
 	}
