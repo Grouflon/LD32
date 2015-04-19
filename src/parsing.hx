@@ -165,7 +165,7 @@ class Parsing
 			tilemap.setTile(x, y, tileIndex);
 		}
 		
-		_scene.addGraphic(tilemap);
+		_scene.addGraphic(tilemap, 200);
 	}
 	
 	private function createProps(props:Xml)
@@ -182,7 +182,7 @@ class Parsing
 			tilemap.setTile(x, y, tileIndex);
 		}
 		
-		_scene.addGraphic(tilemap);
+		_scene.addGraphic(tilemap, 150);
 	}
 
 	public var _width:Int;
