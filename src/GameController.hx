@@ -32,7 +32,7 @@ class GameController
 	}
 	
 	
-	static public function playerJustDied(e:Entity):Void
+	static public function playerJustDied(e:Entity, boss:Bool):Void
 	{
 		if (e.type == "player")
 		{
@@ -40,7 +40,14 @@ class GameController
 		}
 		else if (e.type == "enemy")
 		{
-			HXP.scene.addGraphic(new Text("I'll have you know that I just killed you.", e.x - 100, e.y - 80, 0, 0));
+			if (boss)
+			{
+				HXP.scene.addGraphic(new Text("DIEEEEEEEEE HUMANNNNN ", e.x - 100, e.y - 175, 0, 0));
+			}
+			else
+			{
+				HXP.scene.addGraphic(new Text("I'll have you know that I just killed you.", e.x - 140, e.y - 80, 0, 0));
+			}
 		}
 		
 		HXP.scene.addTween(new Alarm(2., function (e:Dynamic) {

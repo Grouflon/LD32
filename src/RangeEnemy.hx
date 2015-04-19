@@ -150,6 +150,21 @@ class RangeEnemy extends Enemy
 		}
 	}
 	
+	
+	override public function moveCollideX(e:Entity):Bool
+	{
+		if (e.type == "player")
+		{
+			HXP.scene.remove(e);
+			GameController.playerJustDied(this, false);
+		}
+		
+		super.moveCollideX(e);
+		
+		return true;
+	}
+	
+	
 	private var attackCooldown : Int;
 	private var attackTimer : Float;
 	

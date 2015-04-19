@@ -168,6 +168,21 @@ class BossEnemy extends Enemy
 		}
 	}
 	
+	
+	override public function moveCollideX(e:Entity):Bool
+	{
+		if (e.type == "player")
+		{
+			HXP.scene.remove(e);
+			GameController.playerJustDied(this, true);
+		}
+		
+		super.moveCollideX(e);
+		
+		return true;
+	}
+	
+	
 	private function fireArm(_direction : Int)
 	{
 		canFireArm = false;

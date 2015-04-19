@@ -508,7 +508,7 @@ class Player extends Entity
 		if (type == DamageType.MELEE)
 		{
 			HXP.scene.remove(this);
-			GameController.playerJustDied(this);
+			GameController.playerJustDied(this, false);
 		}
 		else if (type == DamageType.RANGE)
 		{

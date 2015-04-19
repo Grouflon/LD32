@@ -139,13 +139,7 @@ class Enemy extends Entity
 	}
 
 	public override function moveCollideX(e:Entity):Bool
-	{
-		if (e.type == "player")
-		{
-			HXP.scene.remove(e);
-			GameController.playerJustDied(this);
-		}
-		
+	{		
 		if (e.type == "block" || e.type == "platform")
 		{
 			if (direction == Direction.RIGHT)
