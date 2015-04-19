@@ -22,6 +22,7 @@ class LevelChanger extends Entity
 	
 	public function changeLevel()
 	{
+		trace(nextLevel);
 		GameController.switchLevel(nextLevel);
 	}
 	

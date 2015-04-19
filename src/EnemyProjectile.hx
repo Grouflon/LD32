@@ -27,6 +27,7 @@ class EnemyProjectile extends Entity
 		distanceDone = 0;
 	}
 	
+	
 	public override function update()
 	{
 		var player:Player = cast(HXP.scene, MainScene).player;

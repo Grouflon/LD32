@@ -28,6 +28,7 @@ class MainScene extends Scene
 		levelWidth = level._width;
 	}
 	
+	
 	public override function update()
 	{
 		if (player != null)

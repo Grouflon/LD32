@@ -24,7 +24,7 @@ import Leg;
 class Player extends Entity
 {
 
-	public function new(x:Float=0, y:Float=0)
+	public function new(x:Float=0, y:Float=0, arms:Int, legs:Int)
 	{
 		super(x, y);
 		
@@ -36,6 +36,9 @@ class Player extends Entity
 		originX = cast(width * 0.5, Int);
 		originY = height;
 		
+		_blood = new BloodSquirt();
+		HXP.scene.add(_blood);
+		
 		name = "player";
 		type = "player";
 		
@@ -45,6 +48,11 @@ class Player extends Entity
 		Input.define("MoveDown", [Key.CONTROL, Key.DOWN]);
 		Input.define("FireArm", [Key.Q]);
 		Input.define("FireLeg", [Key.E]);
+		
+		_armCount = arms;
+		_maxArmCount = arms;
+		_legCount = legs;
+		_maxLegCount = legs;
 	}
 	
 	
@@ -575,6 +583,7 @@ class Player extends Entity
 			if (_legCount == 0)
 			{
 				HXP.screen.shake(GB.playerTouchesGroundShakeIntensity, GB.playerTouchesGroundShakeDuration);
+				_blood.squirt(x, y);
 			}
 			
 			_onGround = true;
@@ -585,6 +594,8 @@ class Player extends Entity
 	{
 		_sprite.stop();
 	}
+	
+	private var _blood:BloodSquirt;
 	
 	private var _sprite:Spritemap;
 	
