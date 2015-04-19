@@ -20,7 +20,7 @@ class BossEnemy extends Enemy
 	{
 		var _resistance : EnemyResistance = EnemyResistance.BOTH;
 		
-		sprite = new Spritemap("graphics/boss.png", 50, 50);
+		sprite = new Spritemap("graphics/boss.png", _width, _height);
 		sprite.flipped = true;
 		
 		sprite.originX = cast(_width * 0.5, Int);
