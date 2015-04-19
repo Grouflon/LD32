@@ -25,8 +25,6 @@ class Arm extends Limb
 		img.centerOrigin();
 		addGraphic(img);
 		setHitboxTo(graphic);
-		trace(width);
-		trace(height);
 		originX = cast(Math.round(width * 0.5), Int);
 		originY = cast(Math.round(height * 0.5), Int);
 	}
