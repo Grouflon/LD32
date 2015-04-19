@@ -1,5 +1,6 @@
 package;
 
+// External imports
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Spritemap;
@@ -15,6 +16,9 @@ import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Joystick;
 import com.haxepunk.graphics.Text;
 import hxmath.math.Vector2;
+
+// Local Imports
+import src.GB;
 import Arm;
 import Leg;
 
@@ -41,6 +45,11 @@ class Player extends Entity
 		Input.define("MoveRight", [Key.D, Key.RIGHT]);
 		Input.define("FireArm", [Key.Q]);
 		Input.define("FireLeg", [Key.E]);
+		
+		GB.playerArmCount 	= 2;
+		GB.playerLegCount 	= 2;
+		GB.playerReach		= 9.5;
+		GB.playerSpeed		= 4.;
 	}
 	
 	
@@ -51,13 +60,13 @@ class Player extends Entity
 		if (Input.check("MoveLeft"))
 		{
 			_direction = -1;
-			_velocity.x = _speed;
+			_velocity.x = GB.playerSpeed;
 		}
 		
 		if (Input.check("MoveRight"))
 		{
 			_direction = 1;
-			_velocity.x = _speed;
+			_velocity.x = GB.playerSpeed;
 		}
 		
 		if (!Input.check("MoveLeft") && !Input.check("MoveRight"))
@@ -83,7 +92,7 @@ class Player extends Entity
 			_fireLeg();
 		}
 		
-		if (_legCount == 0)
+		if (GB.playerLegCount == 0)
 		{
 			_short = true;
 			_height = 57;
@@ -105,13 +114,13 @@ class Player extends Entity
 	
 	private function _fireArm()
 	{
-		if (_armCount > 0 && _canFireArm)
+		if (GB.playerArmCount > 0 && _canFireArm)
 		{
 			_firedArm = true;
 			_canFireArm = false;
-			_armCount--;
+			GB.playerArmCount--;
 			addTween(new Alarm(.15, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height)); }, TweenType.OneShot), true);
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerArmCount < 2) GB.playerArmCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(.3, function (e:Dynamic = null):Void { _canFireArm = true; }, TweenType.OneShot), true);
 		}
 	}
@@ -119,11 +128,11 @@ class Player extends Entity
 	
 	private function _fireLeg()
 	{
-		if (_legCount > 0)
+		if (GB.playerLegCount > 0)
 		{
 			HXP.scene.add(new Leg(x, y, _direction, _height));
-			_legCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
+			GB.playerLegCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerLegCount < 2) GB.playerLegCount++; }, TweenType.OneShot), true);
 		}
 	}
 	
@@ -132,15 +141,15 @@ class Player extends Entity
 	{
 		if (_short)
 		{
-			_reach = 7.;
+			GB.playerReach = 7.;
 		}
 		else
 		{
-			_reach = 9.5;
+			GB.playerReach = 9.5;
 		}
 		
 		_onGround = false;
-		_velocity.y = -_reach;
+		_velocity.y = -GB.playerReach;
 	}
 	
 	
@@ -181,18 +190,18 @@ class Player extends Entity
 	
 	private function _applyGravity():Void
 	{
-		_velocity = Vector2.add(_velocity, Vector2.multiply(_gravity, HXP.elapsed));
+		_velocity = Vector2.add(_velocity, Vector2.multiply(GB.gravity, HXP.elapsed));
 	}
 	
 	private function _playerMovement():Void
 	{
 		if (_short && _onGround)
 		{
-			_speed = 0;
+			GB.playerSpeed = 0;
 		}
 		else
 		{
-			_speed = 4.;
+			GB.playerSpeed = 4.;
 		}
 		
 		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy"]);
@@ -244,12 +253,12 @@ class Player extends Entity
 	private function _updateGraphics():Void
 	{
 		// CHEST
-		if (_firedArm && (_armCount == 1)) _chestSprite.play("arm1_tearing");
-		if (_firedArm && (_armCount == 0)) _chestSprite.play("arm2_tearing");
+		if (_firedArm && (GB.playerArmCount == 1)) _chestSprite.play("arm1_tearing");
+		if (_firedArm && (GB.playerArmCount == 0)) _chestSprite.play("arm2_tearing");
 		
 		var armStr:String = "";
-		if (_armCount == 1) armStr = "_1arm";
-		else if (_armCount == 0) armStr = "_0arm";
+		if (GB.playerArmCount == 1) armStr = "_1arm";
+		else if (GB.playerArmCount == 0) armStr = "_0arm";
 		
 		if ((_chestSprite.currentAnim != "arm1_tearing" && _chestSprite.currentAnim != "arm2_tearing") || _chestSprite.complete)
 		{
@@ -334,26 +343,15 @@ class Player extends Entity
 	
 	private var _sprite:Spritemap;
 	
-	public function getArmCount():Int { return _armCount; }
-	public function getLegCount():Int { return _legCount; }
-	
 	private var _legsSprite:Spritemap;
 	private var _chestSprite:Spritemap;
-	
-	private var _gravity:Vector2 = new Vector2(0. , 20.);
-	private var _velocity:Vector2 = new Vector2(0., 0.);
 
+	private var _velocity:Vector2 = new Vector2(0., 0.);
+	
 	private var _short:Bool = false;
 	private var _height:Int = 72;
 	
 	private var _direction:Int = 1;
-
-	private var _speed:Float = 4.;
-	private var _reach:Float = 9.5;
-
-	
-	private var _armCount:Int = 2;
-	private var _legCount:Int = 2;
 	
 	private var _onGround:Bool = false;
 	private var _firedArm:Bool = false;
