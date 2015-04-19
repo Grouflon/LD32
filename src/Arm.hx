@@ -16,9 +16,9 @@ import Limb;
 class Arm extends Limb
 {
 
-	public function new(x:Float, y:Float, direction:Int, playerHeight:Int) 
+	public function new(x:Float, y:Float, direction:Int, playerHeight:Int, friendly:Bool) 
 	{
-		super(x + direction * 15, y - (playerHeight / 3) * 2, direction);
+		super(x + direction * 15, y - (playerHeight / 3) * 2, direction, friendly);
 		
 		var img:Image = new Image("graphics/arm.png");
 		img.flipped = direction < 0;
@@ -36,10 +36,32 @@ class Arm extends Limb
 		
 		if (e.type == "enemy")
 		{
-			var e : Enemy = cast(e, Enemy);
-			e.notifyDamage(EnemyResistance.ARM);
-			
-			HXP.world.remove(this);
+			if (_friendly)
+			{
+				var e : Enemy = cast(e, Enemy);
+				e.notifyDamage(EnemyResistance.ARM);
+				
+				HXP.world.remove(this);
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		if (e.type == "player")
+		{
+			if (!_friendly)
+			{
+				var e : Player = cast(e, Player);
+				e.takeDamage(DamageType.RANGE);
+				
+				HXP.world.remove(this);
+			}
+			else
+			{
+				return false;
+			}
 		}
 		
 		if (e.type == "block")
@@ -59,10 +81,32 @@ class Arm extends Limb
 		
 		if (e.type == "enemy")
 		{
-			var e : Enemy = cast(e, Enemy);
-			e.notifyDamage(EnemyResistance.ARM);
-			
-			HXP.world.remove(this);
+			if (_friendly)
+			{
+				var e : Enemy = cast(e, Enemy);
+				e.notifyDamage(EnemyResistance.ARM);
+				
+				HXP.world.remove(this);
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		if (e.type == "player")
+		{
+			if (!_friendly)
+			{
+				var e : Player = cast(e, Player);
+				e.takeDamage(DamageType.RANGE);
+				
+				HXP.world.remove(this);
+			}
+			else
+			{
+				return false;
+			}
 		}
 		
 		return true;
@@ -71,7 +115,7 @@ class Arm extends Limb
 	
 	override public function update():Void
 	{
-		moveBy(_velocity.x, 0., ["enemy", "block"]);
+		moveBy(_velocity.x, 0., ["enemy", "player", "block"]);
 		
 		if (!onCamera)
 		{

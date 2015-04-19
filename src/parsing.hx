@@ -19,19 +19,19 @@ class Parsing
 		xml = xml.firstElement();
 		
 		var it_1:Iterator<Xml> = xml.elementsNamed("Terrain");
-		var it_2:Iterator<Xml> = xml.elementsNamed("spawn");
+		var it_2:Iterator<Xml> = xml.elementsNamed("item");
 		var it_3:Iterator<Xml> = xml.elementsNamed("platform");
 		var it_4:Iterator<Xml> = xml.elementsNamed("background");
 		var it_5:Iterator<Xml> = xml.elementsNamed("props");
 		
 		var terrain:Xml = it_1.next();
-		var spawner:Xml = it_2.next();
+		var items:Xml = it_2.next();
 		var platformer:Xml = it_3.next();
 		var background:Xml = it_4.next();
 		var props:Xml = it_5.next();
-		
+	
 		createBlock(terrain);
-		createSpawner(spawner);
+		createItem(items);
 		createPlatform(platformer);
 		createBackground(background);
 		createProps(props);
@@ -70,61 +70,90 @@ class Parsing
 		_scene.add(e);
 	}
 	
-	private function createSpawner(spawner:Xml)
+	private function createItem(items:Xml)
 	{
-		for (spawn in spawner.elements())
+		for (item in items.elements())
 		{
-			var x:Int = Std.parseInt(spawn.get("x"));
-			var y:Int = Std.parseInt(spawn.get("y"));
-			var timer:Float = Std.parseInt(spawn.get("timer"));
-			var number:Int = Std.parseInt(spawn.get("number"));
-			var damageStr:String = spawn.get("DamageType");
-			var resitanceStr:String = spawn.get("Resitance");
-			var damage:DamageType.DamageType;
-			var resitance:EnemyResistance.EnemyResistance;
-			
-			switch (damageStr)
-			{
-				case "MELEE":
-				{
-					damage = MELEE;
-				}
-				
-				case "RANGE":
-				{
-					damage = RANGE;
-				}
-				
-				case "BOTH":
-				{
-					damage = BOTH;
-				}
-				
-				default: damage = BOTH;
-			}
-			
-			switch (resitanceStr)
-			{
-				case "LEG":
-				{
-					resitance = LEG;
-				}
-				
-				case "ARM":
-				{
-					resitance = ARM;
-				}
-				
-				case "BOTH":
-				{
-					resitance = BOTH;
-				}
-				
-				default: resitance = BOTH;
-			}
-			
-			_scene.add(new EnemySpawner(x, y, timer, number, resitance, damage));
+			var name:String = item.nodeName;
+			if (name == "spawn")
+				createSpawn(item);
+			else if (name == "ammo")
+			createAmmo(item);
 		}
+	}
+	
+	private function createAmmo(spawn)
+	{
+		var x:Int = Std.parseInt(spawn.get("x"));
+		var y:Int = Std.parseInt(spawn.get("y"));
+		var limb:String = spawn.get("limb");
+
+		switch (limb)
+		{
+			case "ARM":
+			{
+				_scene.add(new ArmAmmunition(x, y));
+			}
+			
+			case "LEG":
+			{
+				_scene.add(new LegAmmunition(x, y));
+			}
+		}
+	}
+	
+	private function createSpawn(spawn)
+	{
+		var x:Int = Std.parseInt(spawn.get("x"));
+		var y:Int = Std.parseInt(spawn.get("y"));
+		var timer:Float = Std.parseInt(spawn.get("timer"));
+		var number:Int = Std.parseInt(spawn.get("number"));
+		var damageStr:String = spawn.get("DamageType");
+		var resitanceStr:String = spawn.get("Resitance");
+		var damage:DamageType.DamageType;
+		var resitance:EnemyResistance.EnemyResistance;
+		
+		switch (damageStr)
+		{
+			case "MELEE":
+			{
+				damage = MELEE;
+			}
+			
+			case "RANGE":
+			{
+				damage = RANGE;
+			}
+			
+			case "BOTH":
+			{
+				damage = BOTH;
+			}
+			
+			default: damage = BOTH;
+		}
+		
+		switch (resitanceStr)
+		{
+			case "LEG":
+			{
+				resitance = LEG;
+			}
+			
+			case "ARM":
+			{
+				resitance = ARM;
+			}
+			
+			case "BOTH":
+			{
+				resitance = BOTH;
+			}
+			
+			default: resitance = BOTH;
+		}
+		
+		_scene.add(new EnemySpawner(x, y, timer, number, resitance, damage));
 	}
 	
 	private function createPlatform(platformer:Xml)
@@ -132,8 +161,8 @@ class Parsing
 		var e:Entity = new Entity();
 		var m:Grid = new Grid(_width, _height, 30, 15);
 		e.setHitbox(_width, _height);
-		e.type = "block";
-		e.name = "block";
+		e.type = "platform";
+		e.name = "platform";
 		e.mask = m;
 		
 		for (miblock in platformer.elements()) 
@@ -171,7 +200,7 @@ class Parsing
 	private function createProps(props:Xml)
 	{
 		var tileSize:Int = 30;
-		var tilemapCols:Int = 8;
+		var tilemapCols:Int = 9;
 		var tilemap:Tilemap = new Tilemap("graphics/props_tileset.png", _width, _height, tileSize, tileSize);
 		
 		for (tile in props.elements())

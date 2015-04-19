@@ -20,7 +20,7 @@ import Player;
 class Enemy extends Entity
 {
 
-	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _resistance : EnemyResistance, _life : Int, _sprite : Spritemap) 
+	public function new(_owner : EnemySpawner, _isBoss : Bool, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _resistance : EnemyResistance, _life : Int, _sprite : Spritemap) 
 	{
 		super(_xPos, _yPos, _sprite);
 	
@@ -48,7 +48,7 @@ class Enemy extends Entity
 		life = _life;
 		
 		playerSpotted = false;
-		
+			
 		owner = _owner;
 	}
 	

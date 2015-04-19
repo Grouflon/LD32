@@ -52,6 +52,8 @@ class Player extends Entity
 	{
 		super.update();
 		
+		_checkGround();
+		
 		if (Input.check("MoveLeft"))
 		{
 			_direction = -1;
@@ -102,6 +104,10 @@ class Player extends Entity
 		_onKeyDown = false;
 		_firedArm = false;
 		_firedLeg = false;
+		_hitPlatformLastFrame = _hitPlatform;
+		_hitPlatform = false;
+		_lastFramePosition.x = x;
+		_lastFramePosition.y = y;
 	}
 
 	
@@ -134,7 +140,8 @@ class Player extends Entity
 			_firedArm = true;
 			_canFireArm = false;
 			_armCount--;
-			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height)); }, TweenType.OneShot), true);
+			
+			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height, true)); }, TweenType.OneShot), true);
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < _maxArmCount) this._armCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireArm = true; }, TweenType.OneShot), true);
 		}
@@ -148,7 +155,8 @@ class Player extends Entity
 			_firedLeg = true;
 			_canFireLeg = false;
 			_legCount--;
-			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Leg(x, y, _direction, _height)); }, TweenType.OneShot), true);
+			
+			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Leg(x, y, _direction, _height, true)); }, TweenType.OneShot), true);
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < _maxLegCount) this._legCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireLeg = true; }, TweenType.OneShot), true);
 		}
@@ -197,24 +205,52 @@ class Player extends Entity
 			return true;
 		}
 		
-		if (e.type == "platform")
+		else if (e.type == "platform")
 		{
-			if ((e.top >= this.bottom || _onGround) && !_onKeyDown)
+			_hitPlatform = true;
+			if (_onGround)
+			{
+				_velocity.y = 0;
+				return true;
+			}
+			else if (!_hitPlatformLastFrame && _velocity.y > 0 && y > _lastFramePosition.y)
+			{
+				var startY:Int = cast(Math.ceil(y), Int);
+				var endY:Int = cast(Math.floor(_lastFramePosition.y), Int);
+				
+				while (startY >= endY)
+				{
+					var e:Entity = collide("platform", x, startY);
+					if (e == null)
+					{
+						_onGround = true;
+						_velocity.y = 0;
+						return true;
+					}
+					--startY;
+				}
+				return false;
+			}
+			else
+			{
+				return false;
+			}
+			/*if ((e.top >= this.bottom || _onGround) && !_onKeyDown)
 			{
 				_onGround = true;
 				_velocity.y = 0;
 				return true;
-			}
+			}*/
 		}
 		
-		if (e.type == "block")
+		else if (e.type == "block")
 		{
 			if (_velocity.y >= 0)
 			{
 				_onGround = true;
 				_velocity.y = 0;
-				return true;
 			}
+			return true;
 		}
 		
 		return false;
@@ -229,6 +265,7 @@ class Player extends Entity
 		
 		if (e.type == "platform")
 		{
+			_hitPlatform = true;
 			return false;
 		}
 		
@@ -467,6 +504,7 @@ class Player extends Entity
 
 	public function takeDamage(type : DamageType)
 	{
+		trace("player took damage !");
 		if (type == DamageType.MELEE)
 		{
 			HXP.scene.remove(this);
@@ -501,6 +539,24 @@ class Player extends Entity
 	public function getArmCount():Int { return _armCount; }
 	public function getLegCount():Int { return _legCount; }
 	
+	private function _checkGround():Void
+	{
+		_onGround = false;
+		if (_velocity.y >= 0)
+		{
+			var types:Dynamic = ["block", "platform"];
+			for (i in 0...2)
+			{
+				var e:Entity = scene.collideRect(types[i], x - halfWidth, y, width, 1);
+				if (e != null)
+				{
+					_onGround = true;
+					break;
+				}
+			}
+		}
+	}
+	
 	private var _sprite:Spritemap;
 	
 	private var _legsSprite:Spritemap;
@@ -520,6 +576,10 @@ class Player extends Entity
 
 	private var _onKeyDown:Bool = false;
 	
+	private var _hitPlatform:Bool = false;
+	private var _hitPlatformLastFrame:Bool = false;
+	private var _lastFramePosition:Vector2 = new Vector2(0., 0.);
+
 	private var _maxArmCount:Int = 0;
 	private var _maxLegCount:Int = 0;
 	

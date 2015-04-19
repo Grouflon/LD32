@@ -406,9 +406,13 @@
     <tile x="20" y="28" tx="1" ty="0" />
     <tile x="21" y="28" tx="1" ty="0" />
   </platform>
-  <spawn>
-    <spawn id="0" x="930" y="480" timer="4,5" number="1" DamageType="MELEE" Resitance="LEG" />
-  </spawn>
+  <item>
+    <spawn id="0" x="900" y="480" timer="4,5" number="1" DamageType="MELEE" Resitance="LEG" />
+    <ammo id="1" x="480" y="480" limb="LEG" />
+    <ammo id="2" x="420" y="480" limb="LEG" />
+    <ammo id="3" x="660" y="360" limb="ARM" />
+    <ammo id="4" x="750" y="360" limb="ARM" />
+  </item>
   <background tileset="background" exportMode="XMLCoords">
     <tile x="0" y="0" tx="1" ty="7" />
     <tile x="0" y="1" tx="1" ty="7" />
@@ -1692,8 +1696,44 @@
     <tile x="63" y="19" tx="1" ty="7" />
   </background>
   <props tileset="props" exportMode="XMLCoords">
+    <tile x="4" y="9" tx="5" ty="0" />
+    <tile x="4" y="10" tx="5" ty="1" />
+    <tile x="4" y="11" tx="5" ty="2" />
+    <tile x="5" y="9" tx="6" ty="0" />
+    <tile x="5" y="10" tx="6" ty="1" />
+    <tile x="5" y="11" tx="6" ty="2" />
+    <tile x="6" y="9" tx="7" ty="0" />
+    <tile x="6" y="10" tx="7" ty="1" />
+    <tile x="6" y="11" tx="7" ty="2" />
+    <tile x="7" y="9" tx="8" ty="0" />
+    <tile x="7" y="10" tx="8" ty="1" />
+    <tile x="7" y="11" tx="8" ty="2" />
+    <tile x="8" y="9" tx="5" ty="0" />
+    <tile x="8" y="10" tx="5" ty="1" />
+    <tile x="8" y="11" tx="5" ty="2" />
+    <tile x="9" y="9" tx="6" ty="0" />
+    <tile x="9" y="10" tx="6" ty="1" />
+    <tile x="9" y="11" tx="6" ty="2" />
+    <tile x="10" y="9" tx="7" ty="0" />
+    <tile x="10" y="10" tx="7" ty="1" />
+    <tile x="10" y="11" tx="7" ty="2" />
+    <tile x="11" y="9" tx="8" ty="0" />
+    <tile x="11" y="10" tx="8" ty="1" />
+    <tile x="11" y="11" tx="8" ty="2" />
+    <tile x="12" y="9" tx="5" ty="0" />
+    <tile x="12" y="10" tx="5" ty="1" />
+    <tile x="12" y="11" tx="5" ty="2" />
+    <tile x="13" y="9" tx="6" ty="0" />
+    <tile x="13" y="10" tx="6" ty="1" />
+    <tile x="13" y="11" tx="6" ty="2" />
+    <tile x="14" y="9" tx="7" ty="0" />
+    <tile x="14" y="10" tx="7" ty="1" />
+    <tile x="14" y="11" tx="7" ty="2" />
     <tile x="14" y="16" tx="5" ty="5" />
     <tile x="14" y="17" tx="5" ty="6" />
+    <tile x="15" y="9" tx="8" ty="0" />
+    <tile x="15" y="10" tx="8" ty="1" />
+    <tile x="15" y="11" tx="8" ty="2" />
     <tile x="15" y="16" tx="6" ty="5" />
     <tile x="15" y="17" tx="6" ty="6" />
     <tile x="16" y="16" tx="7" ty="5" />

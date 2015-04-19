@@ -19,9 +19,9 @@ import Limb;
 class Leg extends Limb
 {
 
-	public function new(x:Float, y:Float, direction:Int, playerHeight:Int) 
+	public function new(x:Float, y:Float, direction:Int, playerHeight:Int, friendly:Bool) 
 	{
-		super(x, y - (playerHeight / 3) * 1, direction);
+		super(x, y - (playerHeight / 3) * 1, direction, friendly);
 		
 		_sprite = new Spritemap("graphics/leg_spritesheet.png", 24, 24);
 		_sprite.add("roll_cw", [0, 1, 2, 3, 4, 5, 6, 7], 13);
@@ -56,12 +56,35 @@ class Leg extends Limb
 	{
 		super.moveCollideX(e);
 		
+		
 		if (e.type == "enemy")
 		{
-			var e : Enemy = cast(e, Enemy);
-			e.notifyDamage(EnemyResistance.LEG);
-			
-			HXP.world.remove(this);
+			if (_friendly)
+			{
+				var e : Enemy = cast(e, Enemy);
+				e.notifyDamage(EnemyResistance.LEG);
+				
+				HXP.world.remove(this);
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		if (e.type == "player")
+		{
+			if (!_friendly)
+			{
+				var e : Player = cast(e, Player);
+				e.takeDamage(DamageType.RANGE);
+				
+				HXP.world.remove(this);
+			}
+			else
+			{
+				return false;
+			}
 		}
 		
 		_velocity.x = -_velocity.x * GB.legBounceAttenuation;
@@ -74,12 +97,35 @@ class Leg extends Limb
 	{
 		super.moveCollideY(e);
 		
+		
 		if (e.type == "enemy")
 		{
-			var e : Enemy = cast(e, Enemy);
-			e.notifyDamage(EnemyResistance.LEG);
-			
-			HXP.world.remove(this);
+			if (_friendly)
+			{
+				var e : Enemy = cast(e, Enemy);
+				e.notifyDamage(EnemyResistance.LEG);
+				
+				HXP.world.remove(this);
+			}
+			else
+			{
+				return false;
+			}
+		}
+		
+		if (e.type == "player")
+		{
+			if (!_friendly)
+			{
+				var e : Player = cast(e, Player);
+				e.takeDamage(DamageType.RANGE);
+				
+				HXP.world.remove(this);
+			}
+			else
+			{
+				return false;
+			}
 		}
 		
 		_velocity.y = -_velocity.y * GB.legBounceAttenuation;
