@@ -1,6 +1,6 @@
 package;
 
-
+import com.haxepunk.HXP;
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Image;
@@ -30,10 +30,6 @@ class Leg extends Limb
 		
 		_velocity.x = 5. * direction;
 		_velocity.y = -6;
-		
-		addTween(new Alarm(1.5, function (e:Dynamic = null):Void {
-			_disableVelocity();
-		}, TweenType.OneShot), true);
 	}
 	
 	
@@ -45,12 +41,6 @@ class Leg extends Limb
 	}
 
 	
-	private function _disableVelocity():Void
-	{
-		_velocity.y = 0;
-	}
-	
-
 	private function _applyGravity():Void
 	{
 		_velocity = Vector2.add(_velocity, Vector2.multiply(_gravity, HXP.elapsed));

@@ -1,5 +1,6 @@
 package;
 
+// External imports
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Spritemap;
@@ -15,6 +16,9 @@ import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Joystick;
 import com.haxepunk.graphics.Text;
 import hxmath.math.Vector2;
+
+// Local Imports
+import src.GB;
 import Arm;
 import Leg;
 
@@ -51,13 +55,13 @@ class Player extends Entity
 		if (Input.check("MoveLeft"))
 		{
 			_direction = -1;
-			_velocity.x = _speed;
+			_velocity.x = GB.playerSpeed;
 		}
 		
 		if (Input.check("MoveRight"))
 		{
 			_direction = 1;
-			_velocity.x = _speed;
+			_velocity.x = GB.playerSpeed;
 		}
 		
 		if (!Input.check("MoveLeft") && !Input.check("MoveRight"))
@@ -72,7 +76,7 @@ class Player extends Entity
 				_doJump();
 			}
 		}
-				
+			
 		if (Input.pressed("FireArm"))
 		{
 			_fireArm();
@@ -122,20 +126,37 @@ class Player extends Entity
 		}
 	}
 	
+	private function _looseLeg()
+	{
+		if (_legCount > 0)
+		{
+			_legCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
+		}
+	}
+	
+	private function _looseArm()
+	{
+		if (_armCount > 0)
+		{
+			_armCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
+		}
+	}
 	
 	private function _doJump():Void
 	{
 		if (_short)
 		{
-			_reach = 7.;
+			GB.playerReach = 7.;
 		}
 		else
 		{
-			_reach = 9.5;
+			GB.playerReach = 9.5;
 		}
 		
 		_onGround = false;
-		_velocity.y = -_reach;
+		_velocity.y = -GB.playerReach;
 	}
 	
 	
@@ -143,26 +164,44 @@ class Player extends Entity
 	{
 		if (e.type == "enemy")
 		{
-			HXP.scene.remove(this);
+			takeDamage(DamageType.MELEE);
+			return true;
 		}
 		
-		if (_velocity.y >= 0)
+		if (e.type == "platform")
 		{
-			_onGround = true;
+			if (e.top >= this.bottom)
+			{
+				_onGround = true;
+				_velocity.y = 0;
+				return true;
+			}
 		}
 		
-		_velocity.y = 0;
+		if (e.type == "block")
+		{
+			if (_velocity.y >= 0)
+			{
+				_onGround = true;
+				_velocity.y = 0;
+				return true;
+			}
+		}
 		
-		return true;
+		return false;
 	}
 	
 	override public function moveCollideX(e:Entity):Bool
 	{
 		if (e.type == "enemy")
 		{
-			HXP.scene.remove(this);
+			takeDamage(DamageType.MELEE);
 		}
 		
+		if (e.type == "platform")
+		{
+			return false;
+		}
 		
 		return true;
 	}
@@ -179,18 +218,18 @@ class Player extends Entity
 	
 	private function _applyGravity():Void
 	{
-		_velocity = Vector2.add(_velocity, Vector2.multiply(_gravity, HXP.elapsed));
+		_velocity = Vector2.add(_velocity, Vector2.multiply(GB.gravity, HXP.elapsed));
 	}
 	
 	private function _playerMovement():Void
 	{
 		if (_short && _onGround)
 		{
-			_speed = 0;
+			GB.playerSpeed = 0;
 		}
 		else
 		{
-			_speed = 4.;
+			GB.playerSpeed = 4.;
 		}
 		
 		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy"]);
@@ -293,11 +332,11 @@ class Player extends Entity
 	{
 		// CHEST
 		if (_firedArm && (_armCount == 1)) _chestSprite.play("arm1_tearing");
-		if (_firedArm && (_armCount == 0)) _chestSprite.play("arm2_tearing");
+		if (_firedArm && (_armCount== 0)) _chestSprite.play("arm2_tearing");
 		
 		var armStr:String = "";
 		if (_armCount == 1) armStr = "_1arm";
-		else if (_armCount == 0) armStr = "_0arm";
+		else if (_armCount== 0) armStr = "_0arm";
 		
 		if ((_chestSprite.currentAnim != "arm1_tearing" && _chestSprite.currentAnim != "arm2_tearing") || _chestSprite.complete)
 		{
@@ -386,32 +425,55 @@ class Player extends Entity
 		}
 	}
 
-	public function takeDamage()
+	public function takeDamage(type : DamageType)
 	{
-		trace("Player damage !");
+		if (type == DamageType.MELEE)
+		{
+			HXP.scene.remove(this);
+		}
+		else if (type == DamageType.RANGE)
+		{
+			if (_legCount == 0)
+			{
+				_looseArm();
+			}
+			else if (_armCount == 0)
+			{
+				_looseLeg();
+			}
+			else
+			{
+				var rand : Float = Math.random();
+				if (rand < 0.5)
+				{
+					_looseLeg();
+				}
+				else
+				{
+					_looseArm();
+				}
+			}
+		}
 	}
 	
-	private var _sprite:Spritemap;
 	
 	public function getArmCount():Int { return _armCount; }
 	public function getLegCount():Int { return _legCount; }
 	
+	
+	private var _sprite:Spritemap;
+	
 	private var _legsSprite:Spritemap;
 	private var _chestSprite:Spritemap;
-	
-	private var _gravity:Vector2 = new Vector2(0. , 20.);
-	private var _velocity:Vector2 = new Vector2(0., 0.);
 
+	private var _velocity:Vector2 = new Vector2(0., 0.);
+	
 	private var _short:Bool = false;
 	private var _height:Int = 72;
 	private var _shortHeight:Int = 54;
 	private var _shortAlarm:Alarm = null;
 	
 	private var _direction:Int = 1;
-
-	private var _speed:Float = 4.;
-	private var _reach:Float = 9.5;
-
 	
 	private var _armCount:Int = 2;
 	private var _legCount:Int = 2;

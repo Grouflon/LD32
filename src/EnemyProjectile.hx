@@ -38,6 +38,7 @@ class EnemyProjectile extends Entity
 		}
 		else
 		{
+			graphic = null;
 			HXP.scene.remove(this);
 		}
 	}
@@ -46,9 +47,10 @@ class EnemyProjectile extends Entity
 	{	
 		if (e.type == "player")
 		{
-			cast(HXP.scene.getInstance("player"), Player).takeDamage();
+			cast(HXP.scene.getInstance("player"), Player).takeDamage(DamageType.RANGE);
 		}
 		
+		graphic = null;
 		HXP.scene.remove(this);
 		
 		return true;
@@ -58,9 +60,10 @@ class EnemyProjectile extends Entity
 	{
 		if (e.type == "player")
 		{
-			cast(HXP.scene.getInstance("player"), Player).takeDamage();
+			cast(HXP.scene.getInstance("player"), Player).takeDamage(DamageType.RANGE);
 		}
 		
+		graphic = null;
 		HXP.scene.remove(this);
 
 		return true;
