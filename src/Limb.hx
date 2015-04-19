@@ -35,9 +35,21 @@ class Limb extends Entity
 	}
 	
 	
+	override public function moveCollideY(e:Entity):Bool
+	{
+		if (e.type == "enemy")
+		{
+			HXP.world.remove(e);
+			HXP.world.remove(this);
+		}
+		
+		return true;
+	}
+	
+	
 	override public function update():Void
 	{
-		moveBy(_velocity.x, 0., "enemy");
+		moveBy(_velocity.x, _velocity.y, "enemy");
 		
 		if (!onCamera)
 		{
