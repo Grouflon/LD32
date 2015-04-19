@@ -30,12 +30,16 @@ class GB
 	// MELEE ENEMY 
 	static public var meleeSpeed = 60;
 	static public var meleeVisionRange = 150;
+	static public var meleeSameYVisionRange = 400;
+	static public var meleeChargeSpeed = 120;
 	
 	// RANGE ENEMY
 	static public var rangeSpeed = 75;
 	static public var rangeVisionRange = 200;
 	static public var rangeEnemyProjectileSpeed = 200;
 	static public var rangeEnemyProjectileRange = 400;
+	static public var rangeAttackCooldown = 1;
+	static public var rangeStateChangeCooldown = 3;
 	
 	// BOSS
 	static public var limbToResist = 3;	

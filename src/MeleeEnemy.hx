@@ -39,7 +39,7 @@ class MeleeEnemy extends Enemy
 		applyGravity();
 		
 		if (cast(HXP.scene, MainScene).player.y == y)
-			visionRange = 400;
+			visionRange = GB.meleeSameYVisionRange;
 		else
 			visionRange = visionRangeDefault;
 			
@@ -117,7 +117,7 @@ class MeleeEnemy extends Enemy
 		{
 			if (canIGoLeft())
 			{
-				velocity.x -= speed * 2 * HXP.elapsed;
+				velocity.x -= GB.meleeChargeSpeed * HXP.elapsed;
 				direction = playerDirection;
 			}
 		}
@@ -126,7 +126,7 @@ class MeleeEnemy extends Enemy
 			if (canIGoRight())
 			{
 				direction = playerDirection;
-				velocity.x += speed * 2 * HXP.elapsed;
+				velocity.x += GB.meleeChargeSpeed * HXP.elapsed;
 			}
 		}
 	}

@@ -29,10 +29,10 @@ class RangeEnemy extends Enemy
 		
 		super(_owner, false, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life,  sprite);
 		
-		attackCooldown = 1;
+		attackCooldown = GB.rangeAttackCooldown;
 		attackTimer = 0;
 		
-		stateCooldown = 3;
+		stateCooldown = GB.rangeStateChangeCooldown;
 		stateTimer = 0;
 	}
 	
