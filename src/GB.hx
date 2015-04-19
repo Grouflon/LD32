@@ -14,11 +14,17 @@ class GB
 	}
 	
 	// PLAYER
+	//               jump
 	static public var playerTallReach:Float 	= 9.5;
 	static public var playerShortReach:Float	= 7;
 	
+	//               speed
 	static public var playerSpeed:Float			= 4.;
 	static public var playerLeglessSpeed:Float 	= 0.;
+	
+	//               shake 
+	static public var playerTouchesGroundShakeIntensity = 2;
+	static public var playerTouchesGroundShakeDuration = 0.2;
 	
 	// LIMBS
 	static public var legBounceAttenuation:Float 	= 0.8;
