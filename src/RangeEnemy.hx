@@ -2,6 +2,7 @@ package;
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.math.Vector;
+import com.haxepunk.graphics.Spritemap;
 
 /**
  * ...
@@ -10,9 +11,23 @@ import com.haxepunk.math.Vector;
 class RangeEnemy extends Enemy
 {
 
-	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int) 
-	{
-		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange, 0xFFFF00);
+	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _resistance : EnemyResistance) 
+	{	
+		if (_resistance == EnemyResistance.ARM)
+		{
+			sprite = new Spritemap("graphics/range_arm.png", 32, 50);
+		}
+		else
+		{
+			sprite = new Spritemap("graphics/range_leg.png", 32, 50);
+		}
+		
+		sprite.originX = cast(_width * 0.5, Int);
+		sprite.originY = _height;
+		
+		sprite.add("normal", [0]);
+		
+		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, sprite);
 		
 		attackCooldown = 1;
 		attackTimer = 0;

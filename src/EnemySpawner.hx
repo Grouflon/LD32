@@ -5,7 +5,7 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.HXP;
 import Enemy;
 import EnemyState;
-
+import EnemyResistance;
 
 /**
  * ...
@@ -54,11 +54,31 @@ class EnemySpawner extends Entity
 	{
 		spawn -= 1;
 		
-		var random : Float = Math.random();
-		if (random > 0.5)
-			HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 50));
+		var randomType : Float = Math.random();
+		var randomResistance : Float = Math.random();
+		
+		if (randomType > 0.5)
+		{
+			if (randomResistance > 0.5)
+			{
+				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, EnemyResistance.LEG));
+			}
+			else
+			{
+				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, EnemyResistance.ARM));
+			}
+		}
 		else
-			HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200));
+		{
+			if (randomResistance > 0.5)
+			{
+				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, EnemyResistance.LEG));
+			}
+			else
+			{
+				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, EnemyResistance.ARM));
+			}
+		}
 		
 	}
 	

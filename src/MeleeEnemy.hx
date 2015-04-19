@@ -2,6 +2,7 @@ package;
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.math.Vector;
+import com.haxepunk.graphics.Spritemap;
 
 /**
  * ...
@@ -10,9 +11,25 @@ import com.haxepunk.math.Vector;
 class MeleeEnemy extends Enemy
 {
 
-	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int) 
+	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _resistance : EnemyResistance) 
 	{
-		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange, 0xFF0000);
+		if (_resistance == EnemyResistance.ARM)
+		{
+			sprite = new Spritemap("graphics/melee_arm.png", 32, 50);
+		}
+		else
+		{
+			sprite = new Spritemap("graphics/melee_leg.png", 32, 50);
+		}
+		
+		sprite.originX = cast(_width * 0.5, Int);
+		sprite.originY = _height;
+		
+		sprite.add("normal", [0]);
+		
+		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, sprite);
+		
+		visionRangeDefault = _visionRange;
 	}
 	
 	override public function update() 
@@ -24,7 +41,7 @@ class MeleeEnemy extends Enemy
 		if (HXP.scene.getInstance("player").y == y)
 			visionRange = 400;
 		else
-			visionRange = 50;
+			visionRange = visionRangeDefault;
 			
 		// Mise à jour de l'état de l'ennemi
 		if (isPlayerSpotted())
@@ -119,4 +136,6 @@ class MeleeEnemy extends Enemy
 	
 	private var stateCooldown : Int;
 	private var stateTimer : Float;
+	
+	private var visionRangeDefault : Int;
 }

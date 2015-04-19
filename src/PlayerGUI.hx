@@ -1,4 +1,4 @@
-package src;
+package;
 
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;

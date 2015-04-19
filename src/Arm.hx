@@ -1,4 +1,4 @@
-package src;
+package;
 
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;
@@ -7,7 +7,7 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.Tween;
 import com.haxepunk.tweens.misc.Alarm;
 import com.haxepunk.utils.Draw;
-import src.Limb;
+import Limb;
 
 /**
  * ...
@@ -36,11 +36,35 @@ class Arm extends Limb
 	{
 		super.moveCollideX(e);
 		
+		if (e.type == "enemy")
+		{
+			var e : Enemy = cast(e, Enemy);
+			e.notifyDamage(EnemyResistance.ARM);
+			
+			HXP.world.remove(this);
+		}
+		
 		if (e.type == "block")
 		{
 			_velocity.x = 0;
 			this.type = "block";
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { HXP.world.remove(this); }, TweenType.OneShot), true);
+		}
+		
+		return true;
+	}
+	
+
+	override public function moveCollideY(e:Entity):Bool
+	{
+		super.moveCollideY(e);
+		
+		if (e.type == "enemy")
+		{
+			var e : Enemy = cast(e, Enemy);
+			e.notifyDamage(EnemyResistance.ARM);
+			
+			HXP.world.remove(this);
 		}
 		
 		return true;
