@@ -54,6 +54,21 @@ class Arm extends Limb
 		return true;
 	}
 	
+	override public function moveCollideY(e:Entity):Bool
+	{
+		super.moveCollideY(e);
+		
+		if (e.type == "enemy")
+		{
+			var e : Enemy = cast(e, Enemy);
+			e.notifyDamage(EnemyResistance.ARM);
+			
+			HXP.world.remove(this);
+		}
+		
+		return true;
+	}
+	
 	override public function update():Void
 	{
 		moveBy(_velocity.x, 0., ["enemy", "block"]);

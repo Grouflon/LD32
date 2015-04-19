@@ -71,5 +71,20 @@ class Leg extends Limb
 		return true;
 	}
 	
+	override public function moveCollideY(e:Entity):Bool
+	{
+		super.moveCollideY(e);
+		
+		if (e.type == "enemy")
+		{
+			var e : Enemy = cast(e, Enemy);
+			e.notifyDamage(EnemyResistance.LEG);
+			
+			HXP.world.remove(this);
+		}
+		
+		return true;
+	}
+	
 	private var _gravity:Vector2 = new Vector2(0., 10.);
 }

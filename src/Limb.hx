@@ -31,12 +31,6 @@ class Limb extends Entity
 	
 	override public function moveCollideY(e:Entity):Bool
 	{
-		if (e.type == "enemy")
-		{
-			HXP.world.remove(e);
-			HXP.world.remove(this);
-		}
-		
 		return true;
 	}
 	
