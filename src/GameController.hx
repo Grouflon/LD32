@@ -41,23 +41,5 @@ class GameController
 		
 		if (!isPlayerAlive())
 			start();
-			
-		var player : Entity = HXP.scene.getInstance("player");
-		if (player != null)
-		{	
-			if (player.x - HXP.halfWidth < 0)
-				HXP.camera.x = 0;
-			else if (player.x + HXP.halfWidth > HXP.width)
-				HXP.camera.x = HXP.width - HXP.halfWidth;
-			else
-				HXP.camera.x = player.x - HXP.halfWidth;
-			
-			if (player.y + HXP.halfHeight > HXP.height)
-				HXP.camera.y = HXP.height - HXP.halfHeight * 2;
-			else if (player.y - HXP.halfHeight < 0)
-				HXP.camera.y = 0;
-			else	
-				HXP.camera.y = player.y - HXP.halfHeight;
-		}
 	}
 }
