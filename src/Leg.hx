@@ -1,5 +1,6 @@
 package;
 
+import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
@@ -22,11 +23,16 @@ class Leg extends Limb
 	{
 		super(x, y - (playerHeight / 3) * 1, direction);
 		
-		addGraphic(Image.createRect(25, 8, 0x3366FF, 1));
+		_sprite = new Spritemap("graphics/leg_spritesheet.png", 24, 24);
+		_sprite.add("roll_cw", [0, 1, 2, 3, 4, 5, 6, 7], 13);
+		_sprite.add("roll_ccw", [7, 6, 5, 4, 3, 2, 1, 0], 13);
+		_sprite.centerOrigin();
+		addGraphic(_sprite);
+		_sprite.play("roll_cw");
 		
-		setHitbox(25, 8); //temporary
-		width 	= 25; //temporary
-		height 	= 8; //temporary
+		setHitboxTo(_sprite);
+		originX = cast(Math.round(_sprite.height / 2), Int);
+		originY = cast(Math.round(_sprite.width / 2), Int);
 		
 		_velocity.x = 5. * direction;
 		_velocity.y = -6;
@@ -58,6 +64,9 @@ class Leg extends Limb
 			HXP.world.remove(this);
 		}
 		
+		_velocity.x = -_velocity.x * GB.legBounceAttenuation;
+		reverseRotation();
+		
 		return true;
 	}
 	
@@ -73,8 +82,18 @@ class Leg extends Limb
 			HXP.world.remove(this);
 		}
 		
+		_velocity.y = -_velocity.y * GB.legBounceAttenuation;
+		reverseRotation();
+		
 		return true;
 	}
 	
+	private function reverseRotation()
+	{
+		if (_sprite.currentAnim == "roll_cw") _sprite.play("roll_ccw");
+		else _sprite.play("roll_cw");
+	}
+	
 	private var _gravity:Vector2 = new Vector2(0., 10.);
+	private var _sprite:Spritemap;
 }
