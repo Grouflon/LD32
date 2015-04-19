@@ -28,7 +28,7 @@ class BossEnemy extends Enemy
 		
 		sprite.add("normal", [0]);
 		
-		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life, sprite);
+		super(_owner, true, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life, sprite);
 		
 		visionRangeDefault = _visionRange;
 		
@@ -138,7 +138,7 @@ class BossEnemy extends Enemy
 			{
 				if (canIGoLeft())
 				{
-					velocity.x -= speed * 2 * HXP.elapsed;
+					velocity.x -= speed * legCount * 2 * HXP.elapsed;
 					direction = playerDirection;
 				}
 			}
@@ -147,12 +147,11 @@ class BossEnemy extends Enemy
 				if (canIGoRight())
 				{
 					direction = playerDirection;
-					velocity.x += speed * 2 * HXP.elapsed;
+					velocity.x += speed * legCount * 2 * HXP.elapsed;
 				}
 			}
 		}
-		/*trace ("Arm " + armCount + "  " + canFireArm + " " + canFire);
-		trace ("Leg " + legCount + "  " + canFireLeg + " " + canFire);*/
+		
 		if (armCount > 0 && canFireArm && canFire)
 		{
 			if (playerDirection == Direction.RIGHT)
@@ -171,11 +170,10 @@ class BossEnemy extends Enemy
 	
 	private function fireArm(_direction : Int)
 	{
-		trace("arm fired");
 		canFireArm = false;
 		canFire = false;
 		armCount--;
-		HXP.scene.add(new Arm(x, y, _direction, fireArmHeight));
+		HXP.scene.add(new Arm(x, y, _direction, fireArmHeight, false));
 		addTween(new Alarm(fireArmCooldown, function (e:Dynamic = null):Void { canFireArm = true; }, TweenType.OneShot), true);
 		addTween(new Alarm(fireCooldown, function (e:Dynamic = null):Void { canFire = true; }, TweenType.OneShot), true);
 	}
@@ -185,7 +183,7 @@ class BossEnemy extends Enemy
 		canFireLeg = false;
 		canFire = false;
 		legCount--;
-		HXP.scene.add(new Leg(x, y, _direction, fireLegHeight));
+		HXP.scene.add(new Leg(x, y, _direction, fireLegHeight, false));
 		addTween(new Alarm(fireLegCooldown, function (e:Dynamic = null):Void { canFireLeg = true; }, TweenType.OneShot), true);
 		addTween(new Alarm(fireCooldown, function (e:Dynamic = null):Void { canFire = true; }, TweenType.OneShot), true);
 	}

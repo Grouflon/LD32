@@ -27,7 +27,7 @@ class MeleeEnemy extends Enemy
 		
 		sprite.add("normal", [0]);
 		
-		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life, sprite);
+		super(_owner, false, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life, sprite);
 		
 		visionRangeDefault = _visionRange;
 	}

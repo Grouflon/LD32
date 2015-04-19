@@ -4,7 +4,9 @@ import com.haxepunk.HXP;
 import com.haxepunk.Entity;
 import com.haxepunk.Scene;
 import com.haxepunk.graphics.Text;
+
 import Player;
+import MainScene;
 
 /**
  * ...
@@ -19,9 +21,9 @@ class PlayerGUI extends Entity
 		
 		layer = 0;
 		
-		_playerArms = new Text("Arms : 2");
+		_playerArms = new Text("Arms : " + cast(HXP.scene, MainScene).player.getArmCount());
 		_playerArms.size = 20;
-		_playerLegs = new Text("Legs : 2", 0., 25.);
+		_playerLegs = new Text("Legs : " + cast(HXP.scene, MainScene).player.getLegCount(), 0., 25.);
 		_playerLegs.size = 20;
 		
 		addGraphic(_playerArms);

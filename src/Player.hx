@@ -13,7 +13,6 @@ import com.haxepunk.Tween;
 import com.haxepunk.utils.Draw;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
-import com.haxepunk.utils.Joystick;
 import com.haxepunk.graphics.Text;
 import hxmath.math.Vector2;
 
@@ -58,13 +57,13 @@ class Player extends Entity
 		if (Input.check("MoveLeft"))
 		{
 			_direction = -1;
-			_velocity.x = GB.playerSpeed;
+			_velocity.x = _speed;
 		}
 		
 		if (Input.check("MoveRight"))
 		{
 			_direction = 1;
-			_velocity.x = GB.playerSpeed;
+			_velocity.x = _speed;
 		}
 		
 		if (!Input.check("MoveLeft") && !Input.check("MoveRight"))
@@ -112,6 +111,20 @@ class Player extends Entity
 	}
 
 	
+	public function addLeg():Void
+	{
+		_maxLegCount++;
+		_legCount++;
+	}
+	
+	
+	public function addArm():Void
+	{
+		_maxArmCount++;
+		_armCount++;
+	}
+	
+	
 	private function _fireArm()
 	{
 		if (_armCount > 0 && _canFireArm)
@@ -119,8 +132,9 @@ class Player extends Entity
 			_firedArm = true;
 			_canFireArm = false;
 			_armCount--;
-			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height)); }, TweenType.OneShot), true);
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
+			
+			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height, true)); }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < _maxArmCount) this._armCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireArm = true; }, TweenType.OneShot), true);
 		}
 	}
@@ -133,42 +147,46 @@ class Player extends Entity
 			_firedLeg = true;
 			_canFireLeg = false;
 			_legCount--;
-			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Leg(x, y, _direction, _height)); }, TweenType.OneShot), true);
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
+			
+			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Leg(x, y, _direction, _height, true)); }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < _maxLegCount) this._legCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireLeg = true; }, TweenType.OneShot), true);
 		}
 	}
+	
+		
+	private function _looseArm()
+	{
+		if (_armCount > 0)
+		{
+			_armCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < _maxArmCount) this._armCount++; }, TweenType.OneShot), true);
+		}
+	}
+	
 	
 	private function _looseLeg()
 	{
 		if (_legCount > 0)
 		{
 			_legCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < _maxLegCount) this._legCount++; }, TweenType.OneShot), true);
 		}
 	}
-	
-	private function _looseArm()
-	{
-		if (_armCount > 0)
-		{
-			_armCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
-		}
-	}
+
 	
 	private function _doJump():Void
 	{
 		if (_short)
 		{
-			GB.playerReach = 7.;
+			_reach = GB.playerShortReach;
 		}
 		else
 		{
-			GB.playerReach = 9.5;
+			_reach = GB.playerTallReach;
 		}
 		_onGround = false;
-		_velocity.y = -GB.playerReach;
+		_velocity.y = -_reach;
 	}
 	
 	override public function moveCollideY(e:Entity):Bool
@@ -266,11 +284,11 @@ class Player extends Entity
 	{
 		if (_short && _onGround)
 		{
-			GB.playerSpeed = 0;
+			_speed = GB.playerLeglessSpeed;
 		}
 		else
 		{
-			GB.playerSpeed = 4.;
+			_speed = GB.playerSpeed;
 		}
 		
 		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy"]);
@@ -479,6 +497,7 @@ class Player extends Entity
 
 	public function takeDamage(type : DamageType)
 	{
+		trace("player took damage !");
 		if (type == DamageType.MELEE)
 		{
 			HXP.scene.remove(this);
@@ -542,6 +561,9 @@ class Player extends Entity
 	private var _shortHeight:Int = 54;
 	private var _shortAlarm:Alarm = null;
 	
+	private var _reach:Float = GB.playerTallReach;
+	private var _speed:Float = GB.playerSpeed;
+	
 	private var _direction:Int = 1;
 
 	private var _onKeyDown:Bool = false;
@@ -549,9 +571,12 @@ class Player extends Entity
 	private var _hitPlatform:Bool = false;
 	private var _hitPlatformLastFrame:Bool = false;
 	private var _lastFramePosition:Vector2 = new Vector2(0., 0.);
+
+	private var _maxArmCount:Int = 0;
+	private var _maxLegCount:Int = 0;
 	
-	private var _armCount:Int = 2;
-	private var _legCount:Int = 2;
+	private var _armCount:Int = 0;
+	private var _legCount:Int = 0;
 	
 	private var _onGround:Bool = false;
 	private var _firedArm:Bool = false;

@@ -13,12 +13,12 @@ import hxmath.math.Vector2;
 class Limb extends Entity
 {
 
-	public function new(x:Float, y:Float, direction:Int) 
+	public function new(x:Float, y:Float, direction:Int, friendly:Bool) 
 	{
 		super(x, y);
 		
 		collidable = true;
-		
+		_friendly = friendly;
 		_velocity.x = 10 * direction;
 	}
 	
@@ -37,7 +37,7 @@ class Limb extends Entity
 	
 	override public function update():Void
 	{
-		moveBy(_velocity.x, _velocity.y, ["enemy", "block", "platform"]);
+		moveBy(_velocity.x, _velocity.y, ["enemy", "block", "player", "platform"]);
 		
 		if (!onCamera)
 		{
@@ -45,6 +45,6 @@ class Limb extends Entity
 		}
 	}
 	
-	
+	private var _friendly : Bool;
 	private var _velocity:Vector2 = new Vector2(0., 0.);
 }

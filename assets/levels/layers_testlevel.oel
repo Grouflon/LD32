@@ -406,9 +406,13 @@
     <tile x="20" y="28" tx="1" ty="0" />
     <tile x="21" y="28" tx="1" ty="0" />
   </platform>
-  <spawn>
-    <spawn id="0" x="930" y="480" timer="4,5" number="1" DamageType="MELEE" Resitance="LEG" />
-  </spawn>
+  <item>
+    <spawn id="0" x="900" y="480" timer="4,5" number="1" DamageType="MELEE" Resitance="LEG" />
+    <ammo id="1" x="480" y="480" limb="LEG" />
+    <ammo id="2" x="420" y="480" limb="LEG" />
+    <ammo id="3" x="660" y="360" limb="ARM" />
+    <ammo id="4" x="750" y="360" limb="ARM" />
+  </item>
   <background tileset="background" exportMode="XMLCoords">
     <tile x="0" y="0" tx="1" ty="7" />
     <tile x="0" y="1" tx="1" ty="7" />
