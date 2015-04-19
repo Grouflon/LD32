@@ -171,14 +171,14 @@ class Player extends Entity
 	{
 		if (_short)
 		{
-			GB.playerReach = 7.;
+			_reach = GB.playerShortReach;
 		}
 		else
 		{
-			GB.playerReach = 9.5;
+			_reach = GB.playerTallReach;
 		}
 		_onGround = false;
-		_velocity.y = -GB.playerReach;
+		_velocity.y = -_reach;
 	}
 	
 	override public function moveCollideY(e:Entity):Bool
@@ -246,11 +246,11 @@ class Player extends Entity
 	{
 		if (_short && _onGround)
 		{
-			GB.playerSpeed = 0;
+			_speed = GB.playerLeglessSpeed;
 		}
 		else
 		{
-			GB.playerSpeed = 4.;
+			_speed = GB.playerSpeed;
 		}
 		
 		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy"]);
@@ -503,6 +503,9 @@ class Player extends Entity
 	private var _height:Int = 72;
 	private var _shortHeight:Int = 54;
 	private var _shortAlarm:Alarm = null;
+	
+	private var _reach:Float = GB.playerTallReach;
+	private var _speed:Float = GB.playerSpeed;
 	
 	private var _direction:Int = 1;
 
