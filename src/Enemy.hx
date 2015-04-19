@@ -49,6 +49,8 @@ class Enemy extends Entity
 		
 		playerSpotted = false;
 			
+		isBoss = _isBoss;
+		
 		owner = _owner;
 	}
 	
@@ -59,7 +61,10 @@ class Enemy extends Entity
 	
 	public function applyMovement()
 	{
-		moveBy(velocity.x, velocity.y, ["block", "platform", "player"]);
+		if (!isBoss)
+			moveBy(velocity.x, velocity.y, ["block", "platform", "player"]);
+		else
+			moveBy(velocity.x, velocity.y, ["block", "player"]);
 		
 		if (direction == Direction.LEFT)
 			sprite.flipped = true;
@@ -71,25 +76,53 @@ class Enemy extends Entity
 	
 	private function canIGoLeft() : Bool
 	{
-		if (collideTypes(["block", "platform"], x - this.halfWidth, y + 1) != null)
+		if (!isBoss)
 		{
-			return true;
+			if (collideTypes(["block", "platform"], x - this.halfWidth, y + 1) != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
-			return false;
+			if (collide("block", x - this.halfWidth, y + 1) != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 	
 	private function canIGoRight() : Bool
 	{
-		if (collideTypes(["block", "platform"], x + this.halfWidth, y + 1) != null)
+		if (!isBoss)
 		{
-			return true;
+			if (collideTypes(["block", "platform"], x + this.halfWidth, y + 1) != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 		else
 		{
-			return false;
+			if (collide("block", x + this.halfWidth, y + 1) != null)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 	
@@ -125,7 +158,7 @@ class Enemy extends Entity
 		var velocitySign:Int = HXP.sign(velocity.y);
 		if (velocitySign > 0)
 		{
-			if (e.type == "block" || e.type == "platform")
+			if (e.type == "block" || (!isBoss && e.type == "platform"))
 			{
 				onGround = true;
 				velocity.y = 0;
@@ -142,7 +175,7 @@ class Enemy extends Entity
 			HXP.scene.remove(e);
 		}
 		
-		if (e.type == "block" || e.type == "platform")
+		if (e.type == "block" || (!isBoss && e.type == "platform"))
 		{
 			if (direction == Direction.RIGHT)
 				direction = Direction.LEFT;
@@ -183,6 +216,7 @@ class Enemy extends Entity
 	private var life : Int;
 	private var playerSpotted:Bool;
 	private var state:EnemyState;
+	private var isBoss : Bool;
 	
 	private var sprite : Spritemap;
 	private var owner : EnemySpawner;

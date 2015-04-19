@@ -87,6 +87,7 @@ class Arm extends Limb
 				e.notifyDamage(EnemyResistance.ARM);
 				
 				HXP.world.remove(this);
+				return false;
 			}
 			else
 			{
