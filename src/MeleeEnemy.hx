@@ -63,7 +63,6 @@ class MeleeEnemy extends Enemy
 		applyMovement();
 	}
 	
-	
 	private function patrol()
 	{
 		// Si la direction actuelle est la gauche
@@ -131,7 +130,6 @@ class MeleeEnemy extends Enemy
 			}
 		}
 	}
-	
 	
 	override public function moveCollideX(e:Entity):Bool
 	{

@@ -34,7 +34,7 @@ class EnemyProjectile extends Entity
 		if (distanceDone < range)
 		{
 			distanceDone += speed * HXP.elapsed;
-			moveTowards( xTarget, yTarget, speed * HXP.elapsed, ["block", "platform", "player"], true);
+			moveTowards( xTarget, yTarget, speed * HXP.elapsed, ["block", "player"], true);
 		}
 		else
 		{

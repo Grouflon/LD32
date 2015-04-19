@@ -38,6 +38,8 @@ class RangeEnemy extends Enemy
 	
 	override public function update() 
 	{
+		if (GameController.isPlayerAlive())
+		{
 		super.update();
 		
 		applyGravity();
@@ -81,6 +83,7 @@ class RangeEnemy extends Enemy
 		}
 		
 		applyMovement();
+		}
 	}
 	
 	
