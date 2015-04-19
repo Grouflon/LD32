@@ -23,7 +23,7 @@ class Leg extends Limb
 	{
 		super(x, y - (playerHeight / 3) * 1, direction, friendly);
 		
-		_sprite = new Spritemap("graphics/leg_spritesheet.png", 24, 24);
+		_sprite = new Spritemap("graphics/leg_spritesheet.png", 30, 30);
 		_sprite.add("roll_cw", [0, 1, 2, 3, 4, 5, 6, 7], 13);
 		_sprite.add("roll_ccw", [7, 6, 5, 4, 3, 2, 1, 0], 13);
 		_sprite.centerOrigin();
@@ -31,6 +31,8 @@ class Leg extends Limb
 		_sprite.play("roll_cw");
 		
 		setHitboxTo(_sprite);
+		height -= 6;
+		width -= 6;
 		originX = cast(Math.round(_sprite.height / 2), Int);
 		originY = cast(Math.round(_sprite.width / 2), Int);
 		
