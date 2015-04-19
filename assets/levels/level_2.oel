@@ -481,10 +481,10 @@
     <tile x="62" y="37" tx="1" ty="0" />
   </platform>
   <item>
-    <spawn id="0" x="240" y="450" timer="6" number="2" DamageType="RANGE" Resitance="ARM" />
+    <spawn id="0" x="390" y="450" timer="6" number="2" DamageType="RANGE" Resitance="ARM" />
     <player id="2" x="90" y="540" arms="0" legs="1" />
     <spawn id="1" x="600" y="180" timer="4,5" number="1" DamageType="MELEE" Resitance="ARM" />
-    <spawn id="3" x="1140" y="480" timer="4" number="2" DamageType="BOTH" Resitance="BOTH" />
+    <spawn id="3" x="1110" y="480" timer="6" number="1" DamageType="BOTH" Resitance="BOTH" />
     <ammo id="4" x="780" y="270" limb="ARM" />
     <spawn id="5" x="1530" y="270" timer="6" number="2" DamageType="BOTH" Resitance="LEG" />
     <goal id="6" x="1830" y="525" w="30" h="30" nextLevel="levels/level_2.oel" />
