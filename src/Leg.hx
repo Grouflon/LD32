@@ -36,11 +36,21 @@ class Leg extends Limb
 		
 		_velocity.x = 5. * direction;
 		_velocity.y = -6;
+		
+		_bounceAmount = GB.maxBounceAmount;
+		
+		_blood = new BloodSquirt();
+		HXP.scene.add(_blood);
 	}
 	
 	
 	override public function update():Void
 	{	
+		if (_bounceAmount == 0)
+		{
+			HXP.scene.remove(this);
+		}
+		
 		_applyGravity();
 		
 		super.update();
@@ -87,8 +97,13 @@ class Leg extends Limb
 			}
 		}
 		
-		_velocity.x = -_velocity.x * GB.legBounceAttenuation;
-		reverseRotation();
+		if (_bounceAmount > 0)
+		{
+			_velocity.x = -_velocity.x * GB.legBounceAttenuation;
+			_blood.squirt(x, y);
+			reverseRotation();
+			_bounceAmount--;
+		}
 		
 		return true;
 	}
@@ -128,8 +143,13 @@ class Leg extends Limb
 			}
 		}
 		
-		_velocity.y = -_velocity.y * GB.legBounceAttenuation;
-		reverseRotation();
+		if (_bounceAmount > 0)
+		{
+			_velocity.y = -_velocity.y * GB.legBounceAttenuation;
+			_blood.squirt(x, y);
+			reverseRotation();
+			_bounceAmount--;
+		}
 		
 		return true;
 	}
@@ -142,4 +162,6 @@ class Leg extends Limb
 	
 	private var _gravity:Vector2 = new Vector2(0., 10.);
 	private var _sprite:Spritemap;
+	private var _blood:BloodSquirt;
+	private var _bounceAmount:Int;
 }

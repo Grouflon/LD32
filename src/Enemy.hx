@@ -186,7 +186,8 @@ class Enemy extends Entity
 		return true;
 	}
 	
-	public override function removed():Void 
+	
+	public override function removed():Void
 	{
 		super.removed();
 		

@@ -16,7 +16,7 @@ import Limb;
 class Arm extends Limb
 {
 
-	public function new(x:Float, y:Float, direction:Int, playerHeight:Int, friendly:Bool) 
+	public function new(x:Float, y:Float, direction:Int, playerHeight:Int, friendly:Bool)
 	{
 		super(x + direction * 15, y - (playerHeight / 3) * 2, direction, friendly);
 		
@@ -27,6 +27,11 @@ class Arm extends Limb
 		setHitboxTo(graphic);
 		originX = cast(Math.round(width * 0.5), Int);
 		originY = cast(Math.round(height * 0.5), Int);
+		
+		_playerDirection = direction;
+		
+		_blood = new BloodSquirt();
+		HXP.scene.add(_blood);
 	}
 	
 	
@@ -69,6 +74,9 @@ class Arm extends Limb
 			_velocity.x = 0;
 			this.type = "platform";
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { HXP.world.remove(this); }, TweenType.OneShot), true);
+			
+			if (_playerDirection < 0)	_blood.squirt(x + 8, y);
+			else 						_blood.squirt(x - 9, y);
 		}
 		
 		return true;
@@ -130,4 +138,7 @@ class Arm extends Limb
 		super.render();
 		Draw.hitbox(this);
 	}*/
+	
+	private var _blood:BloodSquirt;
+	private var _playerDirection:Int;
 }

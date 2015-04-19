@@ -36,7 +36,7 @@ class GameController
 	{
 		if (e.type == "player")
 		{
-			HXP.scene.addGraphic(new Text("You are so bad ! You died !", e.x, e.y - 40, 0, 0));
+			HXP.scene.addGraphic(new Text("You are so bad ! You died !", e.x - 60, e.y - 80, 0, 0));
 		}
 		else if (e.type == "enemy")
 		{
