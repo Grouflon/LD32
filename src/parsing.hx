@@ -3,6 +3,8 @@ import com.haxepunk.Scene;
 import haxe.xml.Fast;
 import sys.io.File;
 import com.haxepunk.HXP;
+import com.haxepunk.Entity;
+import com.haxepunk.masks.Grid;
 
 class Parsing
 {
@@ -46,16 +48,26 @@ class Parsing
 	
 	private function createBlock(terrain:Xml)
 	{
-		for (block in terrain.elements()) 
+		var e:Entity = new Entity();
+		var m:Grid = new Grid(_width, _height, 30, 30);
+		e.setHitbox(_width, _height);
+		e.type = "block";
+		e.name = "block";
+		e.mask = m;
+		
+		for (miblock in terrain.elements()) 
 		{
-			var x:Int = Std.parseInt(block.get("x")) * 30;
-			var y:Int = Std.parseInt(block.get("y")) * 30;
-			var tx:Int = Std.parseInt(block.get("tx"));
-			var ty:Int = Std.parseInt(block.get("ty"));
+			var x:Int = Std.parseInt(miblock.get("x"));
+			var y:Int = Std.parseInt(miblock.get("y"));
+			var tx:Int = Std.parseInt(miblock.get("tx"));
+			var ty:Int = Std.parseInt(miblock.get("ty"));
 			
 			if (tx == 1)
-				_scene.add(new SolidBlock(x, y));
+			{
+				m.setTile(x, y, true);
+			}
 		}
+		_scene.add(e);
 	}
 	
 	private function createSpawner(spawner:Xml)
@@ -117,16 +129,26 @@ class Parsing
 	
 	private function createPlatform(platformer:Xml)
 	{
+		var e:Entity = new Entity();
+		var m:Grid = new Grid(_width, _height, 30, 15);
+		e.setHitbox(_width, _height);
+		e.type = "block";
+		e.name = "block";
+		e.mask = m;
+		
 		for (miblock in platformer.elements()) 
 		{
-			var x:Int = Std.parseInt(miblock.get("x")) * 30;
-			var y:Int = Std.parseInt(miblock.get("y")) * 15;
+			var x:Int = Std.parseInt(miblock.get("x"));
+			var y:Int = Std.parseInt(miblock.get("y"));
 			var tx:Int = Std.parseInt(miblock.get("tx"));
 			var ty:Int = Std.parseInt(miblock.get("ty"));
 			
 			if (tx == 1)
-				_scene.add(new Platform(x, y));
+			{
+				m.setTile(x, y, true);
+			}
 		}
+		_scene.add(e);
 	}
 	
 	private function createBackground(background:Xml)
