@@ -17,7 +17,7 @@ class EnemySpawner extends Entity
 
 	public function new(_x : Int, _y : Int, _respawnTimer : Float, _spawnNumber : Int, _enemyResistType : EnemyResistance, _enemyDamageType : DamageType)
 	{
-		super(_x, _y, Image.createRect(30, 60, 0xFF99FD));
+		super(_x, _y, new Image("graphics/door.png"));
 		
 		layer = 50;
 		spawn = _spawnNumber;
