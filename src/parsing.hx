@@ -200,7 +200,7 @@ class Parsing
 	private function createProps(props:Xml)
 	{
 		var tileSize:Int = 30;
-		var tilemapCols:Int = 8;
+		var tilemapCols:Int = 9;
 		var tilemap:Tilemap = new Tilemap("graphics/props_tileset.png", _width, _height, tileSize, tileSize);
 		
 		for (tile in props.elements())
