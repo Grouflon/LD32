@@ -2,7 +2,10 @@ package;
 
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
+import com.haxepunk.tweens.misc.Alarm;
+import com.haxepunk.Tween.TweenType;
 import Enemy;
 import EnemyState;
 import EnemyResistance;
@@ -17,7 +20,14 @@ class EnemySpawner extends Entity
 
 	public function new(_x : Int, _y : Int, _respawnTimer : Float, _spawnNumber : Int, _enemyResistType : EnemyResistance, _enemyDamageType : DamageType)
 	{
-		super(_x, _y, new Image("graphics/door.png"));
+		super(_x, _y);
+		
+		_sprite = new Spritemap("graphics/door_spritesheet.png", 60, 90);
+		_sprite.add("idle", [0]);
+		_sprite.add("ready", [1]);
+		_sprite.add("opened", [2]);
+		_sprite.play("idle");
+		addGraphic(_sprite);
 		
 		layer = 50;
 		spawn = _spawnNumber;
@@ -36,13 +46,16 @@ class EnemySpawner extends Entity
 			{
 				effectiveTimer -= HXP.elapsed;
 				if (effectiveTimer < 3)
-					addGraphic(new Image("graphics/door_on.png"));
+					{
+						_sprite.play("ready");
+					}
 			}
 			else
 			{
+				_sprite.play("opened");
+				addTween(new Alarm(1.0, function(e:Dynamic = null):Void { _sprite.play("idle"); },  TweenType.OneShot), true);
 				spawnMob();
 				effectiveTimer = respawnTimer;
-				addGraphic(new Image("graphics/door.png"));	
 			}
 		}
 		
@@ -101,6 +114,7 @@ class EnemySpawner extends Entity
 		}
 	}
 	
+	private var _sprite:Spritemap;
 	private var enemyDamageType : DamageType;
 	private var enemyResistType : EnemyResistance;
 	private var respawnTimer : Float;
