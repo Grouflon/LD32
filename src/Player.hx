@@ -99,7 +99,11 @@ class Player extends Entity
 		_applyGravity();
 		
 		_updateGraphics();
-		
+	
+		var velocitySign:Int = HXP.sign(_velocity.y);
+		if (velocitySign > 0)
+			_onGround = false;
+					trace(_onGround);	
 		_onKeyDown = false;
 		_firedArm = false;
 		_firedLeg = false;
@@ -165,27 +169,20 @@ class Player extends Entity
 		_velocity.y = -GB.playerReach;
 	}
 	
-	
 	override public function moveCollideY(e:Entity):Bool
-	{
-		trace(_velocity.y );
-		
+	{		
 		if (e.type == "enemy")
 		{
 			takeDamage(DamageType.MELEE);
 			return true;
 		}
 		
-		if (bottom != e.top)
-			_onGround = false;
-		
 		if (e.type == "platform")
 		{
-			trace("collide avec platform");
+			trace(_onGround);
 				
 			if ((e.top >= this.bottom || _onGround) && !_onKeyDown)
 			{
-				trace("sur une platform test");
 				_onGround = true;
 				_velocity.y = 0;
 				return true;
