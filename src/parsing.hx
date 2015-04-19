@@ -40,7 +40,6 @@ class Parsing
 		
 		for (miblock in platformer.elements()) 
 		{
-			trace(miblock);
 			var x:Int = Std.parseInt(miblock.get("x")) * 32;
 			var y:Int = Std.parseInt(miblock.get("y")) * 16;
 			var tx:Int = Std.parseInt(miblock.get("tx"));
