@@ -46,6 +46,7 @@ class Arm extends Limb
 		return true;
 	}
 	
+	
 	override public function update():Void
 	{
 		moveBy(_velocity.x, 0., ["enemy", "block"]);

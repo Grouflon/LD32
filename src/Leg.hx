@@ -1,6 +1,7 @@
 package src;
 
 import com.haxepunk.HXP;
+import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.tweens.misc.Alarm;
@@ -31,6 +32,20 @@ class Leg extends Limb
 		addTween(new Alarm(1.5, function (e:Dynamic = null):Void {
 			_disableVelocity();
 		}, TweenType.OneShot), true);
+	}
+	
+	
+	override public function moveCollideX(e:Entity):Bool
+	{
+		super.moveCollideX(e);
+		return true;
+	}
+	
+	
+	override public function moveCollideY(e:Entity):Bool
+	{
+		super.moveCollideY(e);
+		return true;
 	}
 	
 	
