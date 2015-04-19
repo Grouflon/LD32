@@ -26,8 +26,6 @@ class MainScene extends Scene
 
 		levelHeight = level._height;
 		levelWidth = level._width;
-		
-		add(new LevelChanger(50, 400, 50, 50, "levels/level_1.oel"));
 	}
 	
 	public override function update()
