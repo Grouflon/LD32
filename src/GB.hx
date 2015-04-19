@@ -26,5 +26,14 @@ class GB
 	
 	// GAME RELATED
 	static public var gravity:Vector2 	= new Vector2(0., 20.);
+		
+	// BOSS RELATED
+	static public var limbToResist = 3;	
+	static public var initialBossArm = 0;
+	static public var initialBossLeg = 0;
+	
+	static public var bossFireLegCooldown = 6;
+	static public var bossFireArmCooldown = 5;
+	static public var bossFireCooldown = 4;
 	
 }
