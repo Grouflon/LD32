@@ -29,7 +29,7 @@ class EnemyProjectile extends Entity
 	
 	public override function update()
 	{
-		var player : Player = cast(HXP.scene.getInstance("player"), Player);
+		var player:Player = cast(HXP.scene, MainScene).player;
 		
 		if (distanceDone < range)
 		{

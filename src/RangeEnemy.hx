@@ -122,7 +122,7 @@ class RangeEnemy extends Enemy
 	
 	private function combat()
 	{	
-		var player : Entity = HXP.scene.getInstance("player");
+		var player:Player = cast(HXP.scene, MainScene).player;
 		
 		var playerPosition : Vector = new Vector(player.x, player.y);
 		var thisPosition : Vector = new Vector(x, y);
