@@ -68,13 +68,10 @@ class MenuScene extends Scene
 	
 	private function _action(index:Int):Void
 	{
-		trace("executing an action");
-		
 		switch index
 		{
 			case 1:
 			{
-				trace("Play request");
 				GameController.clean();
 				GameController.startGame();
 			}
@@ -97,8 +94,6 @@ class MenuScene extends Scene
 		
 		_upPressed 		= false;
 		_downPressed 	= false;
-		
-		//trace(_currentButton);
 		
 		_cursor.y = 100 * _currentButton + 5;
 	}
