@@ -24,8 +24,6 @@ class Parsing
 		createBlock(terrain);
 		createSpawner(spawner);
 		createPlatform(platformer);
-		
-		
 	}
 	
 	private function getSize(xml:Xml)
@@ -41,8 +39,8 @@ class Parsing
 	{
 		for (block in terrain.elements()) 
 		{
-			var x:Int = Std.parseInt(block.get("x")) * 32;
-			var y:Int = Std.parseInt(block.get("y")) * 32;
+			var x:Int = Std.parseInt(block.get("x")) * 30;
+			var y:Int = Std.parseInt(block.get("y")) * 30;
 			var tx:Int = Std.parseInt(block.get("tx"));
 			var ty:Int = Std.parseInt(block.get("ty"));
 			
@@ -57,10 +55,54 @@ class Parsing
 		{
 			var x:Int = Std.parseInt(spawn.get("x"));
 			var y:Int = Std.parseInt(spawn.get("y"));
-			var enemy_1_timer:Float = Std.parseInt(spawn.get("enemy_1_timer"));
-			var enemy_1_number:Int = Std.parseInt(spawn.get("enemy_1_number"));
+			var timer:Float = Std.parseInt(spawn.get("timer"));
+			var number:Int = Std.parseInt(spawn.get("number"));
+			var damageStr:String = spawn.get("DamageType");
+			var resitanceStr:String = spawn.get("Resitance");
+			var damage:DamageType.DamageType;
+			var resitance:EnemyResistance.EnemyResistance;
 			
-			HXP.scene.add(new EnemySpawner(x, y, enemy_1_timer, enemy_1_number, EnemyResistance.BOTH, DamageType.BOTH));
+			switch (damageStr)
+			{
+				case "MELEE":
+				{
+					damage = MELEE;
+				}
+				
+				case "RANGE":
+				{
+					damage = RANGE;
+				}
+				
+				case "BOTH":
+				{
+					damage = BOTH;
+				}
+				
+				default: damage = BOTH;
+			}
+			
+			switch (resitanceStr)
+			{
+				case "LEG":
+				{
+					resitance = LEG;
+				}
+				
+				case "ARM":
+				{
+					resitance = ARM;
+				}
+				
+				case "BOTH":
+				{
+					resitance = BOTH;
+				}
+				
+				default: resitance = BOTH;
+			}
+			
+			HXP.scene.add(new EnemySpawner(x, y, timer, number, resitance, damage));
 		}
 	}
 	
@@ -68,8 +110,8 @@ class Parsing
 	{
 		for (miblock in platformer.elements()) 
 		{
-			var x:Int = Std.parseInt(miblock.get("x")) * 32;
-			var y:Int = Std.parseInt(miblock.get("y")) * 16;
+			var x:Int = Std.parseInt(miblock.get("x")) * 30;
+			var y:Int = Std.parseInt(miblock.get("y")) * 15;
 			var tx:Int = Std.parseInt(miblock.get("tx"));
 			var ty:Int = Std.parseInt(miblock.get("ty"));
 			
