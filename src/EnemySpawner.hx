@@ -35,11 +35,14 @@ class EnemySpawner extends Entity
 			if (effectiveTimer > 0)
 			{
 				effectiveTimer -= HXP.elapsed;
+				if (effectiveTimer < 3)
+					addGraphic(new Image("graphics/door_on.png"));
 			}
 			else
 			{
 				spawnMob();
 				effectiveTimer = respawnTimer;
+				addGraphic(new Image("graphics/door.png"));	
 			}
 		}
 		
