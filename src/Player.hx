@@ -138,19 +138,19 @@ class Player extends Entity
 	
 	private function _looseLeg()
 	{
-		if (_legCount > 0)
+		if (GB.playerLegCount > 0)
 		{
-			_legCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
+			GB.playerLegCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerLegCount < 2) GB.playerLegCount++; }, TweenType.OneShot), true);
 		}
 	}
 	
 	private function _looseArm()
 	{
-		if (_armCount > 0)
+		if (GB.playerArmCount > 0)
 		{
-			_armCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
+			GB.playerArmCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerArmCount < 2) GB.playerArmCount++; }, TweenType.OneShot), true);
 		}
 	}
 	
@@ -360,11 +360,11 @@ class Player extends Entity
 		}
 		else if (type == DamageType.RANGE)
 		{
-			if (_legCount == 0)
+			if (GB.playerLegCount == 0)
 			{
 				_looseArm();
 			}
-			else if (_armCount == 0)
+			else if (GB.playerArmCount == 0)
 			{
 				_looseLeg();
 			}
