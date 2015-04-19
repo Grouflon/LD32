@@ -20,7 +20,7 @@ import Player;
 class Enemy extends Entity
 {
 
-	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _resistance : EnemyResistance, _sprite : Spritemap) 
+	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _resistance : EnemyResistance, _life : Int, _sprite : Spritemap) 
 	{
 		super(_xPos, _yPos, _sprite);
 	
@@ -45,6 +45,7 @@ class Enemy extends Entity
 		
 		visionRange = _visionRange;
 		resistance = _resistance;
+		life = _life;
 		
 		playerSpotted = false;
 		
@@ -158,14 +159,18 @@ class Enemy extends Entity
 	{
 		super.removed();
 		
-		owner.notifyEnemyDeath();
+		if (owner != null)
+			owner.notifyEnemyDeath();
 	}
 	
 	public function notifyDamage(projectileType : EnemyResistance):Void
 	{
 		if (projectileType != resistance)
 		{
-			HXP.scene.remove(this);
+			life--;
+			
+			if (life <= 0)
+				HXP.scene.remove(this);
 		}
 	}
 	
@@ -175,7 +180,7 @@ class Enemy extends Entity
 	private var onGround:Bool;
 	private var visionRange:Int;
 	private var resistance:EnemyResistance;
-	
+	private var life : Int;
 	private var playerSpotted:Bool;
 	private var state:EnemyState;
 	

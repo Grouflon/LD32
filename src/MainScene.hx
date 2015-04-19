@@ -23,6 +23,9 @@ class MainScene extends Scene
 		
 		levelHeight = level._height;
 		levelWidth = level._width;
+		
+		var boss : BossEnemy = new BossEnemy(null, 75, 100, 50, 50, 50, 200, 10);
+		add(boss);
 	}
 	
 	public override function update()
@@ -36,16 +39,18 @@ class MainScene extends Scene
 			else
 				HXP.camera.x = player.x - HXP.halfWidth;
 			
-			if (player.y + HXP.halfHeight > levelHeight)
+			/*if (player.y + HXP.halfHeight > levelHeight)
 				HXP.camera.y = levelHeight - HXP.height;
 			else if (player.y - HXP.halfHeight < 0)
 				HXP.camera.y = 0;
 			else	
-				HXP.camera.y = player.y - HXP.halfHeight;
+				HXP.camera.y = player.y - HXP.halfHeight;*/
+				HXP.camera.y = 0;
 		}
 		
 		super.update();
 	}
+	
 	
 	private var player:Player;
 	public var levelHeight:Int;
