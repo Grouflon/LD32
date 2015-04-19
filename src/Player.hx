@@ -43,6 +43,7 @@ class Player extends Entity
 		Input.define("Jump", [Key.W, Key.UP, Key.SPACE]);
 		Input.define("MoveLeft", [Key.A, Key.LEFT]);
 		Input.define("MoveRight", [Key.D, Key.RIGHT]);
+		Input.define("MoveDown", [Key.CONTROL, Key.DOWN]);
 		Input.define("FireArm", [Key.Q]);
 		Input.define("FireLeg", [Key.E]);
 		
@@ -72,6 +73,11 @@ class Player extends Entity
 		if (!Input.check("MoveLeft") && !Input.check("MoveRight"))
 		{
 			_velocity.x = 0;
+		}
+		
+		if (Input.check("MoveDown"))
+		{
+			_onKeyDown = true;
 		}
 		
 		if (Input.pressed("Jump"))
@@ -108,6 +114,7 @@ class Player extends Entity
 		
 		_updateGraphics();
 		
+		_onKeyDown = false;
 		_firedArm = false;
 	}
 
@@ -164,7 +171,6 @@ class Player extends Entity
 		{
 			GB.playerReach = 9.5;
 		}
-		
 		_onGround = false;
 		_velocity.y = -GB.playerReach;
 	}
@@ -172,16 +178,24 @@ class Player extends Entity
 	
 	override public function moveCollideY(e:Entity):Bool
 	{
+		trace(_velocity.y );
+		
 		if (e.type == "enemy")
 		{
 			takeDamage(DamageType.MELEE);
 			return true;
 		}
 		
+		if (bottom != e.top)
+			_onGround = false;
+		
 		if (e.type == "platform")
 		{
-			if (e.top >= this.bottom)
+			trace("collide avec platform");
+				
+			if ((e.top >= this.bottom || _onGround) && !_onKeyDown)
 			{
+				trace("sur une platform test");
 				_onGround = true;
 				_velocity.y = 0;
 				return true;
@@ -413,6 +427,8 @@ class Player extends Entity
 	private var _height:Int = 72;
 	
 	private var _direction:Int = 1;
+
+	private var _onKeyDown:Bool = false;
 	
 	private var _onGround:Bool = false;
 	private var _firedArm:Bool = false;

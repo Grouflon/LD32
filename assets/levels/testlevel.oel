@@ -274,7 +274,6 @@
   </platform>
   <spawn>
     <spawn id="0" x="640" y="272" enemy_1_timer="4,5" enemy_1_number="1" />
-    <spawn id="1" x="64" y="336" enemy_1_timer="4,5" enemy_1_number="1" />
-    <spawn id="2" x="1152" y="480" enemy_1_timer="4,5" enemy_1_number="1" />
+    <spawn id="2" x="1248" y="480" enemy_1_timer="4,5" enemy_1_number="1" />
   </spawn>
 </level>
