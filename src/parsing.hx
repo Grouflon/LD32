@@ -1,7 +1,6 @@
 import com.haxepunk.graphics.Tilemap;
 import com.haxepunk.Scene;
-import haxe.xml.Fast;
-import sys.io.File;
+import openfl.Assets;
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;
 import com.haxepunk.masks.Grid;
@@ -11,7 +10,7 @@ class Parsing
 	public function new(file:String, scene:Scene) 
 	{
 		_scene = scene;
-		var xmlString:String = sys.io.File.getContent(file);
+		var xmlString:String = Assets.getText(file);
 		var xml:Xml = Xml.parse(xmlString);
 		
 		getSize(xml);
