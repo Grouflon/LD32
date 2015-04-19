@@ -59,7 +59,10 @@ class Enemy extends Entity
 	
 	public function applyMovement()
 	{
-		moveBy(velocity.x, velocity.y, ["block", "platform", "player"]);
+		if (GameController.isPlayerAlive())
+		{
+			moveBy(velocity.x, velocity.y, ["block", "platform", "player"]);
+		}
 		
 		if (direction == Direction.LEFT)
 			sprite.flipped = true;
@@ -95,7 +98,7 @@ class Enemy extends Entity
 	
 	private function isPlayerSpotted() : Bool
 	{
-		var player : Entity = HXP.scene.getInstance("player");
+		var player : Player = cast(HXP.scene, MainScene).player;
 		
 		var playerY : Float = player.y;
 		
@@ -140,6 +143,7 @@ class Enemy extends Entity
 		if (e.type == "player")
 		{
 			HXP.scene.remove(e);
+			GameController.playerJustDied(this);
 		}
 		
 		if (e.type == "block" || e.type == "platform")

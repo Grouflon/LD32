@@ -20,8 +20,8 @@ class Main extends Engine
 	
 	override public function update()
 	{
-		gameController.update();
 		super.update();
+		gameController.update();
 	}
 	
 	public static function main() { new Main(); }

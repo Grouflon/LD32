@@ -38,7 +38,7 @@ class MainScene extends Scene
 	}
 	
 	public override function update()
-	{	
+	{
 		if (player != null)
 		{	
 			if (player.x - HXP.halfWidth < 0)
