@@ -20,7 +20,7 @@ class MainScene extends Scene
 	{
 		var level:Parsing = new Parsing("levels/layers_testlevel.oel", this);
 		
-		player = new Player(200, HXP.screen.height - 100);
+		player = new Player(250, HXP.screen.height - 100);
 		add(player);
 		add(new PlayerGUI());
 		
@@ -33,7 +33,7 @@ class MainScene extends Scene
 		levelHeight = level._height;
 		levelWidth = level._width;
 		
-		var boss : BossEnemy = new BossEnemy(null, 100, HXP.height - 100, 50, 50, 50, 200, 10);
+		var boss : BossEnemy = new BossEnemy(null, 1000, HXP.height - 300, 150, 150, 50, 200, 10);
 		add(boss);
 	}
 	
