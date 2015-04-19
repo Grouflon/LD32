@@ -213,7 +213,6 @@ class Player extends Entity
 				while (startY >= endY)
 				{
 					var e:Entity = collide("platform", x, startY);
-					trace(e);
 					if (e == null)
 					{
 						_onGround = true;
