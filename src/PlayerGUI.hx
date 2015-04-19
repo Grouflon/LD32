@@ -36,9 +36,8 @@ class PlayerGUI extends Entity
 		super.update();
 		
 		_playerArmCount = cast(HXP.scene, MainScene).player.getArmCount();
-		//cast(HXP.scene.getInstance("player"), Player).getArmCount();
+		
 		_playerLegCount = cast(HXP.scene, MainScene).player.getLegCount();
-		//cast(HXP.scene.getInstance("player"), Player).getLegCount();
 		
 		_displayStats();
 	}

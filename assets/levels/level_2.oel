@@ -521,6 +521,7 @@
     <spawn id="3" x="1050" y="480" timer="4" number="3" DamageType="BOTH" Resitance="BOTH" />
     <ammo id="4" x="780" y="270" limb="ARM" />
     <spawn id="5" x="1530" y="270" timer="6" number="2" DamageType="BOTH" Resitance="LEG" />
+    <goal id="6" x="1830" y="525" w="30" h="30" nextLevel="levels/level_2.oel" />
   </item>
   <background tileset="background" exportMode="XMLCoords">
     <tile x="0" y="0" tx="0" ty="7" />

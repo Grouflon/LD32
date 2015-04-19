@@ -83,8 +83,20 @@ class Parsing
 				createPlayer(item);
 			else if (name == "boss")
 				createBoss(item);
+			else if (name == "goal")
+				createGoal(item);
 		}
 	}
+	private function createGoal(goal)
+	{
+		var x:Int = Std.parseInt(goal.get("x"));
+		var y:Int = Std.parseInt(goal.get("y"));
+		var w:Int = Std.parseInt(goal.get("w"));
+		var h:Int = Std.parseInt(goal.get("h"));
+		var nextLevel:String = goal.get("nextLevel");
+		_scene.add(new LevelChanger(x, y, w, h, nextLevel));
+	}
+	
 	
 	private function createBoss(boss)
 	{

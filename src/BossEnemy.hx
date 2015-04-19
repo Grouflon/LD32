@@ -175,7 +175,6 @@ class BossEnemy extends Enemy
 	{
 		if (e.type == "player")
 		{
-			HXP.scene.remove(e);
 			GameController.playerJustDied(this, true);
 		}
 		

@@ -519,20 +519,19 @@
     <tile x="31" y="22" tx="1" ty="0" />
     <tile x="31" y="26" tx="1" ty="0" />
     <tile x="31" y="30" tx="1" ty="0" />
-    <tile x="31" y="34" tx="1" ty="0" />
     <tile x="32" y="18" tx="1" ty="0" />
     <tile x="32" y="22" tx="1" ty="0" />
     <tile x="32" y="26" tx="1" ty="0" />
     <tile x="32" y="30" tx="1" ty="0" />
-    <tile x="32" y="34" tx="1" ty="0" />
     <tile x="33" y="18" tx="1" ty="0" />
     <tile x="54" y="21" tx="1" ty="0" />
   </platform>
   <item>
-    <player id="0" x="90" y="540" arms="2" legs="0" />
+    <player id="0" x="90" y="540" arms="0" legs="0" />
     <spawn id="1" x="780" y="450" timer="4,5" number="1" DamageType="MELEE" Resitance="LEG" />
     <spawn id="2" x="1320" y="450" timer="4,5" number="2" DamageType="RANGE" Resitance="ARM" />
     <ammo id="3" x="1800" y="180" limb="LEG" />
+    <goal id="4" x="1830" y="420" w="30" h="30" nextLevel="levels/level_2.oel" />
   </item>
   <background tileset="background" exportMode="XMLCoords">
     <tile x="0" y="0" tx="1" ty="7" />
@@ -1914,8 +1913,8 @@
     <tile x="31" y="13" tx="1" ty="6" />
     <tile x="31" y="14" tx="1" ty="3" />
     <tile x="31" y="15" tx="1" ty="6" />
-    <tile x="31" y="16" tx="1" ty="3" />
-    <tile x="31" y="17" tx="6" ty="6" />
+    <tile x="31" y="16" tx="2" ty="2" />
+    <tile x="31" y="17" tx="1" ty="7" />
     <tile x="32" y="8" tx="3" ty="0" />
     <tile x="32" y="9" tx="3" ty="1" />
     <tile x="32" y="10" tx="3" ty="3" />
@@ -1924,8 +1923,8 @@
     <tile x="32" y="13" tx="3" ty="6" />
     <tile x="32" y="14" tx="3" ty="3" />
     <tile x="32" y="15" tx="3" ty="6" />
-    <tile x="32" y="16" tx="3" ty="3" />
-    <tile x="32" y="17" tx="6" ty="6" />
+    <tile x="32" y="16" tx="2" ty="2" />
+    <tile x="32" y="17" tx="1" ty="7" />
     <tile x="33" y="1" tx="5" ty="1" />
     <tile x="33" y="2" tx="5" ty="2" />
     <tile x="33" y="8" tx="4" ty="0" />
