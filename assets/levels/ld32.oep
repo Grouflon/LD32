@@ -5,8 +5,8 @@
   <BackgroundColor A="255" R="125" G="160" B="255" />
   <GridColor A="255" R="255" G="240" B="90" />
   <LevelDefaultSize>
-    <Width>2016</Width>
-    <Height>576</Height>
+    <Width>1920</Width>
+    <Height>600</Height>
   </LevelDefaultSize>
   <LevelMinimumSize>
     <Width>640</Width>
@@ -16,7 +16,7 @@
     <Width>640</Width>
     <Height>480</Height>
   </LevelMaximumSize>
-  <Filename>C:\Users\alpha\Documents\ld32\LD32\assets\levels\ld32.oep</Filename>
+  <Filename>D:\Projects\Games\LD32\assets\levels\ld32.oep</Filename>
   <AngleMode>Radians</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -29,8 +29,8 @@
     <LayerDefinition xsi:type="TileLayerDefinition">
       <Name>Terrain</Name>
       <Grid>
-        <Width>32</Width>
-        <Height>32</Height>
+        <Width>30</Width>
+        <Height>30</Height>
       </Grid>
       <ScrollFactor>
         <X>1</X>
@@ -41,8 +41,8 @@
     <LayerDefinition xsi:type="TileLayerDefinition">
       <Name>platform</Name>
       <Grid>
-        <Width>32</Width>
-        <Height>16</Height>
+        <Width>30</Width>
+        <Height>15</Height>
       </Grid>
       <ScrollFactor>
         <X>1</X>
@@ -53,13 +53,37 @@
     <LayerDefinition xsi:type="EntityLayerDefinition">
       <Name>spawn</Name>
       <Grid>
-        <Width>32</Width>
-        <Height>16</Height>
+        <Width>30</Width>
+        <Height>15</Height>
       </Grid>
       <ScrollFactor>
         <X>1</X>
         <Y>1</Y>
       </ScrollFactor>
+    </LayerDefinition>
+    <LayerDefinition xsi:type="TileLayerDefinition">
+      <Name>background</Name>
+      <Grid>
+        <Width>30</Width>
+        <Height>30</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+      <ExportMode>XMLCoords</ExportMode>
+    </LayerDefinition>
+    <LayerDefinition xsi:type="TileLayerDefinition">
+      <Name>props</Name>
+      <Grid>
+        <Width>30</Width>
+        <Height>30</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+      <ExportMode>XMLCoords</ExportMode>
     </LayerDefinition>
   </LayerDefinitions>
   <Tilesets>
@@ -67,8 +91,26 @@
       <Name>terrain_tileset</Name>
       <FilePath>..\graphics\tileset.png</FilePath>
       <TileSize>
-        <Width>32</Width>
-        <Height>32</Height>
+        <Width>30</Width>
+        <Height>30</Height>
+      </TileSize>
+      <TileSep>0</TileSep>
+    </Tileset>
+    <Tileset>
+      <Name>background</Name>
+      <FilePath>..\graphics\bg_tileset.png</FilePath>
+      <TileSize>
+        <Width>30</Width>
+        <Height>30</Height>
+      </TileSize>
+      <TileSep>0</TileSep>
+    </Tileset>
+    <Tileset>
+      <Name>props</Name>
+      <FilePath>..\graphics\props_tileset.png</FilePath>
+      <TileSize>
+        <Width>30</Width>
+        <Height>30</Height>
       </TileSize>
       <TileSep>0</TileSep>
     </Tileset>
@@ -76,8 +118,8 @@
   <EntityDefinitions>
     <EntityDefinition Name="spawn" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
       <Size>
-        <Width>32</Width>
-        <Height>64</Height>
+        <Width>30</Width>
+        <Height>60</Height>
       </Size>
       <Origin>
         <X>0</X>
@@ -87,8 +129,22 @@
         <RectColor A="255" R="255" G="0" B="0" />
       </ImageDefinition>
       <ValueDefinitions>
-        <ValueDefinition xsi:type="FloatValueDefinition" Name="enemy_1_timer" Default="4.5" Min="0" Max="100" Round="0.1" />
-        <ValueDefinition xsi:type="IntValueDefinition" Name="enemy_1_number" Default="1" Min="0" Max="100" ShowSlider="false" />
+        <ValueDefinition xsi:type="FloatValueDefinition" Name="timer" Default="4.5" Min="0" Max="100" Round="0.1" />
+        <ValueDefinition xsi:type="IntValueDefinition" Name="number" Default="1" Min="0" Max="100" ShowSlider="false" />
+        <ValueDefinition xsi:type="EnumValueDefinition" Name="DamageType">
+          <Elements>
+            <string>MELEE</string>
+            <string>RANGE</string>
+            <string>BOTH</string>
+          </Elements>
+        </ValueDefinition>
+        <ValueDefinition xsi:type="EnumValueDefinition" Name="Resitance">
+          <Elements>
+            <string>LEG</string>
+            <string>ARM</string>
+            <string>BOTH</string>
+          </Elements>
+        </ValueDefinition>
       </ValueDefinitions>
       <NodesDefinition Enabled="true" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>

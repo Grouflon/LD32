@@ -17,7 +17,7 @@ class EnemySpawner extends Entity
 
 	public function new(_x : Int, _y : Int, _respawnTimer : Float, _spawnNumber : Int, _enemyResistType : EnemyResistance, _enemyDamageType : DamageType)
 	{
-		super(_x, _y, Image.createRect(32, 64, 0xFF99FD));
+		super(_x, _y, new Image("graphics/door.png"));
 		
 		layer = 50;
 		spawn = _spawnNumber;
@@ -35,11 +35,14 @@ class EnemySpawner extends Entity
 			if (effectiveTimer > 0)
 			{
 				effectiveTimer -= HXP.elapsed;
+				if (effectiveTimer < 3)
+					addGraphic(new Image("graphics/door_on.png"));
 			}
 			else
 			{
 				spawnMob();
 				effectiveTimer = respawnTimer;
+				addGraphic(new Image("graphics/door.png"));	
 			}
 		}
 		
@@ -81,20 +84,20 @@ class EnemySpawner extends Entity
 			
 			if (randomType > 0.5)
 			{
-				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, enemyResist));
+				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, 1, enemyResist));
 			}
 			else
 			{
-				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, enemyResist));
+				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, 1, enemyResist));
 			}
 		}
 		else if (enemyDamageType == DamageType.MELEE)
 		{
-			HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, enemyResist));
+			HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, 1, enemyResist));
 		}
 		else if (enemyDamageType == DamageType.RANGE)
 		{
-			HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, enemyResist));
+			HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, 1, enemyResist));
 		}
 	}
 	

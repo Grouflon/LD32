@@ -11,7 +11,7 @@ import com.haxepunk.graphics.Spritemap;
 class RangeEnemy extends Enemy
 {
 
-	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _resistance : EnemyResistance) 
+	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _life : Int, _resistance : EnemyResistance) 
 	{	
 		if (_resistance == EnemyResistance.ARM)
 		{
@@ -27,7 +27,7 @@ class RangeEnemy extends Enemy
 		
 		sprite.add("normal", [0]);
 		
-		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, sprite);
+		super(_owner, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life,  sprite);
 		
 		attackCooldown = 1;
 		attackTimer = 0;
