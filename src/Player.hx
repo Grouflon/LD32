@@ -13,7 +13,6 @@ import com.haxepunk.Tween;
 import com.haxepunk.utils.Draw;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
-import com.haxepunk.utils.Joystick;
 import com.haxepunk.graphics.Text;
 import hxmath.math.Vector2;
 
@@ -99,7 +98,7 @@ class Player extends Entity
 		_applyGravity();
 		
 		_updateGraphics();
-		
+	
 		_onKeyDown = false;
 		_firedArm = false;
 		_firedLeg = false;
@@ -182,27 +181,18 @@ class Player extends Entity
 		_velocity.y = -GB.playerReach;
 	}
 	
-	
 	override public function moveCollideY(e:Entity):Bool
-	{
-		trace(_velocity.y );
-		
+	{		
 		if (e.type == "enemy")
 		{
 			takeDamage(DamageType.MELEE);
 			return true;
 		}
 		
-		if (bottom != e.top)
-			_onGround = false;
-		
 		if (e.type == "platform")
 		{
-			trace("collide avec platform");
-				
 			if ((e.top >= this.bottom || _onGround) && !_onKeyDown)
 			{
-				trace("sur une platform test");
 				_onGround = true;
 				_velocity.y = 0;
 				return true;
@@ -501,7 +491,6 @@ class Player extends Entity
 	
 	public function getArmCount():Int { return _armCount; }
 	public function getLegCount():Int { return _legCount; }
-	
 	
 	private var _sprite:Spritemap;
 	

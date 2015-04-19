@@ -15,7 +15,7 @@ import EnemyResistance;
 class EnemySpawner extends Entity
 {
 
-	public function new(_x : Int, _y : Int, _respawnTimer : Float, _spawnNumber : Int)
+	public function new(_x : Int, _y : Int, _respawnTimer : Float, _spawnNumber : Int, _enemyResistType : EnemyResistance, _enemyDamageType : DamageType)
 	{
 		super(_x, _y, Image.createRect(32, 64, 0xFF99FD));
 		
@@ -24,6 +24,8 @@ class EnemySpawner extends Entity
 		
 		respawnTimer = _respawnTimer;
 		effectiveTimer = 0;
+		enemyResistType = _enemyResistType;
+		enemyDamageType = _enemyDamageType;
 	}
 	
 	public override function update()
@@ -54,34 +56,50 @@ class EnemySpawner extends Entity
 	{
 		spawn -= 1;
 		
-		var randomType : Float = Math.random();
-		var randomResistance : Float = Math.random();
-		
-		if (randomType > 0.5)
+		var enemyResist : EnemyResistance;
+		if (enemyResistType == EnemyResistance.ARM)
 		{
-			if (randomResistance > 0.5)
-			{
-				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, EnemyResistance.LEG));
-			}
-			else
-			{
-				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, EnemyResistance.ARM));
-			}
+			enemyResist = EnemyResistance.ARM;
+		}
+		else if (enemyResistType == EnemyResistance.LEG)
+		{
+			enemyResist = EnemyResistance.LEG;
 		}
 		else
 		{
+			var randomResistance : Float = Math.random();
+			
 			if (randomResistance > 0.5)
+				enemyResist = EnemyResistance.ARM;
+			else
+				enemyResist = EnemyResistance.LEG;
+		}
+		
+		if (enemyDamageType == DamageType.BOTH)
+		{
+			var randomType : Float = Math.random();
+			
+			if (randomType > 0.5)
 			{
-				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, EnemyResistance.LEG));
+				HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, enemyResist));
 			}
 			else
 			{
-				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, EnemyResistance.ARM));
+				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, enemyResist));
 			}
 		}
-		
+		else if (enemyDamageType == DamageType.MELEE)
+		{
+			HXP.scene.add(new MeleeEnemy(this, x + 30 / 2, y + 50, 30, 50, 60, 150, enemyResist));
+		}
+		else if (enemyDamageType == DamageType.RANGE)
+		{
+			HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, 75, 200, enemyResist));
+		}
 	}
 	
+	private var enemyDamageType : DamageType;
+	private var enemyResistType : EnemyResistance;
 	private var respawnTimer : Float;
 	private var effectiveTimer : Float;
 	private var spawn : Int;

@@ -17,6 +17,9 @@ class GB
 	static public var playerReach:Float = 9.5;
 	static public var playerSpeed:Float	= 4.;
 	
+	// LIMBS RELATED
+	static public var legBounceAttenuation = 0.8;
+	
 	// GAME RELATED
 	static public var gravity:Vector2 	= new Vector2(0., 20.);
 	

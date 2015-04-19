@@ -4,10 +4,14 @@ import com.haxepunk.HXP;
 
 class Parsing
 {
-	static public function createBlock() 
+	public function new() 
 	{
 		var xmlString:String = sys.io.File.getContent("levels/testlevel.oel");
-		var xml:Xml = Xml.parse(xmlString).firstElement();
+		var xml:Xml = Xml.parse(xmlString);
+		
+		getSize(xml);
+		
+		xml = xml.firstElement();
 		
 		var it_1:Iterator<Xml> = xml.elementsNamed("Terrain");
 		var it_2:Iterator<Xml> = xml.elementsNamed("spawn");
@@ -17,6 +21,24 @@ class Parsing
 		var spawner:Xml = it_2.next();
 		var platformer:Xml = it_3.next();
 		
+		createBlock(terrain);
+		createSpawner(spawner);
+		createPlatform(platformer);
+		
+		
+	}
+	
+	private function getSize(xml:Xml)
+	{
+		for (lvl in xml.elements()) 
+		{
+			_width = Std.parseInt(lvl.get("width"));
+			_height = Std.parseInt(lvl.get("height"));
+		}
+	}
+	
+	private function createBlock(terrain:Xml)
+	{
 		for (block in terrain.elements()) 
 		{
 			var x:Int = Std.parseInt(block.get("x")) * 32;
@@ -27,7 +49,10 @@ class Parsing
 			if (tx == 1)
 				HXP.scene.add(new SolidBlock(x, y));
 		}
-		
+	}
+	
+	private function createSpawner(spawner:Xml)
+	{
 		for (spawn in spawner.elements())
 		{
 			var x:Int = Std.parseInt(spawn.get("x"));
@@ -35,9 +60,12 @@ class Parsing
 			var enemy_1_timer:Float = Std.parseInt(spawn.get("enemy_1_timer"));
 			var enemy_1_number:Int = Std.parseInt(spawn.get("enemy_1_number"));
 			
-			HXP.scene.add(new EnemySpawner(x, y, enemy_1_timer, enemy_1_number));
+			HXP.scene.add(new EnemySpawner(x, y, enemy_1_timer, enemy_1_number, EnemyResistance.BOTH, DamageType.BOTH));
 		}
-		
+	}
+	
+	private function createPlatform(platformer:Xml)
+	{
 		for (miblock in platformer.elements()) 
 		{
 			var x:Int = Std.parseInt(miblock.get("x")) * 32;
@@ -48,5 +76,8 @@ class Parsing
 			if (tx == 1)
 				HXP.scene.add(new Platform(x, y));
 		}
-	}	
+	}
+	
+	public var _width:Int;
+	public var _height:Int;
 }

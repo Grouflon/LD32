@@ -1,5 +1,6 @@
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;
+import com.haxepunk.Scene;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 
@@ -8,15 +9,17 @@ class GameController
 
 	public function new()
 	{
-		HXP.scene = new MainScene();
+		HXP.scene = new MenuScene();
 	}
-	
-	public function start()
+
+	static public function startGame():Void
 	{
+		_inGame = true;
+		HXP.scene.removeAll();
 		HXP.scene = new MainScene();
 	}
 	
-	public function destroy()
+	static public function clean()
 	{
 		HXP.scene.removeAll();
 	}
@@ -25,7 +28,6 @@ class GameController
 	{
 		if (HXP.scene.getInstance("player") == null)
 		{
-			destroy();
 			return false;
 		}
 		return true;
@@ -35,29 +37,15 @@ class GameController
 	{
 		if (Input.pressed(Key.P))
 		{
-			destroy();
-			start();
+			clean();
+			startGame();
 		}
 		
-		if (!isPlayerAlive())
-			start();
-			
-		var player : Entity = HXP.scene.getInstance("player");
-		if (player != null)
-		{	
-			if (player.x - HXP.halfWidth < 0)
-				HXP.camera.x = 0;
-			else if (player.x + HXP.halfWidth > HXP.width)
-				HXP.camera.x = HXP.width - HXP.halfWidth;
-			else
-				HXP.camera.x = player.x - HXP.halfWidth;
-			
-			if (player.y + HXP.halfHeight > HXP.height)
-				HXP.camera.y = HXP.height - HXP.halfHeight * 2;
-			else if (player.y - HXP.halfHeight < 0)
-				HXP.camera.y = 0;
-			else	
-				HXP.camera.y = player.y - HXP.halfHeight;
+		if (!isPlayerAlive() && _inGame)
+		{
+			startGame();
 		}
 	}
+	
+	static private var _inGame:Bool = false;
 }

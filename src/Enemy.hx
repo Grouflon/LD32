@@ -60,6 +60,11 @@ class Enemy extends Entity
 	{
 		moveBy(velocity.x, velocity.y, ["block", "platform", "player"]);
 		
+		if (direction == Direction.LEFT)
+			sprite.flipped = true;
+		else if (direction == Direction.RIGHT)
+			sprite.flipped = false;
+			
 		velocity.x = 0;
 	}
 	
