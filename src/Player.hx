@@ -55,13 +55,13 @@ class Player extends Entity
 		if (Input.check("MoveLeft"))
 		{
 			_direction = -1;
-			_velocity.x = GB.playerSpeed;
+			_velocity.x = _speed;
 		}
 		
 		if (Input.check("MoveRight"))
 		{
 			_direction = 1;
-			_velocity.x = GB.playerSpeed;
+			_velocity.x = _speed;
 		}
 		
 		if (!Input.check("MoveLeft") && !Input.check("MoveRight"))
