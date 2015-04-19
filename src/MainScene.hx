@@ -18,7 +18,7 @@ class MainScene extends Scene
 	
 	public override function begin()
 	{
-		var level:Parsing = new Parsing("levels/layers_testlevel.oel", this);
+		var level:Parsing = new Parsing("levels/level_1.oel", this);
 		
 		player = level._player;
 		add(new PlayerGUI());
