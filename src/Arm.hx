@@ -47,7 +47,7 @@ class Arm extends Limb
 		if (e.type == "block")
 		{
 			_velocity.x = 0;
-			this.type = "block";
+			this.type = "platform";
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { HXP.world.remove(this); }, TweenType.OneShot), true);
 		}
 		
