@@ -136,6 +136,23 @@ class Player extends Entity
 		}
 	}
 	
+	private function _looseLeg()
+	{
+		if (_legCount > 0)
+		{
+			_legCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
+		}
+	}
+	
+	private function _looseArm()
+	{
+		if (_armCount > 0)
+		{
+			_armCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
+		}
+	}
 	
 	private function _doJump():Void
 	{
@@ -157,7 +174,7 @@ class Player extends Entity
 	{
 		if (e.type == "enemy")
 		{
-			HXP.scene.remove(this);
+			takeDamage(DamageType.MELEE);
 		}
 		
 		if (_velocity.y >= 0)
@@ -174,9 +191,8 @@ class Player extends Entity
 	{
 		if (e.type == "enemy")
 		{
-			HXP.scene.remove(this);
+			takeDamage(DamageType.MELEE);
 		}
-		
 		
 		return true;
 	}
@@ -336,9 +352,35 @@ class Player extends Entity
 		}
 	}
 
-	public function takeDamage()
+	public function takeDamage(type : DamageType)
 	{
-		trace("Player damage !");
+		if (type == DamageType.MELEE)
+		{
+			HXP.scene.remove(this);
+		}
+		else if (type == DamageType.RANGE)
+		{
+			if (_legCount == 0)
+			{
+				_looseArm();
+			}
+			else if (_armCount == 0)
+			{
+				_looseLeg();
+			}
+			else
+			{
+				var rand : Float = Math.random();
+				if (rand < 0.5)
+				{
+					_looseLeg();
+				}
+				else
+				{
+					_looseArm();
+				}
+			}
+		}
 	}
 	
 	private var _sprite:Spritemap;

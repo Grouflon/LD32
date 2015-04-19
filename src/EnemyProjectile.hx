@@ -46,7 +46,7 @@ class EnemyProjectile extends Entity
 	{	
 		if (e.type == "player")
 		{
-			cast(HXP.scene.getInstance("player"), Player).takeDamage();
+			cast(HXP.scene.getInstance("player"), Player).takeDamage(DamageType.RANGE);
 		}
 		
 		HXP.scene.remove(this);
@@ -58,7 +58,7 @@ class EnemyProjectile extends Entity
 	{
 		if (e.type == "player")
 		{
-			cast(HXP.scene.getInstance("player"), Player).takeDamage();
+			cast(HXP.scene.getInstance("player"), Player).takeDamage(DamageType.RANGE);
 		}
 		
 		HXP.scene.remove(this);

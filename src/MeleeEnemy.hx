@@ -116,7 +116,6 @@ class MeleeEnemy extends Enemy
 		
 		if (playerDirection == Direction.LEFT)
 		{
-			trace("player left !");
 			if (canIGoLeft())
 			{
 				velocity.x -= speed * 2 * HXP.elapsed;
@@ -125,7 +124,6 @@ class MeleeEnemy extends Enemy
 		}
 		else if (playerDirection == Direction.RIGHT)
 		{
-			trace("player right !");
 			if (canIGoRight())
 			{
 				direction = playerDirection;
