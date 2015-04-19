@@ -16,7 +16,7 @@
     <Width>640</Width>
     <Height>480</Height>
   </LevelMaximumSize>
-  <Filename>C:\Users\alpha\Documents\ld32\LD32\assets\levels\ld32.oep</Filename>
+  <Filename>D:\Projects\Games\LD32\assets\levels\ld32.oep</Filename>
   <AngleMode>Radians</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -61,11 +61,53 @@
         <Y>1</Y>
       </ScrollFactor>
     </LayerDefinition>
+    <LayerDefinition xsi:type="TileLayerDefinition">
+      <Name>background</Name>
+      <Grid>
+        <Width>30</Width>
+        <Height>30</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+      <ExportMode>XMLCoords</ExportMode>
+    </LayerDefinition>
+    <LayerDefinition xsi:type="TileLayerDefinition">
+      <Name>props</Name>
+      <Grid>
+        <Width>30</Width>
+        <Height>30</Height>
+      </Grid>
+      <ScrollFactor>
+        <X>1</X>
+        <Y>1</Y>
+      </ScrollFactor>
+      <ExportMode>XMLCoords</ExportMode>
+    </LayerDefinition>
   </LayerDefinitions>
   <Tilesets>
     <Tileset>
       <Name>terrain_tileset</Name>
       <FilePath>..\graphics\tileset.png</FilePath>
+      <TileSize>
+        <Width>30</Width>
+        <Height>30</Height>
+      </TileSize>
+      <TileSep>0</TileSep>
+    </Tileset>
+    <Tileset>
+      <Name>background</Name>
+      <FilePath>..\graphics\bg_tileset.png</FilePath>
+      <TileSize>
+        <Width>30</Width>
+        <Height>30</Height>
+      </TileSize>
+      <TileSep>0</TileSep>
+    </Tileset>
+    <Tileset>
+      <Name>props</Name>
+      <FilePath>..\graphics\props_tileset.png</FilePath>
       <TileSize>
         <Width>30</Width>
         <Height>30</Height>
