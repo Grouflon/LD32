@@ -113,14 +113,22 @@ class Player extends Entity
 	
 	public function addLeg():Void
 	{
-		_maxLegCount++;
+		if (_maxLegCount < 2)
+		{
+			_maxLegCount++;
+		}
+		
 		_legCount++;
 	}
 	
 	
 	public function addArm():Void
 	{
-		_maxArmCount++;
+		if (_maxArmCount < 2)
+		{
+			_maxArmCount++;
+		}
+		
 		_armCount++;
 	}
 	
@@ -213,7 +221,6 @@ class Player extends Entity
 				while (startY >= endY)
 				{
 					var e:Entity = collide("platform", x, startY);
-					trace(e);
 					if (e == null)
 					{
 						_onGround = true;
@@ -501,6 +508,7 @@ class Player extends Entity
 		if (type == DamageType.MELEE)
 		{
 			HXP.scene.remove(this);
+			GameController.playerJustDied(this);
 		}
 		else if (type == DamageType.RANGE)
 		{

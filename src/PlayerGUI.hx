@@ -35,10 +35,10 @@ class PlayerGUI extends Entity
 	{
 		super.update();
 		
-		//var player:Player = new HXP.scene.getInstance("player");
-		
-		_playerArmCount = cast(HXP.scene.getInstance("player"), Player).getArmCount();
-		_playerLegCount = cast(HXP.scene.getInstance("player"), Player).getLegCount();
+		_playerArmCount = cast(HXP.scene, MainScene).player.getArmCount();
+		//cast(HXP.scene.getInstance("player"), Player).getArmCount();
+		_playerLegCount = cast(HXP.scene, MainScene).player.getLegCount();
+		//cast(HXP.scene.getInstance("player"), Player).getLegCount();
 		
 		_displayStats();
 	}
