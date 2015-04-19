@@ -4,7 +4,6 @@ import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.utils.Draw;
 import PlayerGUI;
-import Parsing;
 
 class MainScene extends Scene
 {

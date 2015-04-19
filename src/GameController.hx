@@ -8,7 +8,6 @@ class GameController
 
 	public function new()
 	{
-		HXP.scene = new MainScene();
 	}
 	
 	public function start()
