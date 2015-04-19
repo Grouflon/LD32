@@ -9,14 +9,14 @@
     <Height>600</Height>
   </LevelDefaultSize>
   <LevelMinimumSize>
-    <Width>640</Width>
-    <Height>480</Height>
+    <Width>1920</Width>
+    <Height>600</Height>
   </LevelMinimumSize>
   <LevelMaximumSize>
-    <Width>640</Width>
-    <Height>480</Height>
+    <Width>1920</Width>
+    <Height>600</Height>
   </LevelMaximumSize>
-  <Filename>D:\Projects\Games\LD32\assets\levels\ld32.oep</Filename>
+  <Filename>C:\Users\alpha\Documents\ld32\LD32\assets\levels\ld32.oep</Filename>
   <AngleMode>Radians</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>
@@ -51,7 +51,7 @@
       <ExportMode>XMLCoords</ExportMode>
     </LayerDefinition>
     <LayerDefinition xsi:type="EntityLayerDefinition">
-      <Name>spawn</Name>
+      <Name>item</Name>
       <Grid>
         <Width>30</Width>
         <Height>15</Height>
@@ -147,6 +147,28 @@
         </ValueDefinition>
       </ValueDefinitions>
       <NodesDefinition Enabled="true" Limit="-1" DrawMode="None" Ghost="false" />
+    </EntityDefinition>
+    <EntityDefinition Name="ammo" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
+      <Size>
+        <Width>30</Width>
+        <Height>30</Height>
+      </Size>
+      <Origin>
+        <X>0</X>
+        <Y>0</Y>
+      </Origin>
+      <ImageDefinition DrawMode="Rectangle" ImagePath="" Tiled="false">
+        <RectColor A="255" R="255" G="0" B="0" />
+      </ImageDefinition>
+      <ValueDefinitions>
+        <ValueDefinition xsi:type="EnumValueDefinition" Name="limb">
+          <Elements>
+            <string>LEG</string>
+            <string>ARM</string>
+          </Elements>
+        </ValueDefinition>
+      </ValueDefinitions>
+      <NodesDefinition Enabled="false" Limit="-1" DrawMode="None" Ghost="false" />
     </EntityDefinition>
   </EntityDefinitions>
 </project>
