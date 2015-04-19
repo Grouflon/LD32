@@ -1,5 +1,6 @@
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;
+import com.haxepunk.Scene;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 
@@ -8,15 +9,17 @@ class GameController
 
 	public function new()
 	{
-		HXP.scene = new MainScene();
+		HXP.scene = new MenuScene();
 	}
-	
-	public function start()
+
+	static public function startGame():Void
 	{
+		_inGame = true;
+		HXP.scene.removeAll();
 		HXP.scene = new MainScene();
 	}
 	
-	public function destroy()
+	static public function clean()
 	{
 		HXP.scene.removeAll();
 	}
@@ -25,7 +28,6 @@ class GameController
 	{
 		if (HXP.scene.getInstance("player") == null)
 		{
-			destroy();
 			return false;
 		}
 		return true;
@@ -35,11 +37,15 @@ class GameController
 	{
 		if (Input.pressed(Key.P))
 		{
-			destroy();
-			start();
+			clean();
+			startGame();
 		}
 		
-		if (!isPlayerAlive())
-			start();
+		if (!isPlayerAlive() && _inGame)
+		{
+			startGame();
+		}
 	}
+	
+	static private var _inGame:Bool = false;
 }

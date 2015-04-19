@@ -151,8 +151,7 @@ class BossEnemy extends Enemy
 				}
 			}
 		}
-		/*trace ("Arm " + armCount + "  " + canFireArm + " " + canFire);
-		trace ("Leg " + legCount + "  " + canFireLeg + " " + canFire);*/
+		
 		if (armCount > 0 && canFireArm && canFire)
 		{
 			if (playerDirection == Direction.RIGHT)
@@ -171,7 +170,6 @@ class BossEnemy extends Enemy
 	
 	private function fireArm(_direction : Int)
 	{
-		trace("arm fired");
 		canFireArm = false;
 		canFire = false;
 		armCount--;

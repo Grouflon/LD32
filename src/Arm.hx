@@ -49,11 +49,8 @@ class Arm extends Limb
 			}
 		}
 		
-		trace(e.type);
-		
 		if (e.type == "player")
 		{
-			trace(_friendly);
 			if (!_friendly)
 			{
 				var e : Player = cast(e, Player);

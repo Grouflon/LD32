@@ -3,7 +3,10 @@ import com.haxepunk.Scene;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.utils.Draw;
+
 import PlayerGUI;
+import LegAmmunition;
+import ArmAmmunition;
 import Parsing;
 
 class MainScene extends Scene
@@ -21,6 +24,12 @@ class MainScene extends Scene
 		add(player);
 		add(new PlayerGUI());
 		
+		add(new LegAmmunition(300, HXP.screen.height - 130));
+		add(new LegAmmunition(320, HXP.screen.height - 130));
+		
+		add(new ArmAmmunition(340, HXP.screen.height - 130));
+		add(new ArmAmmunition(360, HXP.screen.height - 130));
+
 		levelHeight = level._height;
 		levelWidth = level._width;
 		
@@ -44,9 +53,8 @@ class MainScene extends Scene
 		
 		super.update();
 	}
-	
-	
-	private var player:Player;
+
+	public var player:Player;
 	public var levelHeight:Int;
 	public var levelWidth:Int;
 }
