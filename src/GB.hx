@@ -1,4 +1,4 @@
-package src;
+package;
 
 import hxmath.math.Vector2;
 

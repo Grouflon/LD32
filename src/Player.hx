@@ -18,7 +18,7 @@ import com.haxepunk.graphics.Text;
 import hxmath.math.Vector2;
 
 // Local Imports
-import src.GB;
+import GB;
 import Arm;
 import Leg;
 
