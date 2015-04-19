@@ -595,6 +595,11 @@ class Player extends Entity
 		_sprite.stop();
 	}
 	
+	
+	public function getMaxArmCount() { return _maxArmCount; }
+	public function getMaxLegCount() { return _maxLegCount; }
+	
+	
 	private var _blood:BloodSquirt;
 	
 	private var _sprite:Spritemap;
