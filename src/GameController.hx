@@ -23,6 +23,7 @@ class GameController
 		if (!_inGame) _inGame = true;
 		HXP.scene.removeAll();
 		HXP.scene = new MainScene();
+		_isPlayerAlive = true;
 	}
 	
 	
@@ -34,6 +35,10 @@ class GameController
 	
 	static public function playerJustDied(e:Entity, boss:Bool):Void
 	{
+		var player : Entity = HXP.scene.getInstance("player");
+		HXP.scene.remove(player);
+		_isPlayerAlive = false;
+		
 		if (e.type == "player")
 		{
 			HXP.scene.addGraphic(new Text("You are so bad ! You died !", e.x - 60, e.y - 80, 0, 0));
@@ -58,7 +63,7 @@ class GameController
 	
 	static public function isPlayerAlive():Bool
 	{
-		if (HXP.scene.getInstance("player") == null)
+		if (_isPlayerAlive == false)
 		{
 			return false;
 		}
@@ -74,5 +79,6 @@ class GameController
 		}
 	}
 	
+	static private var _isPlayerAlive:Bool;
 	static private var _inGame:Bool = false;
 }

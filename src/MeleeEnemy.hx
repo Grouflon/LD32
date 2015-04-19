@@ -137,7 +137,6 @@ class MeleeEnemy extends Enemy
 	{
 		if (e.type == "player")
 		{
-			HXP.scene.remove(e);
 			GameController.playerJustDied(this, false);
 		}
 		
