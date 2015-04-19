@@ -1,4 +1,4 @@
-package src;
+package;
 
 import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
@@ -25,12 +25,6 @@ class Limb extends Entity
 	
 	override public function moveCollideX(e:Entity):Bool
 	{
-		if (e.type == "enemy")
-		{
-			HXP.world.remove(e);
-			HXP.world.remove(this);
-		}
-		
 		return true;
 	}
 	

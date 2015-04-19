@@ -1,4 +1,4 @@
-package src;
+package;
 
 import com.haxepunk.HXP;
 import com.haxepunk.Entity;
@@ -7,7 +7,7 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.Tween;
 import com.haxepunk.tweens.misc.Alarm;
 import com.haxepunk.utils.Draw;
-import src.Limb;
+import Limb;
 
 /**
  * ...
@@ -35,6 +35,14 @@ class Arm extends Limb
 	override public function moveCollideX(e:Entity):Bool
 	{
 		super.moveCollideX(e);
+		
+		if (e.type == "enemy")
+		{
+			var e : Enemy = cast(e, Enemy);
+			e.notifyDamage(EnemyResistance.ARM);
+			
+			HXP.world.remove(this);
+		}
 		
 		if (e.type == "block")
 		{

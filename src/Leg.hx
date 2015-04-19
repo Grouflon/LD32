@@ -1,8 +1,10 @@
-package src;
+package;
 
+import com.haxepunk.Entity;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Image;
-import src.Limb;
+import com.haxepunk.HXP;
+import Limb;
 
 /**
  * ...
@@ -20,6 +22,21 @@ class Leg extends Limb
 		setHitbox(25, 8); //temporary
 		width 	= 25; //temporary
 		height 	= 8; //temporary
+	}
+	
+	override public function moveCollideX(e:Entity):Bool
+	{
+		super.moveCollideX(e);
+		
+		if (e.type == "enemy")
+		{
+			var e : Enemy = cast(e, Enemy);
+			e.notifyDamage(EnemyResistance.LEG);
+			
+			HXP.world.remove(this);
+		}
+		
+		return true;
 	}
 	
 }

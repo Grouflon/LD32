@@ -15,8 +15,8 @@ import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Joystick;
 import com.haxepunk.graphics.Text;
 import hxmath.math.Vector2;
-import src.Arm;
-import src.Leg;
+import Arm;
+import Leg;
 
 class Player extends Entity
 {

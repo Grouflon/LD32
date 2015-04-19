@@ -3,7 +3,7 @@ import com.haxepunk.Scene;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.utils.Draw;
-import src.PlayerGUI;
+import PlayerGUI;
 
 class MainScene extends Scene
 {
