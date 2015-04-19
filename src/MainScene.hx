@@ -15,7 +15,7 @@ class MainScene extends Scene
 	public override function begin()
 	{
 		Parsing.createBlock();
-		add(new Player(HXP.screen.width / 2, HXP.screen.height - 400));
+		add(new Player(100, HXP.screen.height - 400));
 		add(new PlayerGUI());
 
 	}
