@@ -45,11 +45,6 @@ class Player extends Entity
 		Input.define("MoveRight", [Key.D, Key.RIGHT]);
 		Input.define("FireArm", [Key.Q]);
 		Input.define("FireLeg", [Key.E]);
-		
-		GB.playerArmCount 	= 2;
-		GB.playerLegCount 	= 2;
-		GB.playerReach		= 9.5;
-		GB.playerSpeed		= 4.;
 	}
 	
 	
@@ -81,7 +76,7 @@ class Player extends Entity
 				_doJump();
 			}
 		}
-				
+			
 		if (Input.pressed("FireArm"))
 		{
 			_fireArm();
@@ -92,7 +87,7 @@ class Player extends Entity
 			_fireLeg();
 		}
 		
-		if (GB.playerLegCount == 0)
+		if (_legCount == 0)
 		{
 			_short = true;
 			_height = 57;
@@ -114,13 +109,13 @@ class Player extends Entity
 	
 	private function _fireArm()
 	{
-		if (GB.playerArmCount > 0 && _canFireArm)
+		if (_armCount > 0 && _canFireArm)
 		{
 			_firedArm = true;
 			_canFireArm = false;
-			GB.playerArmCount--;
+			_armCount--;
 			addTween(new Alarm(.15, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height)); }, TweenType.OneShot), true);
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerArmCount < 2) GB.playerArmCount++; }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(.3, function (e:Dynamic = null):Void { _canFireArm = true; }, TweenType.OneShot), true);
 		}
 	}
@@ -128,29 +123,29 @@ class Player extends Entity
 	
 	private function _fireLeg()
 	{
-		if (GB.playerLegCount > 0)
+		if (_legCount > 0)
 		{
 			HXP.scene.add(new Leg(x, y, _direction, _height));
-			GB.playerLegCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerLegCount < 2) GB.playerLegCount++; }, TweenType.OneShot), true);
+			_legCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
 		}
 	}
 	
 	private function _looseLeg()
 	{
-		if (GB.playerLegCount > 0)
+		if (_legCount > 0)
 		{
-			GB.playerLegCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerLegCount < 2) GB.playerLegCount++; }, TweenType.OneShot), true);
+			_legCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
 		}
 	}
 	
 	private function _looseArm()
 	{
-		if (GB.playerArmCount > 0)
+		if (_armCount > 0)
 		{
-			GB.playerArmCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (GB.playerArmCount < 2) GB.playerArmCount++; }, TweenType.OneShot), true);
+			_armCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
 		}
 	}
 	
@@ -269,12 +264,12 @@ class Player extends Entity
 	private function _updateGraphics():Void
 	{
 		// CHEST
-		if (_firedArm && (GB.playerArmCount == 1)) _chestSprite.play("arm1_tearing");
-		if (_firedArm && (GB.playerArmCount == 0)) _chestSprite.play("arm2_tearing");
+		if (_firedArm && (_armCount == 1)) _chestSprite.play("arm1_tearing");
+		if (_firedArm && (_armCount== 0)) _chestSprite.play("arm2_tearing");
 		
 		var armStr:String = "";
-		if (GB.playerArmCount == 1) armStr = "_1arm";
-		else if (GB.playerArmCount == 0) armStr = "_0arm";
+		if (_armCount == 1) armStr = "_1arm";
+		else if (_armCount== 0) armStr = "_0arm";
 		
 		if ((_chestSprite.currentAnim != "arm1_tearing" && _chestSprite.currentAnim != "arm2_tearing") || _chestSprite.complete)
 		{
@@ -360,11 +355,11 @@ class Player extends Entity
 		}
 		else if (type == DamageType.RANGE)
 		{
-			if (GB.playerLegCount == 0)
+			if (_legCount == 0)
 			{
 				_looseArm();
 			}
-			else if (GB.playerArmCount == 0)
+			else if (_armCount == 0)
 			{
 				_looseLeg();
 			}
@@ -383,6 +378,11 @@ class Player extends Entity
 		}
 	}
 	
+	
+	public function getArmCount():Int { return _armCount; }
+	public function getLegCount():Int { return _legCount; }
+	
+	
 	private var _sprite:Spritemap;
 	
 	private var _legsSprite:Spritemap;
@@ -394,6 +394,9 @@ class Player extends Entity
 	private var _height:Int = 72;
 	
 	private var _direction:Int = 1;
+	
+	private var _armCount:Int = 2;
+	private var _legCount:Int = 2;
 	
 	private var _onGround:Bool = false;
 	private var _firedArm:Bool = false;
