@@ -132,8 +132,8 @@ class Parsing
 		var e:Entity = new Entity();
 		var m:Grid = new Grid(_width, _height, 30, 15);
 		e.setHitbox(_width, _height);
-		e.type = "block";
-		e.name = "block";
+		e.type = "platform";
+		e.name = "platform";
 		e.mask = m;
 		
 		for (miblock in platformer.elements()) 

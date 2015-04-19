@@ -53,6 +53,8 @@ class Player extends Entity
 	{
 		super.update();
 		
+		_checkGround();
+		
 		if (Input.check("MoveLeft"))
 		{
 			_direction = -1;
@@ -103,6 +105,10 @@ class Player extends Entity
 		_onKeyDown = false;
 		_firedArm = false;
 		_firedLeg = false;
+		_hitPlatformLastFrame = _hitPlatform;
+		_hitPlatform = false;
+		_lastFramePosition.x = x;
+		_lastFramePosition.y = y;
 	}
 
 	
@@ -173,24 +179,53 @@ class Player extends Entity
 			return true;
 		}
 		
-		if (e.type == "platform")
+		else if (e.type == "platform")
 		{
-			if ((e.top >= this.bottom || _onGround) && !_onKeyDown)
+			_hitPlatform = true;
+			if (_onGround)
+			{
+				_velocity.y = 0;
+				return true;
+			}
+			else if (!_hitPlatformLastFrame && _velocity.y > 0 && y > _lastFramePosition.y)
+			{
+				var startY:Int = cast(Math.ceil(y), Int);
+				var endY:Int = cast(Math.floor(_lastFramePosition.y), Int);
+				
+				while (startY >= endY)
+				{
+					var e:Entity = collide("platform", x, startY);
+					trace(e);
+					if (e == null)
+					{
+						_onGround = true;
+						_velocity.y = 0;
+						return true;
+					}
+					--startY;
+				}
+				return false;
+			}
+			else
+			{
+				return false;
+			}
+			/*if ((e.top >= this.bottom || _onGround) && !_onKeyDown)
 			{
 				_onGround = true;
 				_velocity.y = 0;
 				return true;
-			}
+			}*/
 		}
 		
-		if (e.type == "block")
+		else if (e.type == "block")
 		{
 			if (_velocity.y >= 0)
 			{
 				_onGround = true;
 				_velocity.y = 0;
-				return true;
 			}
+			return true;
 		}
 		
 		return false;
@@ -205,6 +240,7 @@ class Player extends Entity
 		
 		if (e.type == "platform")
 		{
+			_hitPlatform = true;
 			return false;
 		}
 		
@@ -476,6 +512,23 @@ class Player extends Entity
 	public function getArmCount():Int { return _armCount; }
 	public function getLegCount():Int { return _legCount; }
 	
+	private function _checkGround():Void
+	{
+		_onGround = false;
+		if (_velocity.y >= 0)
+		{
+			var types:Dynamic = ["block", "platform"];
+			for (i in 0...2)
+			{
+				var e:Entity = scene.collideRect(types[i], x - halfWidth, y, width, 1);
+				if (e != null)
+				{
+					_onGround = true;
+					break;
+				}
+			}
+		}
+	}
 	
 	private var _sprite:Spritemap;
 	
@@ -492,6 +545,10 @@ class Player extends Entity
 	private var _direction:Int = 1;
 
 	private var _onKeyDown:Bool = false;
+	
+	private var _hitPlatform:Bool = false;
+	private var _hitPlatformLastFrame:Bool = false;
+	private var _lastFramePosition:Vector2 = new Vector2(0., 0.);
 	
 	private var _armCount:Int = 2;
 	private var _legCount:Int = 2;
