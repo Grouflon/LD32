@@ -14,8 +14,11 @@ class GB
 	}
 	
 	// PLAYER RELATED
-	static public var playerReach:Float = 9.5;
+	static public var playerTallReach:Float = 9.5;
+	static public var playerShortReach:Float = 7;
+	
 	static public var playerSpeed:Float	= 4.;
+	static public var playerLeglessSpeed:Float = 0.;
 	
 	// LIMBS RELATED
 	static public var legBounceAttenuation = 0.8;

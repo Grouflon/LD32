@@ -23,6 +23,15 @@ class MainScene extends Scene
 		player = new Player(200, HXP.screen.height - 100);
 		add(player);
 		add(new PlayerGUI());
+<<<<<<< HEAD
+=======
+		
+		add(new LegAmmunition(300, HXP.screen.height - 130));
+		add(new LegAmmunition(320, HXP.screen.height - 130));
+		
+		add(new ArmAmmunition(340, HXP.screen.height - 130));
+		add(new ArmAmmunition(360, HXP.screen.height - 130));
+>>>>>>> a7443da2195e24ebfa389aed7649ad9cb79e5e07
 
 		levelHeight = level._height;
 		levelWidth = level._width;
