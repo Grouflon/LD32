@@ -106,6 +106,20 @@ class Player extends Entity
 	}
 
 	
+	public function addLeg():Void
+	{
+		_maxLegCount++;
+		_legCount++;
+	}
+	
+	
+	public function addArm():Void
+	{
+		_maxArmCount++;
+		_armCount++;
+	}
+	
+	
 	private function _fireArm()
 	{
 		if (_armCount > 0 && _canFireArm)
@@ -114,7 +128,7 @@ class Player extends Entity
 			_canFireArm = false;
 			_armCount--;
 			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height)); }, TweenType.OneShot), true);
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < _maxArmCount) this._armCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireArm = true; }, TweenType.OneShot), true);
 		}
 	}
@@ -128,28 +142,31 @@ class Player extends Entity
 			_canFireLeg = false;
 			_legCount--;
 			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Leg(x, y, _direction, _height)); }, TweenType.OneShot), true);
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < _maxLegCount) this._legCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireLeg = true; }, TweenType.OneShot), true);
 		}
 	}
+	
+		
+	private function _looseArm()
+	{
+		if (_armCount > 0)
+		{
+			_armCount--;
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < _maxArmCount) this._armCount++; }, TweenType.OneShot), true);
+		}
+	}
+	
 	
 	private function _looseLeg()
 	{
 		if (_legCount > 0)
 		{
 			_legCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < 2) this._legCount++; }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < _maxLegCount) this._legCount++; }, TweenType.OneShot), true);
 		}
 	}
-	
-	private function _looseArm()
-	{
-		if (_armCount > 0)
-		{
-			_armCount--;
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < 2) this._armCount++; }, TweenType.OneShot), true);
-		}
-	}
+
 	
 	private function _doJump():Void
 	{
@@ -502,8 +519,11 @@ class Player extends Entity
 
 	private var _onKeyDown:Bool = false;
 	
-	private var _armCount:Int = 2;
-	private var _legCount:Int = 2;
+	private var _maxArmCount:Int = 0;
+	private var _maxLegCount:Int = 0;
+	
+	private var _armCount:Int = 0;
+	private var _legCount:Int = 0;
 	
 	private var _onGround:Bool = false;
 	private var _firedArm:Bool = false;
