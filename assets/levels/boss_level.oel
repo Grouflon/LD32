@@ -188,7 +188,7 @@
     <tile x="23" y="28" tx="1" ty="0" />
   </platform>
   <item>
-    <player id="0" x="60" y="180" arms="2" legs="0" />
+    <player id="0" x="60" y="180" arms="2" legs="2" />
   </item>
   <background tileset="background" exportMode="XMLCoords">
     <tile x="0" y="0" tx="1" ty="7" />
