@@ -68,7 +68,7 @@ class Enemy extends Entity
 	
 	public function applyGravity()
 	{
-		velocity.y += 2;
+		velocity.y += 1;
 	}
 	
 	public function applyMovement()
