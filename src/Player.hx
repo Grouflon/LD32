@@ -10,11 +10,13 @@ import com.haxepunk.HXP;
 import com.haxepunk.graphics.atlas.TextureAtlas;
 import com.haxepunk.tweens.misc.Alarm;
 import com.haxepunk.Tween;
+import com.haxepunk.tweens.misc.ColorTween;
 import com.haxepunk.utils.Draw;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
 import com.haxepunk.graphics.Text;
 import hxmath.math.Vector2;
+import com.haxepunk.utils.Ease;
 
 // Local Imports
 import GB;
@@ -53,12 +55,20 @@ class Player extends Entity
 		_maxArmCount = arms;
 		_legCount = legs;
 		_maxLegCount = legs;
+		
+		_colorTween = new ColorTween(function (e:Dynamic)
+		{
+			GameController.playerJustDied(); 
+		}, TweenType.OneShot);
+		_colorTween.tween(1, 1, 1, 1., 0., Ease.quadOut);
+		addTween(_colorTween, false);
+		_colorTween.active = false;
 	}
 	
 	
 	override public function update():Void
 	{
-		if (GameController.isPlayerAlive())
+		if (_isPlayerAlive)
 		{
 			super.update();
 			
@@ -107,7 +117,6 @@ class Player extends Entity
 				_fireLeg();
 			}
 			_updateSize();
-	
 			
 			_playerMovement();
 			
@@ -121,9 +130,29 @@ class Player extends Entity
 			_lastFramePosition.x = x;
 			_lastFramePosition.y = y;
 			
+			
 		}
+		else
+			fadeOut();
 	}
 
+	public function fadeOut()
+	{
+		if (_isPlayerDying)
+		{
+			_legsSprite.alpha = _colorTween.alpha;
+			_chestSprite.alpha = _colorTween.alpha;
+		}
+		else
+		{
+			GameController.enemyKillplayer(this);
+			_blood.squirt(this.x, this.y - 30);
+			_blood.squirt(this.x - 10, this.y - 30);
+			_blood.squirt(this.x + 10, this.y - 30);
+			_colorTween.active = true;
+			_isPlayerDying = true;
+		}
+	}
 	
 	public function addLeg():Void
 	{
@@ -151,6 +180,12 @@ class Player extends Entity
 	{
 		if (_armCount > 0 && _canFireArm)
 		{
+			var which:Int = 19 * _direction;
+			if (_armCount > 1)
+				_blood.squirt(this.x + which, this.y - 51);
+			else
+				_blood.squirt(this.x + which, this.y - 51);
+			
 			_firedArm = true;
 			_canFireArm = false;
 			_armCount--;
@@ -166,13 +201,19 @@ class Player extends Entity
 	{
 		if (_legCount > 0 && _canFireLeg)
 		{
+			var which:Int = 19 * _direction;
+			if (_legCount > 1)
+				_blood.squirt(this.x + which, this.y - 18);
+			else
+				_blood.squirt(this.x + which, this.y - 18);
+				
 			_firedLeg = true;
 			_canFireLeg = false;
 			_legCount--;
 			
 			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Leg(x, y, _direction, _height, true)); }, TweenType.OneShot), true);
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < _maxLegCount) this._legCount++; }, TweenType.OneShot), true);
-			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireLeg = true; }, TweenType.OneShot), true);
+			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireLeg = true; }, TweenType.OneShot), true);			
 		}
 	}
 	
@@ -181,6 +222,12 @@ class Player extends Entity
 	{
 		if (_armCount > 0)
 		{
+			var which:Int = 19 * _direction;
+			if (_armCount > 1)
+				_blood.squirt(this.x + which, this.y - 51);
+			else
+				_blood.squirt(this.x + which, this.y - 51);
+
 			_armCount--;
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < _maxArmCount) this._armCount++; }, TweenType.OneShot), true);
 		}
@@ -191,6 +238,12 @@ class Player extends Entity
 	{
 		if (_legCount > 0)
 		{
+			var which:Int = 19 * _direction;
+			if (_legCount > 1)
+				_blood.squirt(this.x + which, this.y - 18);
+			else
+				_blood.squirt(this.x + which, this.y - 18);
+				
 			_legCount--;
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < _maxLegCount) this._legCount++; }, TweenType.OneShot), true);
 		}
@@ -216,23 +269,9 @@ class Player extends Entity
 	
 	private function _endJump()
 	{
-		if (_velocity.y < -2.0)
-			_velocity.y = -2.0;
+		if (_velocity.y < -80.0)
+			_velocity.y = -80.0;
 	}
-	/*
-	private function _doJump():Void
-	{
-		if (_short)
-		{
-			_reach = GB.playerShortReach;
-		}
-		else
-		{
-			_reach = GB.playerTallReach;
-		}
-		_onGround = false;
-		_velocity.y = -_reach;
-	}*/
 	
 	override public function moveCollideY(e:Entity):Bool
 	{		
@@ -341,7 +380,7 @@ class Player extends Entity
 			_speed = GB.playerSpeed;
 		}
 		
-		moveBy(_velocity.x * _direction, _velocity.y, ["block", "platform", "enemy", "levelChanger"]);
+		moveBy(_velocity.x * _direction * HXP.elapsed, _velocity.y * HXP.elapsed, ["block", "platform", "enemy", "levelChanger"]);
 	}
 	
 	private function _initGraphics():Void
@@ -545,11 +584,16 @@ class Player extends Entity
 		}
 	}
 
+	public function diePlayerDie(live:Bool = false)
+	{
+		_isPlayerAlive = live;
+	}
+	
 	public function takeDamage(type : DamageType)
 	{
 		if (type == DamageType.MELEE)
 		{
-			GameController.playerJustDied(this, false);
+			_isPlayerAlive = false;
 		}
 		else if (type == DamageType.RANGE)
 		{
@@ -625,7 +669,9 @@ class Player extends Entity
 	public function getMaxArmCount() { return _maxArmCount; }
 	public function getMaxLegCount() { return _maxLegCount; }
 	
-	
+	private var _colorTween:ColorTween;
+	private var _isPlayerDying:Bool = false;
+	private var _isPlayerAlive:Bool = true;
 	private var _blood:BloodSquirt;
 	
 	private var _sprite:Spritemap;
