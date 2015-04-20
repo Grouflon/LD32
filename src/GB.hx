@@ -51,7 +51,8 @@ class GB
 	static public var bossLife = 6;
 	static public var bossSpeed = 100;
 	static public var bossInitialLegCooldown = 5;
-	
+	static public var bossPhaseTimer = 7;
+	static public var phaseNumberToPlusIntensity = 2;
 	
 	/*static public var limbToResist = 3;	
 	static public var initialBossArm = 0;

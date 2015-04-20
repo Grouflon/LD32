@@ -40,12 +40,13 @@ class BossEnemy extends Enemy
 		fireLegCooldown = GB.bossInitialLegCooldown;
 		
 		speed = GB.bossSpeed;
-		
+		lastPhase = EnemyResistance.ARM;
 		firstGroundTouch = false;
 		
 		phaseIntensity = 1;
 		timeDashing = 0;
 		isGoingUp = false;
+		counterToMinusIntensity = 0;
 	}
 	
 	private function updatePlayerInfo() : Void
@@ -103,13 +104,35 @@ class BossEnemy extends Enemy
 		}
 	}
 	
-		
+	private function beginArmPhase()
+	{
+		isArmPhase = true;
+		lastPhase = EnemyResistance.ARM;
+		addTween(new Alarm(GB.bossPhaseTimer * phaseIntensity, function (e:Dynamic = null):Void { setTired(); }, TweenType.OneShot), true);
+	}
+	
+	private function beginLegPhase()
+	{
+		isLegPhase = true;
+		lastPhase = EnemyResistance.LEG;
+		addTween(new Alarm(GB.bossPhaseTimer * phaseIntensity * 1.5, function (e:Dynamic = null):Void { setTired(); }, TweenType.OneShot), true);
+	}
+	
 	private function wakeUp() : Void
 	{
 		awake = true;
 		isInvincible = true;
-		isArmPhase = true;
+		beginArmPhase();
 		jumpOffPlatform();
+	}
+	
+	private function notTiredAnymore() : Void
+	{
+		isInvincible = false;
+		if (lastPhase == EnemyResistance.LEG)
+		beginArmPhase();
+		else
+		beginLegPhase();
 	}
 	
 	private function armPhase()
@@ -171,10 +194,61 @@ class BossEnemy extends Enemy
 	
 	private function legPhase()
 	{
+		if (onGround)
+		{
+			legAttack();
+		}
+		else
+		{	
+			// declenche la leg attack au sommet du saut
+			if (velocity.y > 0)
+			{
+				if (isGoingUp)
+					_legAttack();
+					
+				isGoingUp = false;
+			}
+			
+			if (playerDirection == Direction.LEFT)
+			{
+				velocity.x -= speed / 2 * phaseIntensity * HXP.elapsed;
+				direction = playerDirection;
+			}
+			else if (playerDirection == Direction.RIGHT)
+			{
+				direction = playerDirection;
+				velocity.x += speed / 2 * phaseIntensity * HXP.elapsed;
+			}
+		}
+	}
+	
+	private function legAttack()
+	{	
+		jump(15 + phaseIntensity * 2);
+	}
+	
+	private function _legAttack()
+	{
+		HXP.scene.add(new Leg(x, y, playerDirectionInt, 20, false));
+	}
+	
+	private function setTired()
+	{
+		isTired = true;
+		velocity.x = 0;
+		velocity.y = 0;
+		
+		x = 500;
+		y = 150;
+		
+		isInvincible = false;
+		isArmPhase = false;
+		isLegPhase = false;
 	}
 	
 	private function tired()
 	{
+		///
 	}
 	
 	private function jump(reach : Int)
@@ -190,86 +264,7 @@ class BossEnemy extends Enemy
 		velocity.y -= 15;
 		velocity.x += 15;
 	}
-	
-	
-	
-	/*private function patrol()
-	{
-		if (legCount > 0)
-		{
-			// Si la direction actuelle est la gauche
-			if (direction == Direction.LEFT)
-			{
-				// Puis-je aller encore à gauche ?
-				if (canIGoLeft())
-				{
-					velocity.x -= speed * HXP.elapsed;
-				}
-				// Sinon, puis-je aller à droite ?
-				else if (canIGoRight())
-				{
-					direction = Direction.RIGHT;
-					velocity.x += speed * HXP.elapsed;
-				}
-			}
-			// Si la direction actuelle est la droite
-			else if (direction == Direction.RIGHT)
-			{
-				// Puis-je aller encore à droite ?
-				if (canIGoRight())
-				{
-					velocity.x += speed * HXP.elapsed;
-				}
-				// Sinon, puis-je aller à droite ?
-				else if (canIGoLeft())
-				{
-					direction = Direction.LEFT;
-					velocity.x -= speed * HXP.elapsed;
-				}
-			}
-		}
-	}
-	
-	private function combat()
-	{	
-			
-		if (legCount > 0)
-		{
-			if (playerDirection == Direction.LEFT)
-			{
-				if (canIGoLeft())
-				{
-					velocity.x -= speed * legCount * 2 * HXP.elapsed;
-					direction = playerDirection;
-				}
-			}
-			else if (playerDirection == Direction.RIGHT)
-			{
-				if (canIGoRight())
-				{
-					direction = playerDirection;
-					velocity.x += speed * legCount * 2 * HXP.elapsed;
-				}
-			}
-		}
-		
-		if (armCount > 0 && canFireArm && canFire)
-		{
-			if (playerDirection == Direction.RIGHT)
-				fireArm(1);
-			else
-				fireArm(-1);
-		}
-		else if (legCount > 1 && canFireLeg && canFire)
-		{
-			if (playerDirection == Direction.RIGHT)
-				fireLeg(1);
-			else
-				fireLeg(-1);
-		}
-	}*/
-	
-	
+
 	override public function moveCollideX(e:Entity):Bool
 	{
 		if (e.type == "player")
@@ -288,16 +283,6 @@ class BossEnemy extends Enemy
 		HXP.scene.add(new Arm(x, y, _direction, _direction < 0 ? W : E, _fireHeight, false));
 	}
 	
-	/*private function fireLeg(_direction : Int) : Void
-	{
-		canFireLeg = false;
-		canFire = false;
-		
-		HXP.scene.add(new Leg(x, y, _direction, fireLegHeight, false));
-		addTween(new Alarm(fireLegCooldown, function (e:Dynamic = null):Void { canFireLeg = true; }, TweenType.OneShot), true);
-		addTween(new Alarm(fireCooldown, function (e:Dynamic = null):Void { canFire = true; }, TweenType.OneShot), true);
-	}*/
-	
 	public override function notifyDamage(projectileType : EnemyResistance) : Void
 	{
 		if (awake)
@@ -308,8 +293,18 @@ class BossEnemy extends Enemy
 				{
 					life--;
 					
+					counterToMinusIntensity++;
+					
+					if (counterToMinusIntensity == GB.phaseNumberToPlusIntensity)
+					{
+						counterToMinusIntensity = 0;
+						phaseIntensity++;
+					}
+					
 					if (life <= 0)
 						HXP.scene.remove(this);// bossEnd();
+						
+						notTiredAnymore();
 				}
 				else
 				{
@@ -338,10 +333,16 @@ class BossEnemy extends Enemy
 	private var isArmPhase : Bool;
 	private var isLegPhase : Bool;
 	
+	private var lastPhase : EnemyResistance;
+	
+	private var counterToMinusIntensity : Int;
+	
 	private var firstGroundTouch : Bool;
 	
 	private var canFireLeg : Bool;
 	private var fireLegCooldown : Float;
 	
 	private var timeDashing : Float;
+	
+	private var legPhaseDirection : Direction;
 }
