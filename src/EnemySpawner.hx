@@ -103,7 +103,7 @@ class EnemySpawner extends Entity
 			}
 			else
 			{
-				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, GB.rangeSpeed, GB.rangeVisionRange, 1, enemyResist));
+				HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, GB.rangeSpeed, GB.rangeVisionRange, 1, enemyResist));
 			}
 		}
 		else if (enemyDamageType == DamageType.MELEE)
@@ -112,7 +112,7 @@ class EnemySpawner extends Entity
 		}
 		else if (enemyDamageType == DamageType.RANGE)
 		{
-			HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, 30, 50, GB.rangeSpeed, GB.rangeVisionRange, 1, enemyResist));
+			HXP.scene.add(new RangeEnemy(this, x + 30 / 2, y + 50, GB.rangeSpeed, GB.rangeVisionRange, 1, enemyResist));
 		}
 	}
 	

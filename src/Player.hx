@@ -63,6 +63,7 @@ class Player extends Entity
 			super.update();
 			
 			_checkGround();
+			_applyGravity();
 			
 			if (Input.check("MoveLeft"))
 			{
@@ -88,10 +89,12 @@ class Player extends Entity
 			
 			if (Input.pressed("Jump"))
 			{
-				if (_onGround)
-				{
-					_doJump();
-				}
+				_startJump();
+			}
+			
+			if (Input.released("Jump"))
+			{
+				_endJump();
 			}
 				
 			if (Input.pressed("FireArm"))
@@ -107,7 +110,6 @@ class Player extends Entity
 	
 			
 			_playerMovement();
-			_applyGravity();
 			
 			_updateGraphics();
 		
@@ -118,6 +120,7 @@ class Player extends Entity
 			_hitPlatform = false;
 			_lastFramePosition.x = x;
 			_lastFramePosition.y = y;
+			
 		}
 	}
 
@@ -193,7 +196,30 @@ class Player extends Entity
 		}
 	}
 
+	private function _startJump()
+	{
+		if (_onGround)
+		{
+			if (_short)
+			{
+				_reach = GB.playerShortReach;
+			}
+			else
+			{
+				_reach = GB.playerTallReach;
+			}
+			
+			_velocity.y = -_reach;
+			_onGround = false;
+		}
+	}
 	
+	private function _endJump()
+	{
+		if (_velocity.y < -2.0)
+			_velocity.y = -2.0;
+	}
+	/*
 	private function _doJump():Void
 	{
 		if (_short)
@@ -206,7 +232,7 @@ class Player extends Entity
 		}
 		_onGround = false;
 		_velocity.y = -_reach;
-	}
+	}*/
 	
 	override public function moveCollideY(e:Entity):Bool
 	{		
@@ -301,7 +327,7 @@ class Player extends Entity
 	
 	private function _applyGravity():Void
 	{
-		_velocity = Vector2.add(_velocity, Vector2.multiply(GB.gravity, HXP.elapsed));
+		_velocity.y += GB.gravity.y;
 	}
 	
 	private function _playerMovement():Void
