@@ -32,7 +32,7 @@ class GB
 	
 	// GAME
 	static public var gravity:Vector2 	= new Vector2(0., 20.);
-		
+	
 	// MELEE ENEMY 
 	static public var meleeSpeed = 60;
 	static public var meleeVisionRange = 150;
@@ -48,12 +48,17 @@ class GB
 	static public var rangeStateChangeCooldown = 3;
 	
 	// BOSS
-	static public var limbToResist = 3;	
+	static public var bossLife = 6;
+	static public var bossSpeed = 100;
+	static public var bossInitialLegCooldown = 5;
+	
+	
+	/*static public var limbToResist = 3;	
 	static public var initialBossArm = 0;
 	static public var initialBossLeg = 0;
 	
 	static public var bossFireLegCooldown = 6;
 	static public var bossFireArmCooldown = 5;
-	static public var bossFireCooldown = 4;
+	static public var bossFireCooldown = 4;*/
 	
 }

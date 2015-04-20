@@ -17,7 +17,6 @@ import GB;
  */
 class BossEnemy extends Enemy
 {
-
 	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _life : Int) 
 	{
 		var _resistance : EnemyResistance = EnemyResistance.BOTH;
@@ -32,56 +31,140 @@ class BossEnemy extends Enemy
 		
 		super(_owner, true, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life, sprite);
 		
-		visionRangeDefault = _visionRange;
+		awake = false;
+		isInvincible = false;
+		isTired = true;
+		isArmPhase = false;
+		isLegPhase = false;
 		
-		armCount = GB.initialBossArm;
-		legCount = GB.initialBossLeg;
+		fireLegCooldown = GB.bossInitialLegCooldown;
 		
-		canFire = true;
-		canFireArm = true;
-		canFireLeg = true;
+		speed = GB.bossSpeed;
 		
-		fireLegCooldown = GB.bossFireLegCooldown;
-		fireArmCooldown = GB.bossFireArmCooldown;
-		fireCooldown = GB.bossFireCooldown;
+		firstGroundTouch = false;
 		
-		fireArmHeight = _height - 50;
-		fireLegHeight = _height;
+		phaseIntensity = 1;
+		timeDashing = 0;
+		
+		player = cast(HXP.scene.getInstance("player"), Player);
+	}
+	
+	private function updatePlayerInfo() : Void
+	{
+		var playerPosition : Vector = new Vector(player.x, player.y);
+		var thisPosition : Vector = new Vector(x, y);
+		
+		thisToPlayer = playerPosition - thisPosition;
+		
+		playerDirection = Direction.RIGHT;
+		
+		if (thisToPlayer.x <= 0)
+		{
+			playerDirection = Direction.LEFT;
+			playerDirectionInt = -1;
+		}
+		else if (thisToPlayer.x > 0)
+		{
+			playerDirection = Direction.RIGHT;
+			playerDirectionInt = 1;
+		}
 	}
 	
 	override public function update() 
 	{
-		super.update();
-		
-		applyGravity();
-		
-		if (cast(HXP.scene, MainScene).player.y == y)
-			visionRange = 400;
-		else
-			visionRange = visionRangeDefault;
+		if (GameController.isPlayerAlive())
+		{
+			super.update();
 			
-		// Mise à jour de l'état de l'ennemi
-		if (isPlayerSpotted())
-			playerSpotted = true;
-		else
-			playerSpotted = false;
+			applyGravity();
 		
-		// Si le joueur n'est pas vu
-		if (!playerSpotted)
-		{
-			patrol();
+			updatePlayerInfo();
+			
+			if (awake)
+			{
+				if (isArmPhase)
+				{
+					armPhase();
+				}
+				else if (isLegPhase)
+				{
+					legPhase();
+				}
+				else if (isTired)
+				{
+					tired();
+				}
+				else
+				{
+					trace("nothing to do ..?");
+				}
+			}
+			
+			applyMovement();
 		}
-		// Le joueur est repéré, attaque
-		else
-		{
-			combat();
-		}
-		
-		applyMovement();
 	}
 	
+		
+	private function wakeUp() : Void
+	{
+		awake = true;
+		isInvincible = true;
+		isArmPhase = true;
+		jump(6);
+	}
 	
-	private function patrol()
+	private function armPhase()
+	{
+		if (onGround)
+		{
+			if (playerDirection == Direction.LEFT)
+			{
+				velocity.x -= speed * phaseIntensity * HXP.elapsed;
+				direction = playerDirection;
+				timeDashing += HXP.elapsed;
+				
+			}
+			else if (playerDirection == Direction.RIGHT)
+			{
+				direction = playerDirection;
+				velocity.x += speed * phaseIntensity * HXP.elapsed;
+				timeDashing += HXP.elapsed;
+			}
+			
+			if (timeDashing > 2)
+				armAttack();
+		}
+	}
+	
+	private function armAttack()
+	{
+		timeDashing = 0;
+		jump(10);
+		addTween(new Alarm(0.5, function (e:Dynamic = null):Void { _armAttack(); }, TweenType.OneShot), true);
+	}
+	
+	private function _armAttack()
+	{
+		fireArm(-1, 20);
+		fireArm(1, 30);
+	}
+	
+	private function legPhase()
+	{
+	}
+	
+	private function tired()
+	{
+	}
+	
+	private function jump(reach : Int)
+	{
+		onGround = false;
+		velocity.x += thisToPlayer.length;
+		velocity.y = reach;
+	}
+	
+	/*private function patrol()
 	{
 		if (legCount > 0)
 		{
@@ -120,19 +203,6 @@ class BossEnemy extends Enemy
 	
 	private function combat()
 	{	
-		var player:Player = cast(HXP.scene, MainScene).player;
-		
-		var playerPosition : Vector = new Vector(player.x, player.y);
-		var thisPosition : Vector = new Vector(x, y);
-		
-		var thisToPlayer : Vector = playerPosition - thisPosition;
-		
-		var playerDirection : Direction = Direction.RIGHT;
-		
-		if (thisToPlayer.x < 0)
-			playerDirection = Direction.LEFT;
-		else if (thisToPlayer.x > 0)
-			playerDirection = Direction.RIGHT;
 			
 		if (legCount > 0)
 		{
@@ -168,7 +238,7 @@ class BossEnemy extends Enemy
 			else
 				fireLeg(-1);
 		}
-	}
+	}*/
 	
 	
 	override public function moveCollideX(e:Entity):Bool
@@ -184,96 +254,64 @@ class BossEnemy extends Enemy
 	}
 	
 	
-	private function fireArm(_direction : Int)
+	private function fireArm(_direction : Int, _fireHeight : Int)
 	{
-		canFireArm = false;
-		canFire = false;
-		armCount--;
-		
-		if (armCount < GB.limbToResist)
-		{
-			armResistance = false;
-		}
-		
-		HXP.scene.add(new Arm(x, y, _direction, fireArmHeight, false));
-		addTween(new Alarm(fireArmCooldown, function (e:Dynamic = null):Void { canFireArm = true; }, TweenType.OneShot), true);
-		addTween(new Alarm(fireCooldown, function (e:Dynamic = null):Void { canFire = true; }, TweenType.OneShot), true);
+		HXP.scene.add(new Arm(x, y, _direction, _fireHeight, false));
 	}
 	
-	private function fireLeg(_direction : Int)
+	/*private function fireLeg(_direction : Int) : Void
 	{
 		canFireLeg = false;
 		canFire = false;
-		legCount--;
-		
-		if (legCount < GB.limbToResist)
-		{
-			legResistance = false;
-		}
 		
 		HXP.scene.add(new Leg(x, y, _direction, fireLegHeight, false));
 		addTween(new Alarm(fireLegCooldown, function (e:Dynamic = null):Void { canFireLeg = true; }, TweenType.OneShot), true);
 		addTween(new Alarm(fireCooldown, function (e:Dynamic = null):Void { canFire = true; }, TweenType.OneShot), true);
-	}
+	}*/
 	
-	public override function notifyDamage(projectileType : EnemyResistance)
+	public override function notifyDamage(projectileType : EnemyResistance) : Void
 	{
-		if ((projectileType == EnemyResistance.ARM && !armResistance) || (projectileType == EnemyResistance.LEG && !legResistance))
+		if (awake)
 		{
-			life--;
-			
-			if (life <= 0)
-				HXP.scene.remove(this);
+			if (!isInvincible)
+			{
+				if (life > 0)
+				{
+					life--;
+					
+					if (life <= 0)
+						HXP.scene.remove(this);// bossEnd();
+				}
+				else
+				{
+					trace("PAS DE DEGAT SUR CE PROJECTILE");
+				}
+			}
 		}
 		else
 		{
-			trace("PAS DE DEGAT SUR CE PROJECTILE");
+			wakeUp();
 		}
 		
-		
-		if (projectileType == EnemyResistance.ARM && !armResistance)
-		{
-			armCount++;
-			
-			if (armCount == GB.limbToResist)
-			{
-				armResistance = true;
-				trace("boss resistant to arms");
-			}
-		}
-		else if (projectileType == EnemyResistance.LEG && !legResistance)
-		{
-			legCount++;
-			
-			if (legCount == GB.limbToResist)
-			{
-				legResistance = true;
-				trace("boss resistant to legs");
-			}
-		}
-			
-	
 	}
 	
-	private var stateCooldown : Int;
-	private var stateTimer : Float;
+	private var player : Player;
+	private var thisToPlayer : Vector;
+	private var playerDirection : Direction;
+	private var playerDirectionInt : Int;
 	
-	private var legCount : Int;
-	private var armCount : Int;
+	private var awake : Bool;
+	private var isTired : Bool;
+	private var isInvincible : Bool;
 	
-	private var canFireArm : Bool;
-	private var fireArmCooldown : Float;
-	private var fireArmHeight : Int;
+	private var phaseIntensity : Int;
+	private var isArmPhase : Bool;
+	private var isLegPhase : Bool;
+	
+	private var firstGroundTouch : Bool;
 	
 	private var canFireLeg : Bool;
 	private var fireLegCooldown : Float;
-	private var fireLegHeight : Int;
 	
-	private var canFire : Bool;
-	private var fireCooldown : Float;
-	
-	private var visionRangeDefault : Int;
-	
-	private var armResistance : Bool;
-	private var legResistance : Bool;
+	private var timeDashing : Float;
 }

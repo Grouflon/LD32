@@ -68,7 +68,7 @@ class Enemy extends Entity
 	
 	public function applyGravity()
 	{
-		velocity.y += 2;
+		velocity.y += 1;
 	}
 	
 	public function applyMovement()
@@ -86,7 +86,8 @@ class Enemy extends Entity
 		else if (direction == Direction.RIGHT)
 			sprite.flipped = false;
 			
-		velocity.x = 0;
+		if (onGround)
+			velocity.x = 0;
 	}
 	
 	private function canIGoLeft() : Bool
