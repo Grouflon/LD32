@@ -47,6 +47,9 @@ class BossEnemy extends Enemy
 		timeDashing = 0;
 		isGoingUp = false;
 		counterToMinusIntensity = 0;
+		
+		legLastXPosCounter = 0;
+		legLastXPos = 0;
 	}
 	
 	private function updatePlayerInfo() : Void
@@ -115,6 +118,7 @@ class BossEnemy extends Enemy
 	{
 		isLegPhase = true;
 		lastPhase = EnemyResistance.LEG;
+		legPhaseDirection = Direction.RIGHT;
 		addTween(new Alarm(GB.bossPhaseTimer * phaseIntensity * 1.5, function (e:Dynamic = null):Void { setTired(); }, TweenType.OneShot), true);
 	}
 	
@@ -129,10 +133,11 @@ class BossEnemy extends Enemy
 	private function notTiredAnymore() : Void
 	{
 		isInvincible = false;
+		
 		if (lastPhase == EnemyResistance.LEG)
-		beginArmPhase();
+			beginArmPhase();
 		else
-		beginLegPhase();
+			beginLegPhase();
 	}
 	
 	private function armPhase()
@@ -193,7 +198,7 @@ class BossEnemy extends Enemy
 	}
 	
 	private function legPhase()
-	{
+	{	
 		if (onGround)
 		{
 			legAttack();
@@ -209,15 +214,39 @@ class BossEnemy extends Enemy
 				isGoingUp = false;
 			}
 			
-			if (playerDirection == Direction.LEFT)
+			if (legPhaseDirection == Direction.LEFT)
 			{
-				velocity.x -= speed / 2 * phaseIntensity * HXP.elapsed;
-				direction = playerDirection;
+				velocity.x -= speed * 1.5 * phaseIntensity * HXP.elapsed;
+				
+				if (legLastXPos == x)
+				{
+					legLastXPosCounter++;
+					
+					if (legLastXPosCounter > 1)
+					{
+						legLastXPosCounter = 0;
+						legPhaseDirection = Direction.RIGHT;
+					}
+						
+				}
+				legLastXPos = x;
 			}
-			else if (playerDirection == Direction.RIGHT)
+			else if (legPhaseDirection == Direction.RIGHT)
 			{
-				direction = playerDirection;
-				velocity.x += speed / 2 * phaseIntensity * HXP.elapsed;
+				velocity.x += speed * 1.5 * phaseIntensity * HXP.elapsed;
+				
+				if (legLastXPos == x)
+				{
+					legLastXPosCounter++;
+					
+					if (legLastXPosCounter > 1)
+					{
+						legPhaseDirection = Direction.LEFT;
+						legLastXPosCounter = 0;
+					}
+				}
+				
+				legLastXPos = x;
 			}
 		}
 	}
@@ -229,7 +258,11 @@ class BossEnemy extends Enemy
 	
 	private function _legAttack()
 	{
-		HXP.scene.add(new Leg(x, y, playerDirectionInt, 20, false));
+		var rand : Float = Math.random();
+		if (rand < 0.5)
+			HXP.scene.add(new Leg(x, y, playerDirectionInt, 20, false));
+		else
+			HXP.scene.add(new Leg(x, y, -playerDirectionInt, 20, false));
 	}
 	
 	private function setTired()
@@ -345,4 +378,7 @@ class BossEnemy extends Enemy
 	private var timeDashing : Float;
 	
 	private var legPhaseDirection : Direction;
+	
+	private var legLastXPos : Float;
+	private var legLastXPosCounter : Int;
 }
