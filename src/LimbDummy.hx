@@ -23,7 +23,7 @@ class LimbDummy extends Entity
 	{
 		super(x, y - 60);
 		
-		if (limbType == "leg") { _sprite = new Spritemap("graphics/leg.png", 30, 30); addGraphic(_sprite); }
+		if (limbType == "leg") { _sprite = new Spritemap("graphics/leg_spritesheet.png", 30, 30); addGraphic(_sprite); }
 		else if (limbType == "arm") { var armImage:Image = new Image("graphics/arm.png"); addGraphic(armImage); }
 		
 		
