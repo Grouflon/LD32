@@ -48,6 +48,12 @@ class BossEnemy extends Enemy
 		isGoingUp = false;
 		counterToMinusIntensity = 0;
 		
+		armPhaseDirection = Direction.RIGHT;
+		legPhaseDirection = Direction.RIGHT;
+		
+		armLastXPos = 0;
+		armLastXPosCounter = 0;
+		
 		legLastXPosCounter = 0;
 		legLastXPos = 0;
 	}
@@ -111,6 +117,7 @@ class BossEnemy extends Enemy
 	{
 		isArmPhase = true;
 		lastPhase = EnemyResistance.ARM;
+		legPhaseDirection = Direction.RIGHT;
 		addTween(new Alarm(GB.bossPhaseTimer * phaseIntensity, function (e:Dynamic = null):Void { setTired(); }, TweenType.OneShot), true);
 	}
 	
@@ -144,7 +151,46 @@ class BossEnemy extends Enemy
 	{
 		if (onGround)
 		{
-			if (playerDirection == Direction.LEFT)
+			if (armPhaseDirection == Direction.LEFT)
+			{
+				direction = armPhaseDirection;
+				velocity.x -= speed * 1.5 * phaseIntensity * HXP.elapsed;
+				timeDashing += HXP.elapsed;
+				
+				if (armLastXPos == x)
+				{
+					armLastXPosCounter++;
+					
+					if (armLastXPosCounter > 1)
+					{
+						armLastXPosCounter = 0;
+						armPhaseDirection = Direction.RIGHT;
+					}
+						
+				}
+				armLastXPos = x;
+			}
+			else if (armPhaseDirection == Direction.RIGHT)
+			{
+				direction = armPhaseDirection;
+				velocity.x += speed * 1.5 * phaseIntensity * HXP.elapsed;
+				timeDashing += HXP.elapsed;
+				
+				if (armLastXPos == x)
+				{
+					armLastXPosCounter++;
+					
+					if (armLastXPosCounter > 1)
+					{
+						armPhaseDirection = Direction.LEFT;
+						armLastXPosCounter = 0;
+					}
+				}
+				
+				armLastXPos = x;
+			}
+			
+			/*if (armPhaseDirection == Direction.LEFT)
 			{
 				velocity.x -= speed * phaseIntensity * HXP.elapsed;
 				direction = playerDirection;
@@ -156,7 +202,7 @@ class BossEnemy extends Enemy
 				direction = playerDirection;
 				velocity.x += speed * phaseIntensity * HXP.elapsed;
 				timeDashing += HXP.elapsed;
-			}
+			}*/
 			
 			if (timeDashing > 5 - phaseIntensity)
 				armAttack();
@@ -172,7 +218,41 @@ class BossEnemy extends Enemy
 				isGoingUp = false;
 			}
 			
-			if (playerDirection == Direction.LEFT)
+			if (armPhaseDirection == Direction.LEFT)
+			{
+				velocity.x -= speed / 2 * phaseIntensity * HXP.elapsed;
+				
+				if (armLastXPos == x)
+				{
+					armLastXPosCounter++;
+					
+					if (armLastXPosCounter > 1)
+					{
+						armLastXPosCounter = 0;
+						armPhaseDirection = Direction.RIGHT;
+					}
+						
+				}
+				armLastXPos = x;
+			}
+			else if (armPhaseDirection == Direction.RIGHT)
+			{
+				velocity.x += speed / 2 * phaseIntensity * HXP.elapsed;
+				
+				if (armLastXPos == x)
+				{
+					armLastXPosCounter++;
+					
+					if (armLastXPosCounter > 1)
+					{
+						armPhaseDirection = Direction.LEFT;
+						armLastXPosCounter = 0;
+					}
+				}
+				
+				armLastXPos = x;
+			}
+			/*if (playerDirection == Direction.LEFT)
 			{
 				velocity.x -= speed / 2 * phaseIntensity * HXP.elapsed;
 				direction = playerDirection;
@@ -181,7 +261,7 @@ class BossEnemy extends Enemy
 			{
 				direction = playerDirection;
 				velocity.x += speed / 2 * phaseIntensity * HXP.elapsed;
-			}
+			}*/
 		}
 	}
 	
@@ -193,8 +273,70 @@ class BossEnemy extends Enemy
 	
 	private function _armAttack()
 	{
-		fireArm(-1, 20);
-		fireArm(1, 30);
+		var rand : Float = Math.random();
+		
+		if (phaseIntensity == 1)
+		{
+			if (rand > 0.5)
+			{
+				fireArm( -1, 20, 1);
+				fireArm( -1, 20, 2);
+				fireArm( 1, 20, 1);
+				fireArm( 1, 20, 2);
+			}
+			else
+			{
+				fireArm( -1, 20, 3);
+				fireArm( -1, 20, 1);
+				fireArm( 1, 20, 4);
+				fireArm( 1, 20, 2);
+			}
+		}
+		else if (phaseIntensity == 2)
+		{
+			if (rand > 0.5)
+			{
+			fireArm( -1, 20, 1);
+			fireArm( -1, 20, 2);
+			fireArm( -1, 20, 3);
+			fireArm( 1, 20, 1);
+			fireArm( 1, 20, 2);
+			fireArm( 1, 20, 3);
+			}
+			else
+			{
+			fireArm( -1, 20, 5);
+			fireArm( -1, 20, 3);
+			fireArm( -1, 20, 1);
+			fireArm( 1, 20, 4);
+			fireArm( 1, 20, 3);
+			fireArm( 1, 20, 2);
+			}
+		}
+		else if (phaseIntensity == 3)
+		{
+			fireArm( -1, 20, 1);
+			fireArm( -1, 20, 2);
+			fireArm( -1, 20, 3);
+			fireArm( -1, 20, 4);
+			fireArm( 1, 20, 1);
+			fireArm( 1, 20, 2);
+			fireArm( 1, 20, 3);
+			fireArm( 1, 20, 4);
+		}
+		else if (phaseIntensity == 4)
+		{
+			fireArm( -1, 20, 1);
+			fireArm( -1, 20, 2);
+			fireArm( -1, 20, 3);
+			fireArm( -1, 20, 4);
+			fireArm( -1, 20, 5);
+			fireArm( 1, 20, 1);
+			fireArm( 1, 20, 2);
+			fireArm( 1, 20, 3);
+			fireArm( 1, 20, 4);
+			fireArm( -1, 20, 5);
+		}
 	}
 	
 	private function legPhase()
@@ -216,6 +358,7 @@ class BossEnemy extends Enemy
 			
 			if (legPhaseDirection == Direction.LEFT)
 			{
+				direction = legPhaseDirection;
 				velocity.x -= speed * 1.5 * phaseIntensity * HXP.elapsed;
 				
 				if (legLastXPos == x)
@@ -233,6 +376,7 @@ class BossEnemy extends Enemy
 			}
 			else if (legPhaseDirection == Direction.RIGHT)
 			{
+				direction = legPhaseDirection;
 				velocity.x += speed * 1.5 * phaseIntensity * HXP.elapsed;
 				
 				if (legLastXPos == x)
@@ -311,9 +455,66 @@ class BossEnemy extends Enemy
 	}
 	
 	
-	private function fireArm(_direction : Int, _fireHeight : Int)
+	private function fireArm(_direction : Int, _fireHeight : Int, i : Int)
 	{
-		HXP.scene.add(new Arm(x, y, _direction, _direction < 0 ? W : E, _fireHeight, false));
+		var orientation : Orientation;
+		
+		if (_direction < 0)
+		{
+			if (i == 0)
+			{
+				orientation = Orientation.NWW;
+			}
+			else if (i == 1)
+			{
+				orientation = Orientation.SWW;
+			}
+			else if (i == 2)
+			{
+				orientation = Orientation.W;
+			}
+			else if (i == 3)
+			{
+				orientation = Orientation.SW;
+			}
+			else if (i == 4)
+			{
+				orientation = Orientation.NW;
+			}
+			else
+			{
+				orientation = Orientation.NNW;
+			}
+		}
+		else
+		{
+			if (i == 0)
+			{
+				orientation = Orientation.NEE;
+			}
+			else if (i == 1)
+			{
+				orientation = Orientation.SEE;
+			}
+			else if (i == 2)
+			{
+				orientation = Orientation.E;
+			}
+			else if (i == 3)
+			{
+				orientation = Orientation.SE;
+			}
+			else if (i == 4)
+			{
+				orientation = Orientation.NE;
+			}
+			else
+			{
+				orientation = Orientation.NNE;
+			}
+		}
+		
+		HXP.scene.add(new Arm(x, y, _direction, orientation, _fireHeight, false));
 	}
 	
 	public override function notifyDamage(projectileType : EnemyResistance) : Void
@@ -378,7 +579,11 @@ class BossEnemy extends Enemy
 	private var timeDashing : Float;
 	
 	private var legPhaseDirection : Direction;
+	private var armPhaseDirection : Direction;
 	
 	private var legLastXPos : Float;
 	private var legLastXPosCounter : Int;
+	
+	private var armLastXPos : Float;
+	private var armLastXPosCounter : Int;
 }
