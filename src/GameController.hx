@@ -29,6 +29,15 @@ class GameController
 	}
 	
 	
+	static public function winGame():Void
+	{
+		cast(HXP.scene, MainScene).player.addGraphic(new Text("CONGRATULATIONS, YOU WON !!!", HXP.halfWidth, HXP.halfHeight, 100, 15));
+		HXP.scene.addTween(new Alarm(5, function (e:Dynamic) {
+			HXP.scene = new MenuScene();
+		}, TweenType.OneShot), true);
+	}
+	
+	
 	static public function clean()
 	{
 		HXP.scene.removeAll();
@@ -59,6 +68,8 @@ class GameController
 	static public function playerJustDied():Void
 	{
 		var player : Entity = HXP.scene.getInstance("player");
+		
+		trace("Player about to be removed");
 		
 		HXP.scene.remove(player);
 		_isPlayerAlive = false;
