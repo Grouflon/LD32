@@ -36,50 +36,54 @@ class MeleeEnemy extends Enemy
 		sprite.originX = cast(sprite.width * 0.5, Int);
 		sprite.originY = sprite.height;
 		
-		
 		visionRangeDefault = _visionRange;
 	}
 	
 	override public function update() 
 	{
-		super.update();
-		
-		applyGravity();
-		
-		if (cast(HXP.scene, MainScene).player.y == y)
-			visionRange = GB.meleeSameYVisionRange;
-		else
-			visionRange = visionRangeDefault;
+		if (_isEnemyAlive)
+		{
+			super.update();
 			
-		// Mise à jour de l'état de l'ennemi
-		if (isPlayerSpotted())
-			playerSpotted = true;
+			applyGravity();
+			
+			if (cast(HXP.scene, MainScene).player.y == y)
+				visionRange = GB.meleeSameYVisionRange;
+			else
+				visionRange = visionRangeDefault;
+				
+			// Mise à jour de l'état de l'ennemi
+			if (isPlayerSpotted())
+				playerSpotted = true;
+			else
+				playerSpotted = false;
+			
+			// Si le joueur n'est pas vu
+			if (!playerSpotted)
+			{
+				patrol();
+			}
+			// Le joueur est repéré, attaque
+			else
+			{
+				combat();
+			}
+			
+			applyMovement();
+			
+			if (direction == Direction.LEFT)
+			{
+				originX = cast(width * 0.5, Int) + 12;
+				sprite.flipped = true;
+			}
+			else
+			{
+				originX = cast(width * 0.5, Int) - 12;
+				sprite.flipped = false;
+			}
+		}
 		else
-			playerSpotted = false;
-		
-		// Si le joueur n'est pas vu
-		if (!playerSpotted)
-		{
-			patrol();
-		}
-		// Le joueur est repéré, attaque
-		else
-		{
-			combat();
-		}
-		
-		applyMovement();
-		
-		if (direction == Direction.LEFT)
-		{
-			originX = cast(width * 0.5, Int) + 12;
-			sprite.flipped = true;
-		}
-		else
-		{
-			originX = cast(width * 0.5, Int) - 12;
-			sprite.flipped = false;
-		}
+			_fadeOut();
 	}
 	
 	private function patrol()
@@ -154,7 +158,7 @@ class MeleeEnemy extends Enemy
 	{
 		if (e.type == "player")
 		{
-			GameController.playerJustDied(this, false);
+			GameController.enemyKillplayer(this, false);
 		}
 		
 		super.moveCollideX(e);

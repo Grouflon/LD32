@@ -132,7 +132,8 @@ class Arm extends Limb
 				var e : Enemy = cast(e, Enemy);
 				e.notifyDamage(EnemyResistance.ARM);
 				
-				HXP.world.remove(this);
+				HXP.scene.remove(_blood);
+				HXP.scene.remove(this);
 			}
 			else
 			{
@@ -147,7 +148,8 @@ class Arm extends Limb
 				var e : Player = cast(e, Player);
 				e.takeDamage(DamageType.RANGE);
 				
-				HXP.world.remove(this);
+				HXP.scene.remove(_blood);
+				HXP.scene.remove(this);
 			}
 			else
 			{
@@ -158,8 +160,9 @@ class Arm extends Limb
 		if (e.type == "block")
 		{
 			_velocity.x = 0;
+			_velocity.y = 0;
 			this.type = "platform";
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { HXP.world.remove(this); }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { HXP.world.remove(_blood); HXP.world.remove(this); }, TweenType.OneShot), true);
 			
 			if (_playerDirection < 0)	_blood.squirt(x + 8, y);
 			else 						_blood.squirt(x - 9, y);
@@ -180,7 +183,8 @@ class Arm extends Limb
 				var e : Enemy = cast(e, Enemy);
 				e.notifyDamage(EnemyResistance.ARM);
 				
-				HXP.world.remove(this);
+				HXP.scene.remove(_blood);
+				HXP.scene.remove(this);
 				return false;
 			}
 			else
@@ -196,7 +200,8 @@ class Arm extends Limb
 				var e : Player = cast(e, Player);
 				e.takeDamage(DamageType.RANGE);
 				
-				HXP.world.remove(this);
+				HXP.scene.remove(_blood);
+				HXP.scene.remove(this);
 			}
 			else
 			{
@@ -206,9 +211,10 @@ class Arm extends Limb
 		
 		if (e.type == "block")
 		{
+			_velocity.y = 0;
 			_velocity.x = 0;
 			this.type = "platform";
-			addTween(new Alarm(5., function (e:Dynamic = null):Void { HXP.world.remove(this); }, TweenType.OneShot), true);
+			addTween(new Alarm(5., function (e:Dynamic = null):Void {  HXP.world.remove(_blood); HXP.world.remove(this); }, TweenType.OneShot), true);
 			
 			if (_playerDirection < 0)	_blood.squirt(x + 8, y);
 			else 						_blood.squirt(x - 9, y);
@@ -224,7 +230,8 @@ class Arm extends Limb
 		
 		if (!onCamera)
 		{
-			HXP.world.remove(this);
+			HXP.scene.remove(_blood);
+			HXP.scene.remove(this);
 		}
 	}
 	

@@ -35,9 +35,7 @@ class EnemyProjectile extends Entity
 	
 	
 	public override function update()
-	{
-		var player:Player = cast(HXP.scene, MainScene).player;
-		
+	{	
 		if (distanceDone < range)
 		{
 			distanceDone += speed * HXP.elapsed;
@@ -75,7 +73,7 @@ class EnemyProjectile extends Entity
 
 		return true;
 	}
-	
+
 	private var distanceDone : Float;
 	private var range : Int;
 	private var speed : Int;

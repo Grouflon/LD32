@@ -8,6 +8,8 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.tweens.misc.Alarm;
 import com.haxepunk.Tween;
+import com.haxepunk.tweens.misc.ColorTween;
+import com.haxepunk.utils.Ease;
 import com.haxepunk.math.Vector;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
@@ -51,7 +53,7 @@ class Enemy extends Entity
 		life = _life;
 		
 		playerSpotted = false;
-			
+		
 		isBoss = _isBoss;
 		
 		owner = _owner;
@@ -64,6 +66,31 @@ class Enemy extends Entity
 		
 		HXP.scene.addGraphic(resistArm);
 		HXP.scene.addGraphic(resistLeg);
+		
+		_colorTween = new ColorTween(function (e:Dynamic)
+		{
+			//_lastWord.get_graphic().destroy();
+			_scene.remove(_lastWord);
+			_scene.remove(this);
+		}, TweenType.OneShot);
+		_colorTween.tween(1, 1, 1, 1., 0., Ease.quadOut);
+		addTween(_colorTween, false);
+		_colorTween.active = false;
+	}
+	
+	private function _fadeOut()
+	{
+		if (_isEnemyDying)
+		{
+			sprite.alpha = _colorTween.alpha;
+		}
+		else
+		{
+			var text:Text = new Text("AAAAAaaaaaaaah Nooooo.", this.x - 140, this.y - 80, 0, 0);
+			_lastWord = _scene.addGraphic(text);
+			_isEnemyDying = true;
+			_colorTween.active = true;
+		}
 	}
 	
 	public function applyGravity()
@@ -191,7 +218,6 @@ class Enemy extends Entity
 				direction = Direction.LEFT;
 			else
 				direction = Direction.RIGHT;
-		
 			velocity.x = 0;
 		}
 		
@@ -214,7 +240,7 @@ class Enemy extends Entity
 			life--;
 			
 			if (life <= 0)
-				HXP.scene.remove(this);
+				_isEnemyAlive = false;
 		}
 		else
 		{
@@ -239,10 +265,12 @@ class Enemy extends Entity
 					resistLeg.visible = false;
 				}, TweenType.OneShot), true);
 			}
-
 		}
 	}
 	
+	private var _colorTween:ColorTween;
+	private var _isEnemyDying:Bool = false;
+	private var _isEnemyAlive:Bool = true;
 	private var speed:Float;
 	private var velocity:Vector;
 	private var direction:Direction;
@@ -257,6 +285,7 @@ class Enemy extends Entity
 	private var sprite : Spritemap;
 	private var owner : EnemySpawner;
 	
+	private var _lastWord:Entity;
 	private var resistLeg:Text;
 	private var resistArm:Text;
 }
