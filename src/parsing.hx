@@ -219,7 +219,7 @@ class Parsing
 	private function createBackground(background:Xml)
 	{
 		var tileSize:Int = 30;
-		var tilemapCols:Int = 5;
+		var tilemapCols:Int = 7;
 		var tilemap:Tilemap = new Tilemap("graphics/bg_tileset.png", _width, _height, tileSize, tileSize);
 		
 		for (tile in background.elements())

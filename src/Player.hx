@@ -190,7 +190,7 @@ class Player extends Entity
 			_canFireArm = false;
 			_armCount--;
 			
-			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction, _height, true)); }, TweenType.OneShot), true);
+			addTween(new Alarm(_limbFireDelay, function (e:Dynamic = null):Void { HXP.scene.add(new Arm(x, y, _direction,  _direction < 0 ? W : E, _height, true)); }, TweenType.OneShot), true);
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < _maxArmCount) this._armCount++; }, TweenType.OneShot), true);
 			addTween(new Alarm(_limbFireCooldown, function (e:Dynamic = null):Void { _canFireArm = true; }, TweenType.OneShot), true);
 		}

@@ -23,11 +23,11 @@ class LimbDummy extends Entity
 	{
 		super(x, y - 60);
 		
-		if (limbType == "leg") { _sprite = new Spritemap("graphics/leg.png", 30, 30); addGraphic(_sprite); }
+		if (limbType == "leg") { _sprite = new Spritemap("graphics/leg_spritesheet.png", 30, 30); addGraphic(_sprite); }
 		else if (limbType == "arm") { var armImage:Image = new Image("graphics/arm.png"); addGraphic(armImage); }
 		
 		
-		_colorTween = new ColorTween(function (e:Dynamic) { HXP.world.remove(this); }, TweenType.OneShot);
+		_colorTween = new ColorTween(function (e:Dynamic) { HXP.scene.remove(this); }, TweenType.OneShot);
 		_colorTween.tween(0.5, 1, 1, 1., 0., Ease.quadOut);
 		addTween(_colorTween, true);
 		
@@ -47,6 +47,7 @@ class LimbDummy extends Entity
 	
 	override public function update():Void
 	{
+		super.update();
 		cast(graphic, Image).alpha = _colorTween.alpha;
 		moveBy(_velocity.x, _velocity.y);
 	}

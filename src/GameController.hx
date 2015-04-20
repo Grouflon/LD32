@@ -24,9 +24,6 @@ class GameController
 		HXP.scene.removeAll();
 		HXP.scene = new MainScene(file);
 		
-		_blood = new BloodSquirt();
-		HXP.scene.add(_blood);
-		
 		_levelName = file;
 		_isPlayerAlive = true;
 	}
@@ -92,7 +89,6 @@ class GameController
 		startGame(file);
 	}
 	
-	static private var _blood:BloodSquirt;
 	static private var _levelName:String;
 	static private var _isPlayerAlive:Bool;
 	static private var _inGame:Bool = false;
