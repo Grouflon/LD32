@@ -529,7 +529,6 @@ class BossEnemy extends Enemy
 						phaseIntensity++;
 					}
 			
-					life = 0;
 					if (life <= 0) // boss end
 					{
 						var colorTween = new ColorTween(function (e:Dynamic) {

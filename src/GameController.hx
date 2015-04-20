@@ -31,7 +31,7 @@ class GameController
 	
 	static public function winGame():Void
 	{
-		cast(HXP.scene, MainScene).player.addGraphic(new Text("CONGRATULATIONS, YOU WON !!!", HXP.halfWidth, HXP.halfHeight, 100, 15));
+		cast(HXP.scene, MainScene).addGraphic(new Text("CONGRATULATIONS, YOU WON !!!", HXP.halfWidth - 200, HXP.halfHeight, 100, 15));
 		HXP.scene.addTween(new Alarm(5, function (e:Dynamic) {
 			HXP.scene = new MenuScene();
 		}, TweenType.OneShot), true);

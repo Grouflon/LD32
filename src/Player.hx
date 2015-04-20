@@ -336,7 +336,7 @@ class Player extends Entity
 		
 		if (e.type == "victory")
 		{
-			trace("I just won the game");
+			HXP.scene.remove(e);
 			GameController.winGame();
 		}
 		
@@ -364,7 +364,7 @@ class Player extends Entity
 		
 		if (e.type == "victory")
 		{
-			trace("I just won the game");
+			HXP.scene.remove(e);
 			GameController.winGame();
 		}
 		
@@ -397,7 +397,7 @@ class Player extends Entity
 			_speed = GB.playerSpeed;
 		}
 		
-		moveBy(_velocity.x * _direction * HXP.elapsed, _velocity.y * HXP.elapsed, ["block", "platform", "enemy", "levelChanger"]);
+		moveBy(_velocity.x * _direction * HXP.elapsed, _velocity.y * HXP.elapsed, ["block", "platform", "enemy", "levelChanger", "victory"]);
 	}
 	
 	private function _initGraphics():Void
