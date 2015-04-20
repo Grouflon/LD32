@@ -44,66 +44,70 @@ class RangeEnemy extends Enemy
 	
 	override public function update() 
 	{
-		if (GameController.isPlayerAlive())
+		if (_isEnemyAlive)
 		{
-		super.update();
-		
-		applyGravity();
-		
-		// Mise à jour de l'état de l'ennemi
-		if (isPlayerSpotted())
-			playerSpotted = true;
-		else
-			playerSpotted = false;
-		
-		// Si le joueur n'est pas vu
-		if (!playerSpotted)
-		{
-			// Alors qu'il était en combat, alors on reste encore un peu en attente
-			if (state == EnemyState.COMBAT)
+			if (GameController.isPlayerAlive())
 			{
-				stateTimer = stateCooldown;
+				super.update();
 				
-				stateTimer -= HXP.elapsed;
+				applyGravity();
 				
-				if (stateTimer < 0)
+				// Mise à jour de l'état de l'ennemi
+				if (isPlayerSpotted())
+					playerSpotted = true;
+				else
+					playerSpotted = false;
+				
+				// Si le joueur n'est pas vu
+				if (!playerSpotted)
 				{
-					state = EnemyState.CHILL;
-					patrol();
+					// Alors qu'il était en combat, alors on reste encore un peu en attente
+					if (state == EnemyState.COMBAT)
+					{
+						stateTimer = stateCooldown;
+						
+						stateTimer -= HXP.elapsed;
+						
+						if (stateTimer < 0)
+						{
+							state = EnemyState.CHILL;
+							patrol();
+						}
+						else
+						{
+							combat();
+						}
+					}
+					// Sinon on patrouille
+					else
+					{
+						patrol();
+					}
 				}
+				// Le joueur est repéré, attaque
 				else
 				{
 					combat();
 				}
+				
+				applyMovement();
+				
+				
+				if (direction == Direction.LEFT)
+				{
+					originX = cast(width * 0.5, Int) + 12;
+					sprite.flipped = true;
+				}
+				else
+				{
+					originX = cast(width * 0.5, Int) - 12;
+					sprite.flipped = false;
+				}
 			}
-			// Sinon on patrouille
-			else
-			{
-				patrol();
-			}
-		}
-		// Le joueur est repéré, attaque
-		else
-		{
-			combat();
-		}
-		
-		applyMovement();
-		
-		
-		if (direction == Direction.LEFT)
-		{
-			originX = cast(width * 0.5, Int) + 12;
-			sprite.flipped = true;
 		}
 		else
-		{
-			originX = cast(width * 0.5, Int) - 12;
-			sprite.flipped = false;
-		}
-		}
+			_fadeOut();
 	}
-	
 	
 	private function patrol()
 	{
@@ -183,7 +187,6 @@ class RangeEnemy extends Enemy
 		
 		return true;
 	}
-	
 	
 	private var attackCooldown : Int;
 	private var attackTimer : Float;
