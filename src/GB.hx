@@ -14,6 +14,8 @@ class GB
 	}
 	
 	// PLAYER
+	// reset level after die
+	static public var playerDying:Float = 400.;
 	//               jump
 	static public var playerTallReach:Float 	= 12;
 	static public var playerShortReach:Float	= 10;
@@ -23,7 +25,7 @@ class GB
 	static public var playerLeglessSpeed:Float 	= 0.;
 	
 	//               shake 
-	static public var playerTouchesGroundShakeIntensity = 2;
+	static public var playerTouchesGroundShakeIntensity = 1;
 	static public var playerTouchesGroundShakeDuration = 0.2;
 	
 	// LIMBS

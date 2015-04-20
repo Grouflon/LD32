@@ -58,7 +58,7 @@ class Player extends Entity
 	
 	override public function update():Void
 	{
-		if (GameController.isPlayerAlive())
+		if (_isPlayerAlive)
 		{
 			super.update();
 			
@@ -107,7 +107,6 @@ class Player extends Entity
 				_fireLeg();
 			}
 			_updateSize();
-	
 			
 			_playerMovement();
 			
@@ -120,12 +119,17 @@ class Player extends Entity
 			_hitPlatform = false;
 			_lastFramePosition.x = x;
 			_lastFramePosition.y = y;
-			
-			trace(_velocity.y);
-			
 		}
+		else
+			trace("you");
 	}
 
+	public function fadeOut()
+	{
+		if (GB.playerDying <= 0.0)
+			GameController.playerJustDied(this, false);
+		--GB.playerDying;
+	}
 	
 	public function addLeg():Void
 	{
@@ -221,20 +225,6 @@ class Player extends Entity
 		if (_velocity.y < -2.0)
 			_velocity.y = -2.0;
 	}
-	/*
-	private function _doJump():Void
-	{
-		if (_short)
-		{
-			_reach = GB.playerShortReach;
-		}
-		else
-		{
-			_reach = GB.playerTallReach;
-		}
-		_onGround = false;
-		_velocity.y = -_reach;
-	}*/
 	
 	override public function moveCollideY(e:Entity):Bool
 	{		
@@ -551,7 +541,7 @@ class Player extends Entity
 	{
 		if (type == DamageType.MELEE)
 		{
-			GameController.playerJustDied(this, false);
+			_isPlayerAlive = false;
 		}
 		else if (type == DamageType.RANGE)
 		{
@@ -627,7 +617,7 @@ class Player extends Entity
 	public function getMaxArmCount() { return _maxArmCount; }
 	public function getMaxLegCount() { return _maxLegCount; }
 	
-	
+	private var _isPlayerAlive = true;
 	private var _blood:BloodSquirt;
 	
 	private var _sprite:Spritemap;
