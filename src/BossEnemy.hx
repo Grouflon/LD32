@@ -6,6 +6,7 @@ import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.tweens.misc.Alarm;
 import com.haxepunk.Tween;
+import com.haxepunk.utils.Draw;
 import com.haxepunk.utils.Ease;
 import com.haxepunk.tweens.misc.ColorTween;
 
@@ -23,15 +24,22 @@ class BossEnemy extends Enemy
 	{
 		var _resistance : EnemyResistance = EnemyResistance.BOTH;
 		
-		sprite = new Spritemap("graphics/boss.png", _width, _height);
+		_width = 150;
+		_height = 150;
+		sprite = new Spritemap("graphics/boss_spritesheet.png", _width, _height);
+		sprite.add("sleep", [0, 0, 1, 2, 2, 1], 10);
+		sprite.add("walk", [10, 11, 12, 13, 14, 15, 16, 17], 15);
 		sprite.flipped = true;
 		
 		sprite.originX = cast(_width * 0.5, Int);
 		sprite.originY = _height;
 		
-		sprite.add("normal", [0]);
-		
 		super(_owner, true, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life, sprite);
+		
+		height = 50;
+		width = 100;
+		originX = 50;
+		originY = 50;
 		
 		awake = false;
 		isInvincible = false;
@@ -59,6 +67,15 @@ class BossEnemy extends Enemy
 		legLastXPosCounter = 0;
 		legLastXPos = 0;
 	}
+	
+	/*
+	override public function render():Void
+	{
+		super.render();
+		
+		Draw.hitbox(this);
+		Draw.circle(cast(x, Int), cast(y, Int), 5, 0x00FF00);
+	}*/
 	
 	private function updatePlayerInfo() : Void
 	{
@@ -93,6 +110,7 @@ class BossEnemy extends Enemy
 			
 			if (awake)
 			{
+				sprite.play("walk");
 				if (isArmPhase)
 				{
 					armPhase();
@@ -104,11 +122,16 @@ class BossEnemy extends Enemy
 				else if (isTired)
 				{
 					tired();
+					sprite.play("sleep");
 				}
 				else
 				{
 					trace("nothing to do ..?");
 				}
+			}
+			else
+			{
+				sprite.play("sleep");
 			}
 			
 			applyMovement();
