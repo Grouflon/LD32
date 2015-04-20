@@ -539,6 +539,21 @@ class BossEnemy extends Enemy
 					trace("PAS DE DEGAT SUR CE PROJECTILE");
 				}
 			}
+			else
+			{
+				var limbDummy:LimbDummy;
+				
+				if (projectileType == EnemyResistance.LEG)
+				{
+					limbDummy = new LimbDummy(x, y, "leg");
+				}
+				else
+				{
+					limbDummy = new LimbDummy(x, y, "arm");
+				}
+				
+				HXP.scene.add(limbDummy);
+			}
 		}
 		else
 		{

@@ -858,13 +858,14 @@
     <ammo id="3" x="1560" y="525" limb="ARM" />
     <spawn id="4" x="690" y="240" timer="1" number="1" DamageType="RANGE" Resitance="BOTH" />
     <spawn id="1" x="1530" y="300" timer="8" number="2" DamageType="MELEE" Resitance="BOTH" />
-    <goal id="5" x="3750" y="495" w="30" h="30" nextLevel="levels/level_4.oel" />
+    <goal id="5" x="3750" y="495" w="30" h="30" nextLevel="levels/boss_level.oel" />
     <spawn id="6" x="1920" y="330" timer="5" number="1" DamageType="RANGE" Resitance="LEG" />
     <spawn id="7" x="2490" y="210" timer="5" number="1" DamageType="RANGE" Resitance="LEG" />
     <spawn id="8" x="2430" y="480" timer="1" number="10" DamageType="MELEE" Resitance="BOTH" />
     <spawn id="9" x="3030" y="480" timer="6" number="2" DamageType="MELEE" Resitance="BOTH" />
     <spawn id="10" x="3390" y="60" timer="5" number="1" DamageType="MELEE" Resitance="ARM" />
     <player id="0" x="60" y="570" arms="1" legs="1" />
+    <ammo id="11" x="2910" y="165" limb="LEG" />
   </item>
   <background tileset="background" exportMode="XMLCoords">
     <tile x="0" y="0" tx="1" ty="7" />
