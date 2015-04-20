@@ -24,9 +24,6 @@ class GameController
 		HXP.scene.removeAll();
 		HXP.scene = new MainScene(file);
 		
-		_blood = new BloodSquirt();
-		HXP.scene.add(_blood);
-		
 		_levelName = file;
 		_isPlayerAlive = true;
 	}
@@ -40,11 +37,6 @@ class GameController
 	static public function playerJustDied(e:Entity, boss:Bool):Void
 	{
 		var player : Entity = HXP.scene.getInstance("player");
-		
-		_blood.squirt(player.x, player.y);
-		
-		_blood.squirt(player.x + 8, player.y - 20);
-		_blood.squirt(player.x - 8, player.y - 40);
 		
 		HXP.scene.remove(player);
 		_isPlayerAlive = false;
@@ -93,7 +85,6 @@ class GameController
 		startGame(file);
 	}
 	
-	static private var _blood:BloodSquirt;
 	static private var _levelName:String;
 	static private var _isPlayerAlive:Bool;
 	static private var _inGame:Bool = false;
