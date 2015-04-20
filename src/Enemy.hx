@@ -68,7 +68,7 @@ class Enemy extends Entity
 	
 	public function applyGravity()
 	{
-		velocity.y += 2;
+		velocity.y += 1;
 	}
 	
 	public function applyMovement()
@@ -86,7 +86,8 @@ class Enemy extends Entity
 		else if (direction == Direction.RIGHT)
 			sprite.flipped = false;
 			
-		velocity.x = 0;
+		if (onGround)
+			velocity.x = 0;
 	}
 	
 	private function canIGoLeft() : Bool
@@ -218,9 +219,14 @@ class Enemy extends Entity
 		}
 		else
 		{
+			var limbDummy:LimbDummy;
+			
 			if (resistance == EnemyResistance.ARM)
 			{
+				trace("Resistant to arm");
 				resistArm.visible = true;
+				limbDummy = new LimbDummy(x, y, "arm");
+				HXP.scene.add(limbDummy);
 				this.addTween(new Alarm(2., function (e:Dynamic) {
 					resistArm.visible = false;
 				}, TweenType.OneShot), true);
@@ -228,6 +234,8 @@ class Enemy extends Entity
 			else if (resistance == EnemyResistance.LEG)
 			{
 				resistLeg.visible = true;
+				limbDummy = new LimbDummy(x, y, "leg");
+				HXP.scene.add(limbDummy);
 				this.addTween(new Alarm(2., function (e:Dynamic) {
 					resistLeg.visible = false;
 				}, TweenType.OneShot), true);
