@@ -45,8 +45,7 @@ class BossEnemy extends Enemy
 		
 		phaseIntensity = 1;
 		timeDashing = 0;
-		
-		player = cast(HXP.scene.getInstance("player"), Player);
+		isGoingUp = false;
 	}
 	
 	private function updatePlayerInfo() : Void
@@ -74,7 +73,7 @@ class BossEnemy extends Enemy
 	{
 		if (GameController.isPlayerAlive())
 		{
-			super.update();
+			player = cast(HXP.scene.getInstance("player"), Player);
 			
 			applyGravity();
 		
@@ -110,7 +109,7 @@ class BossEnemy extends Enemy
 		awake = true;
 		isInvincible = true;
 		isArmPhase = true;
-		jump(6);
+		jumpOffPlatform();
 	}
 	
 	private function armPhase()
@@ -131,16 +130,37 @@ class BossEnemy extends Enemy
 				timeDashing += HXP.elapsed;
 			}
 			
-			if (timeDashing > 2)
+			if (timeDashing > 5 - phaseIntensity)
 				armAttack();
+		}
+		else
+		{	
+			// declenche l' arm attack au sommet du saut
+			if (velocity.y > 0)
+			{
+				if (isGoingUp)
+					_armAttack();
+					
+				isGoingUp = false;
+			}
+			
+			if (playerDirection == Direction.LEFT)
+			{
+				velocity.x -= speed / 2 * phaseIntensity * HXP.elapsed;
+				direction = playerDirection;
+			}
+			else if (playerDirection == Direction.RIGHT)
+			{
+				direction = playerDirection;
+				velocity.x += speed / 2 * phaseIntensity * HXP.elapsed;
+			}
 		}
 	}
 	
 	private function armAttack()
 	{
 		timeDashing = 0;
-		jump(10);
-		addTween(new Alarm(0.5, function (e:Dynamic = null):Void { _armAttack(); }, TweenType.OneShot), true);
+		jump(15 + phaseIntensity * 2);
 	}
 	
 	private function _armAttack()
@@ -160,9 +180,18 @@ class BossEnemy extends Enemy
 	private function jump(reach : Int)
 	{
 		onGround = false;
-		velocity.x += thisToPlayer.length;
-		velocity.y = reach;
+		velocity.y -= reach;
+		isGoingUp = true;
 	}
+	
+	private function jumpOffPlatform()
+	{
+		onGround = false;
+		velocity.y -= 15;
+		velocity.x += 15;
+	}
+	
+	
 	
 	/*private function patrol()
 	{
@@ -292,8 +321,9 @@ class BossEnemy extends Enemy
 		{
 			wakeUp();
 		}
-		
 	}
+	
+	private var isGoingUp : Bool;
 	
 	private var player : Player;
 	private var thisToPlayer : Vector;

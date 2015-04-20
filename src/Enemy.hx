@@ -86,8 +86,7 @@ class Enemy extends Entity
 		else if (direction == Direction.RIGHT)
 			sprite.flipped = false;
 			
-		if (onGround)
-			velocity.x = 0;
+		velocity.x = 0;
 	}
 	
 	private function canIGoLeft() : Bool
