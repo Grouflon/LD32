@@ -7,6 +7,8 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.tweens.misc.Alarm;
 import com.haxepunk.Tween;
 import com.haxepunk.utils.Draw;
+import com.haxepunk.utils.Ease;
+import com.haxepunk.tweens.misc.ColorTween;
 
 import Arm;
 import Leg;
@@ -98,11 +100,9 @@ class BossEnemy extends Enemy
 	
 	override public function update() 
 	{
-		trace(life);
-		
 		if (GameController.isPlayerAlive())
 		{
-			player = cast(HXP.scene.getInstance("player"), Player);
+			player = cast(HXP.scene, MainScene).player;
 			
 			applyGravity();
 		
@@ -547,9 +547,17 @@ class BossEnemy extends Enemy
 						counterToMinusIntensity = 0;
 						phaseIntensity++;
 					}
-					
-					if (life <= 0)
-						HXP.scene.remove(this);// bossEnd();
+			
+					life = 0;
+					if (life <= 0) // boss end
+					{
+						var colorTween = new ColorTween(function (e:Dynamic) {
+							HXP.scene.remove(this);
+							HXP.scene.add(new VictoryLimb(HXP.halfWidth - 80, HXP.halfHeight + 200));
+						}, TweenType.OneShot);
+						_colorTween.tween(5., 1, 1, 1., 0., Ease.quadOut);
+						addTween(colorTween, true);
+					}
 						
 						notTiredAnymore();
 				}

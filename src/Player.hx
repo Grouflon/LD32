@@ -286,7 +286,7 @@ class Player extends Entity
 			return true;
 		}
 		
-		else if (e.type == "platform")
+		if (e.type == "platform")
 		{
 			_hitPlatform = true;
 			if (_onGround)
@@ -318,7 +318,7 @@ class Player extends Entity
 			}
 		}
 		
-		else if (e.type == "block")
+		if (e.type == "block")
 		{
 			_velocity.y = 0;
 			if (_velocity.y >= 0)
@@ -328,10 +328,16 @@ class Player extends Entity
 			return true;
 		}
 		
-		else if (e.type == "levelChanger")
+		if (e.type == "levelChanger")
 		{
 			var levelchanger : LevelChanger = cast(e, LevelChanger);
 			levelchanger.changeLevel();
+		}
+		
+		if (e.type == "victory")
+		{
+			trace("I just won the game");
+			GameController.winGame();
 		}
 		
 		return false;
@@ -354,6 +360,12 @@ class Player extends Entity
 		{
 			var levelchanger : LevelChanger = cast(e, LevelChanger);
 			levelchanger.changeLevel();
+		}
+		
+		if (e.type == "victory")
+		{
+			trace("I just won the game");
+			GameController.winGame();
 		}
 		
 		return true;
