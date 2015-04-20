@@ -48,8 +48,9 @@ class Leg extends Limb
 	
 	override public function update():Void
 	{	
-		if (_bounceAmount == 0)
+		if (_bounceAmount <= 0)
 		{
+			HXP.scene.remove(_blood);
 			HXP.scene.remove(this);
 		}
 		
@@ -76,7 +77,8 @@ class Leg extends Limb
 				var e : Enemy = cast(e, Enemy);
 				e.notifyDamage(EnemyResistance.LEG);
 				
-				HXP.world.remove(this);
+				HXP.scene.remove(_blood);
+				HXP.scene.remove(this);
 			}
 			else
 			{
@@ -91,7 +93,8 @@ class Leg extends Limb
 				var e : Player = cast(e, Player);
 				e.takeDamage(DamageType.RANGE);
 				
-				HXP.world.remove(this);
+				HXP.scene.remove(_blood);
+				HXP.scene.remove(this);
 			}
 			else
 			{
@@ -122,7 +125,8 @@ class Leg extends Limb
 				var e : Enemy = cast(e, Enemy);
 				e.notifyDamage(EnemyResistance.LEG);
 				
-				HXP.world.remove(this);
+				HXP.scene.remove(_blood);
+				HXP.scene.remove(this);
 			}
 			else
 			{
@@ -136,8 +140,8 @@ class Leg extends Limb
 			{
 				var e : Player = cast(e, Player);
 				e.takeDamage(DamageType.RANGE);
-				
-				HXP.world.remove(this);
+				HXP.scene.remove(_blood);
+				HXP.scene.remove(this);
 			}
 			else
 			{

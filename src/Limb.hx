@@ -41,7 +41,7 @@ class Limb extends Entity
 		
 		if (!onCamera)
 		{
-			HXP.world.remove(this);
+			HXP.scene.remove(this);
 		}
 	}
 	
