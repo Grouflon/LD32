@@ -88,6 +88,7 @@ class RangeEnemy extends Enemy
 				else
 				{
 					combat();
+					sprite.stop();
 				}
 				
 				applyMovement();

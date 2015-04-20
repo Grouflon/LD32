@@ -73,7 +73,7 @@ class Enemy extends Entity
 			_scene.remove(_lastWord);
 			_scene.remove(this);
 		}, TweenType.OneShot);
-		_colorTween.tween(1, 1, 1, 1., 0., Ease.quadOut);
+		_colorTween.tween(0.4, 1, 1, 1., 0., Ease.quadOut);
 		addTween(_colorTween, false);
 		_colorTween.active = false;
 	}
@@ -90,6 +90,7 @@ class Enemy extends Entity
 			_lastWord = _scene.addGraphic(text);
 			_isEnemyDying = true;
 			_colorTween.active = true;
+			collidable = false;
 		}
 	}
 	

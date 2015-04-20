@@ -29,7 +29,8 @@ class EnemyProjectile extends Entity
 		
 		xTarget = _xTarget;
 		yTarget = _yTarget;
-		
+		previewX = _xTarget;
+		previewY = _yTarget;
 		distanceDone = 0;
 	}
 	
@@ -38,8 +39,19 @@ class EnemyProjectile extends Entity
 	{	
 		if (distanceDone < range)
 		{
-			distanceDone += speed * HXP.elapsed;
-			moveTowards( xTarget, yTarget, speed * HXP.elapsed, ["block", "player"], true);
+			if (awake)
+			{
+				distanceDone += speed * HXP.elapsed;
+				moveTowards(this.x + previewX, this.y + previewY, speed * HXP.elapsed, ["block", "player"], true);
+			}
+			else
+			{
+				distanceDone += speed * HXP.elapsed;
+				moveTowards( xTarget, yTarget, speed * HXP.elapsed, ["block", "player"], true);
+				previewX -= this.x;
+				previewY -= this.y;
+				awake = true;
+			}
 		}
 		else
 		{
@@ -74,9 +86,12 @@ class EnemyProjectile extends Entity
 		return true;
 	}
 
+	private var awake : Bool = false;
 	private var distanceDone : Float;
 	private var range : Int;
 	private var speed : Int;
 	private var yTarget : Float;
 	private var xTarget : Float;
+	private var previewX : Float;
+	private var previewY : Float;
 }
