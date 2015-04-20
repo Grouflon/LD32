@@ -63,7 +63,10 @@ class GameController
 		HXP.scene.remove(player);
 		_isPlayerAlive = false;
 		
-		startGame(_levelName);
+
+		HXP.scene.addTween(new Alarm(2., function (e:Dynamic) {
+			startGame(_levelName);
+		 }, TweenType.OneShot), true);
 	}
 	
 	static public function isPlayerAlive():Bool

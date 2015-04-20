@@ -104,7 +104,7 @@ class Parsing
 		var speed:Int = Std.parseInt(boss.get("speed"));
 		var range:Int = Std.parseInt(boss.get("visionRange"));
 		var life:Int = Std.parseInt(boss.get("life"));
-		_scene.add(new BossEnemy(null, x, y, 150, 150, speed, range, life));
+		_scene.add(new BossEnemy(null, x, y, 100, 100, speed, range, life));
 	}
 	
 	private function createPlayer(player)

@@ -230,6 +230,9 @@ class Player extends Entity
 
 			_armCount--;
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._armCount < _maxArmCount) this._armCount++; }, TweenType.OneShot), true);
+			
+			var limbDummy:LimbDummy = new LimbDummy(x, y, "arm");			
+			HXP.scene.add(limbDummy);
 		}
 	}
 	
@@ -246,6 +249,8 @@ class Player extends Entity
 				
 			_legCount--;
 			addTween(new Alarm(5., function (e:Dynamic = null):Void { if (this._legCount < _maxLegCount) this._legCount++; }, TweenType.OneShot), true);
+			var limbDummy:LimbDummy = new LimbDummy(x, y, "leg");			
+			HXP.scene.add(limbDummy);
 		}
 	}
 

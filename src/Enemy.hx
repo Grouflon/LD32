@@ -73,7 +73,7 @@ class Enemy extends Entity
 			_scene.remove(_lastWord);
 			_scene.remove(this);
 		}, TweenType.OneShot);
-		_colorTween.tween(1, 1, 1, 1., 0., Ease.quadOut);
+		_colorTween.tween(0.4, 1, 1, 1., 0., Ease.quadOut);
 		addTween(_colorTween, false);
 		_colorTween.active = false;
 	}
@@ -90,6 +90,7 @@ class Enemy extends Entity
 			_lastWord = _scene.addGraphic(text);
 			_isEnemyDying = true;
 			_colorTween.active = true;
+			collidable = false;
 		}
 	}
 	
@@ -248,7 +249,6 @@ class Enemy extends Entity
 			
 			if (resistance == EnemyResistance.ARM)
 			{
-				trace("Resistant to arm");
 				resistArm.visible = true;
 				limbDummy = new LimbDummy(x, y, "arm");
 				HXP.scene.add(limbDummy);
@@ -267,6 +267,18 @@ class Enemy extends Entity
 			}
 		}
 	}
+	
+	
+	override public function update():Void
+	{
+		super.update();
+		
+		resistArm.x = x - 150;
+		resistArm.y = y - 100;
+		resistLeg.x = x - 110;
+		resistLeg.y = y - 100;
+	}
+	
 	
 	private var _colorTween:ColorTween;
 	private var _isEnemyDying:Bool = false;

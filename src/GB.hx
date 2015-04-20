@@ -44,7 +44,7 @@ class GB
 	static public var rangeVisionRange = 200;
 	static public var rangeEnemyProjectileSpeed = 200;
 	static public var rangeEnemyProjectileRange = 400;
-	static public var rangeAttackCooldown = 1;
+	static public var rangeAttackCooldown = 4;
 	static public var rangeStateChangeCooldown = 3;
 	
 	// BOSS
