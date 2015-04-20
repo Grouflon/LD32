@@ -16,7 +16,7 @@
     <Width>5760</Width>
     <Height>600</Height>
   </LevelMaximumSize>
-  <Filename>D:\Projects\Games\LD32\assets\levels\ld32.oep</Filename>
+  <Filename>D:\FLASHDEV_Workspace\ld32\assets\levels\ld32.oep</Filename>
   <AngleMode>Radians</AngleMode>
   <CameraEnabled>false</CameraEnabled>
   <CameraSize>

@@ -69,8 +69,6 @@ class GameController
 	{
 		var player : Entity = HXP.scene.getInstance("player");
 		
-		trace("Player about to be removed");
-		
 		HXP.scene.remove(player);
 		_isPlayerAlive = false;
 		
