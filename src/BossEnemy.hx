@@ -81,6 +81,8 @@ class BossEnemy extends Enemy
 	
 	override public function update() 
 	{
+		trace(life);
+		
 		if (GameController.isPlayerAlive())
 		{
 			player = cast(HXP.scene.getInstance("player"), Player);
@@ -134,7 +136,6 @@ class BossEnemy extends Enemy
 		awake = true;
 		isInvincible = true;
 		beginArmPhase();
-		jumpOffPlatform();
 	}
 	
 	private function notTiredAnymore() : Void
@@ -433,13 +434,6 @@ class BossEnemy extends Enemy
 		onGround = false;
 		velocity.y -= reach;
 		isGoingUp = true;
-	}
-	
-	private function jumpOffPlatform()
-	{
-		onGround = false;
-		velocity.y -= 15;
-		velocity.x += 15;
 	}
 
 	override public function moveCollideX(e:Entity):Bool

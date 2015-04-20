@@ -26,8 +26,6 @@ class MainScene extends Scene
 
 		levelHeight = level._height;
 		levelWidth = level._width;
-		
-		//HXP.scene.add(new BossEnemy(null, 500, 150, 100, 100, 0, 0, 10));	
 	}
 	
 	public override function update()
