@@ -129,6 +129,10 @@ class BossEnemy extends Enemy
 					trace("nothing to do ..?");
 				}
 			}
+			else
+			{
+				sprite.play("sleep");
+			}
 			
 			applyMovement();
 		}
