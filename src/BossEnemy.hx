@@ -285,7 +285,7 @@ class BossEnemy extends Enemy
 	
 	private function fireArm(_direction : Int, _fireHeight : Int)
 	{
-		HXP.scene.add(new Arm(x, y, _direction, _fireHeight, false));
+		HXP.scene.add(new Arm(x, y, _direction, _direction < 0 ? W : E, _fireHeight, false));
 	}
 	
 	/*private function fireLeg(_direction : Int) : Void

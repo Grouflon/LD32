@@ -16,7 +16,7 @@ import Limb;
 class Arm extends Limb
 {
 
-	public function new(x:Float, y:Float, direction:Int, playerHeight:Int, friendly:Bool)
+	public function new(x:Float, y:Float, direction:Int, orientation:Orientation, playerHeight:Int, friendly:Bool)
 	{
 		super(x + direction * 15, y - (playerHeight / 3) * 2, direction, friendly);
 		
@@ -34,6 +34,90 @@ class Arm extends Limb
 		
 		_blood = new BloodSquirt();
 		HXP.scene.add(_blood);
+		
+		switch orientation
+		{
+			case N:
+				{
+					_velocity.x = 0.;
+					_velocity.y = -10.;
+				}
+			case E:
+				{
+					_velocity.x = 10.;
+					_velocity.y = 0.;
+				}
+			case S:
+				{
+					_velocity.x = 0.;
+					_velocity.y = 10.;
+				}
+			case W:
+				{
+					_velocity.x = -10.;
+					_velocity.y = 0.;
+				}
+			case NE:
+				{
+					_velocity.x = 5.;
+					_velocity.y = -5.;
+				}
+			case SE:
+				{
+					_velocity.x = 5.;
+					_velocity.y = 5.;
+				}
+			case SW:
+				{
+					_velocity.x = -5.;
+					_velocity.y = 5.;
+				}
+			case NW:
+				{
+					_velocity.x = -5.;
+					_velocity.y = -5.;
+				}
+			case NNE:
+				{
+					_velocity.x = 3.;
+					_velocity.y = -7.;
+				}
+			case NEE:
+				{
+					_velocity.x = 7.;
+					_velocity.y = -3.;
+				}
+			case SEE:
+				{
+					_velocity.x = 7.;
+					_velocity.y = 3.;
+				}
+			case SSE:
+				{
+					_velocity.x = 3.;
+					_velocity.y = 7.;
+				}
+			case SSW:
+				{
+					_velocity.x = -3.;
+					_velocity.y = 7.;
+				}
+			case SWW:
+				{
+					_velocity.x = -7.;
+					_velocity.y = 3.;
+				}
+			case NWW:
+				{
+					_velocity.x = -7.;
+					_velocity.y = -3.;
+				}
+			case NNW:
+				{
+					_velocity.x = -3.;
+					_velocity.y = -7.;
+				}
+		}
 	}
 	
 	
@@ -120,13 +204,23 @@ class Arm extends Limb
 			}
 		}
 		
+		if (e.type == "block")
+		{
+			_velocity.x = 0;
+			this.type = "platform";
+			addTween(new Alarm(5., function (e:Dynamic = null):Void { HXP.world.remove(this); }, TweenType.OneShot), true);
+			
+			if (_playerDirection < 0)	_blood.squirt(x + 8, y);
+			else 						_blood.squirt(x - 9, y);
+		}
+		
 		return true;
 	}
 	
 	
 	override public function update():Void
 	{
-		moveBy(_velocity.x, 0., ["enemy", "player", "block"]);
+		moveBy(_velocity.x, _velocity.y, ["enemy", "player", "block"]);
 		
 		if (!onCamera)
 		{
