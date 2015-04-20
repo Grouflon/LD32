@@ -121,8 +121,6 @@ class Player extends Entity
 			_lastFramePosition.x = x;
 			_lastFramePosition.y = y;
 			
-			trace(_velocity.y);
-			
 		}
 	}
 
