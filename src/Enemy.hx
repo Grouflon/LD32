@@ -249,7 +249,6 @@ class Enemy extends Entity
 			
 			if (resistance == EnemyResistance.ARM)
 			{
-				trace("Resistant to arm");
 				resistArm.visible = true;
 				limbDummy = new LimbDummy(x, y, "arm");
 				HXP.scene.add(limbDummy);
@@ -268,6 +267,18 @@ class Enemy extends Entity
 			}
 		}
 	}
+	
+	
+	override public function update():Void
+	{
+		super.update();
+		
+		resistArm.x = x - 150;
+		resistArm.y = y - 100;
+		resistLeg.x = x - 110;
+		resistLeg.y = y - 100;
+	}
+	
 	
 	private var _colorTween:ColorTween;
 	private var _isEnemyDying:Bool = false;
