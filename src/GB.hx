@@ -15,8 +15,8 @@ class GB
 	
 	// PLAYER
 	//               jump
-	static public var playerTallReach:Float 	= 9.5;
-	static public var playerShortReach:Float	= 7;
+	static public var playerTallReach:Float 	= 12;
+	static public var playerShortReach:Float	= 10;
 	
 	//               speed
 	static public var playerSpeed:Float			= 4.;
@@ -31,7 +31,7 @@ class GB
 	static public var maxBounceAmount:Int 			= 3;
 	
 	// GAME
-	static public var gravity:Vector2 	= new Vector2(0., 20.);
+	static public var gravity:Vector2 	= new Vector2(0., 0.5);
 		
 	// MELEE ENEMY 
 	static public var meleeSpeed = 60;
