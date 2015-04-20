@@ -859,8 +859,8 @@
     <spawn id="4" x="690" y="240" timer="1" number="1" DamageType="RANGE" Resitance="BOTH" />
     <spawn id="1" x="1530" y="300" timer="8" number="2" DamageType="MELEE" Resitance="BOTH" />
     <goal id="5" x="3750" y="495" w="30" h="30" nextLevel="levels/level_4.oel" />
-    <spawn id="6" x="1920" y="330" timer="1" number="1" DamageType="RANGE" Resitance="BOTH" />
-    <spawn id="7" x="2490" y="210" timer="1" number="1" DamageType="RANGE" Resitance="ARM" />
+    <spawn id="6" x="1920" y="330" timer="5" number="1" DamageType="RANGE" Resitance="LEG" />
+    <spawn id="7" x="2490" y="210" timer="5" number="1" DamageType="RANGE" Resitance="LEG" />
     <spawn id="8" x="2430" y="480" timer="1" number="10" DamageType="MELEE" Resitance="BOTH" />
     <spawn id="9" x="3030" y="480" timer="6" number="2" DamageType="MELEE" Resitance="BOTH" />
     <spawn id="10" x="3390" y="60" timer="5" number="1" DamageType="MELEE" Resitance="ARM" />
@@ -2271,7 +2271,7 @@
     <tile x="70" y="1" tx="1" ty="3" />
     <tile x="70" y="2" tx="1" ty="3" />
     <tile x="70" y="3" tx="1" ty="5" />
-    <tile x="70" y="4" tx="1" ty="7" />
+    <tile x="70" y="4" tx="1" ty="6" />
     <tile x="70" y="5" tx="1" ty="3" />
     <tile x="70" y="6" tx="1" ty="3" />
     <tile x="70" y="7" tx="1" ty="5" />
@@ -2953,7 +2953,7 @@
     <tile x="104" y="3" tx="1" ty="3" />
     <tile x="104" y="4" tx="1" ty="5" />
     <tile x="104" y="5" tx="1" ty="6" />
-    <tile x="104" y="6" tx="1" ty="7" />
+    <tile x="104" y="6" tx="1" ty="0" />
     <tile x="104" y="7" tx="1" ty="3" />
     <tile x="104" y="8" tx="1" ty="3" />
     <tile x="104" y="9" tx="1" ty="3" />
@@ -2973,7 +2973,7 @@
     <tile x="105" y="3" tx="1" ty="3" />
     <tile x="105" y="4" tx="1" ty="5" />
     <tile x="105" y="5" tx="1" ty="6" />
-    <tile x="105" y="6" tx="1" ty="7" />
+    <tile x="105" y="6" tx="1" ty="0" />
     <tile x="105" y="7" tx="1" ty="3" />
     <tile x="105" y="8" tx="1" ty="3" />
     <tile x="105" y="9" tx="1" ty="3" />
@@ -3305,7 +3305,7 @@
     <tile x="121" y="15" tx="2" ty="7" />
     <tile x="121" y="16" tx="2" ty="7" />
     <tile x="121" y="17" tx="2" ty="7" />
-    <tile x="121" y="18" tx="2" ty="7" />
+    <tile x="121" y="18" tx="1" ty="7" />
     <tile x="121" y="19" tx="1" ty="7" />
     <tile x="122" y="0" tx="1" ty="0" />
     <tile x="122" y="1" tx="1" ty="1" />
@@ -3425,7 +3425,7 @@
     <tile x="127" y="15" tx="0" ty="7" />
     <tile x="127" y="16" tx="0" ty="7" />
     <tile x="127" y="17" tx="0" ty="7" />
-    <tile x="127" y="18" tx="0" ty="7" />
+    <tile x="127" y="18" tx="1" ty="7" />
     <tile x="127" y="19" tx="1" ty="7" />
   </background>
   <props tileset="props" exportMode="XMLCoords">

@@ -13,7 +13,7 @@
     <Height>600</Height>
   </LevelMinimumSize>
   <LevelMaximumSize>
-    <Width>1920</Width>
+    <Width>5760</Width>
     <Height>600</Height>
   </LevelMaximumSize>
   <Filename>D:\FLASHDEV_Workspace\ld32\assets\levels\ld32.oep</Filename>
@@ -190,8 +190,8 @@
     </EntityDefinition>
     <EntityDefinition Name="boss" Limit="-1" ResizableX="false" ResizableY="false" Rotatable="false" RotateIncrement="15">
       <Size>
-        <Width>150</Width>
-        <Height>150</Height>
+        <Width>100</Width>
+        <Height>100</Height>
       </Size>
       <Origin>
         <X>75</X>

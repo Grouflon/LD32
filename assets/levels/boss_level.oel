@@ -189,6 +189,7 @@
   </platform>
   <item>
     <player id="0" x="60" y="180" arms="2" legs="2" />
+    <boss id="1" x="510" y="225" speed="50" visionRange="200" life="10" />
   </item>
   <background tileset="background" exportMode="XMLCoords">
     <tile x="0" y="0" tx="1" ty="7" />
