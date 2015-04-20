@@ -1,5 +1,6 @@
 package;
 import com.haxepunk.Entity;
+import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
 
@@ -14,7 +15,12 @@ class EnemyProjectile extends Entity
 
 	public function new(_x : Float, _y : Float, _xTarget : Float, _yTarget : Float, _speed : Int, _range : Int) 
 	{
-		super(_x, _y, Image.createCircle(2, 0xFFFF00));
+		super(_x, _y);
+		
+		var sprite:Spritemap = new Spritemap("graphics/scalpel_spritesheet.png", 24, 24);
+		sprite.add("roll", [0, 1, 2, 3, 4, 5, 6, 7], 13);
+		graphic = sprite;
+		sprite.play("roll");
 		
 		layer = 100;
 		
@@ -29,9 +35,7 @@ class EnemyProjectile extends Entity
 	
 	
 	public override function update()
-	{
-		var player:Player = cast(HXP.scene, MainScene).player;
-		
+	{	
 		if (distanceDone < range)
 		{
 			distanceDone += speed * HXP.elapsed;
@@ -69,7 +73,7 @@ class EnemyProjectile extends Entity
 
 		return true;
 	}
-	
+
 	private var distanceDone : Float;
 	private var range : Int;
 	private var speed : Int;

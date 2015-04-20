@@ -37,17 +37,10 @@ class GameController
 		HXP.scene.removeAll();
 	}
 	
-	static public function playerJustDied(e:Entity, boss:Bool):Void
+	static public function enemyKillplayer(e:Entity, boss:Bool = false) : Void
 	{
-		var player : Entity = HXP.scene.getInstance("player");
-		
-		_blood.squirt(player.x, player.y);
-		
-		_blood.squirt(player.x + 8, player.y - 20);
-		_blood.squirt(player.x - 8, player.y - 40);
-		
-		HXP.scene.remove(player);
-		_isPlayerAlive = false;
+		var player : Player = cast(HXP.scene.getInstance("player"), Player);
+		player.diePlayerDie();
 		
 		if (e.type == "player")
 		{
@@ -64,10 +57,16 @@ class GameController
 				HXP.scene.addGraphic(new Text("I'll have you know that I just killed you.", e.x - 140, e.y - 80, 0, 0));
 			}
 		}
+	}
+	
+	static public function playerJustDied():Void
+	{
+		var player : Entity = HXP.scene.getInstance("player");
 		
-		HXP.scene.addTween(new Alarm(2., function (e:Dynamic) {
-			startGame(_levelName);
-		}, TweenType.OneShot), true);
+		HXP.scene.remove(player);
+		_isPlayerAlive = false;
+		
+		startGame(_levelName);
 	}
 	
 	static public function isPlayerAlive():Bool

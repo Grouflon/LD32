@@ -154,7 +154,7 @@ class MeleeEnemy extends Enemy
 	{
 		if (e.type == "player")
 		{
-			GameController.playerJustDied(this, false);
+			GameController.enemyKillplayer(this, false);
 		}
 		
 		super.moveCollideX(e);

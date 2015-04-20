@@ -14,14 +14,12 @@ class GB
 	}
 	
 	// PLAYER
-	// reset level after die
-	static public var playerDying:Float = 400.;
 	//               jump
-	static public var playerTallReach:Float 	= 12;
-	static public var playerShortReach:Float	= 10;
+	static public var playerTallReach:Float 	= 610;
+	static public var playerShortReach:Float	= 500;
 	
 	//               speed
-	static public var playerSpeed:Float			= 4.;
+	static public var playerSpeed:Float			= 160.;
 	static public var playerLeglessSpeed:Float 	= 0.;
 	
 	//               shake 
@@ -33,7 +31,7 @@ class GB
 	static public var maxBounceAmount:Int 			= 3;
 	
 	// GAME
-	static public var gravity:Vector2 	= new Vector2(0., 0.5);
+	static public var gravity:Vector2 	= new Vector2(0., 20);
 		
 	// MELEE ENEMY 
 	static public var meleeSpeed = 60;

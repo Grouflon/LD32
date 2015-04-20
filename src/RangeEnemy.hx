@@ -11,23 +11,29 @@ import com.haxepunk.graphics.Spritemap;
 class RangeEnemy extends Enemy
 {
 
-	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _width : Int, _height : Int, _speed : Int, _visionRange : Int, _life : Int, _resistance : EnemyResistance) 
-	{	
+	public function new(_owner : EnemySpawner, _xPos : Float, _yPos : Float, _speed : Int, _visionRange : Int, _life : Int, _resistance : EnemyResistance) 
+	{
+		sprite = new Spritemap("graphics/enemy_woman_spritesheet.png", 84, 81);
+		super(_owner, false, _xPos, _yPos, 44, 69, _speed, _visionRange, _resistance, _life, sprite);
+		sprite.add("walk", [0, 1, 2, 3, 4, 5, 6, 7], 13);
+		sprite.add("walk_arm", [10, 11, 12, 13, 14, 15, 16, 17], 13);
+		sprite.add("walk_leg", [20, 21, 22, 23, 24, 25, 26, 27], 13);
+		
 		if (_resistance == EnemyResistance.ARM)
 		{
-			sprite = new Spritemap("graphics/range_arm.png", 32, 50);
+			sprite.play("walk_arm");
+		}
+		else if (_resistance == EnemyResistance.LEG)
+		{
+			sprite.play("walk_leg");
 		}
 		else
 		{
-			sprite = new Spritemap("graphics/range_leg.png", 32, 50);
+			sprite.play("walk");
 		}
 		
-		sprite.originX = cast(_width * 0.5, Int);
-		sprite.originY = _height;
-		
-		sprite.add("normal", [0]);
-		
-		super(_owner, false, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life,  sprite);
+		sprite.originX = cast(sprite.width * 0.5, Int);
+		sprite.originY = sprite.height;
 		
 		attackCooldown = GB.rangeAttackCooldown;
 		attackTimer = 0;
@@ -83,6 +89,18 @@ class RangeEnemy extends Enemy
 		}
 		
 		applyMovement();
+		
+		
+		if (direction == Direction.LEFT)
+		{
+			originX = cast(width * 0.5, Int) + 12;
+			sprite.flipped = true;
+		}
+		else
+		{
+			originX = cast(width * 0.5, Int) - 12;
+			sprite.flipped = false;
+		}
 		}
 	}
 	
@@ -158,7 +176,7 @@ class RangeEnemy extends Enemy
 	{
 		if (e.type == "player")
 		{
-			GameController.playerJustDied(this, false);
+			GameController.enemyKillplayer(this, false);
 		}
 		
 		super.moveCollideX(e);

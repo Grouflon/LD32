@@ -175,7 +175,7 @@ class BossEnemy extends Enemy
 	{
 		if (e.type == "player")
 		{
-			GameController.playerJustDied(this, true);
+			GameController.enemyKillplayer(this, true);
 		}
 		
 		super.moveCollideX(e);
