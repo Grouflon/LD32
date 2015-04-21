@@ -2,6 +2,7 @@ package;
 
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.graphics.Spritemap;
 
 /**
  * ...
@@ -14,10 +15,19 @@ class VictoryLimb extends Entity
 	{
 		super(x, y);
 		
-		addGraphic(Image.createRect(30, 30, 0xFFFFFF, 1));
+		var sprite:Spritemap = new Spritemap("graphics/victory_pickup.png", 33, 75);
+		sprite.add("float", [0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 2, 2, 1, 1], 13);
+		height = 33;
+		width = 75;
 		
-		setHitbox(30, 30);
-		collidable = true;
+		originX = cast(Math.round(sprite.width * 0.5), Int);
+		originY = cast(Math.round(sprite.height * 0.5), Int);
+		
+		sprite.originX = originX;
+		sprite.originY = originY;
+		
+		addGraphic(sprite);
+		sprite.play("float");
 		
 		name = "victory";
 		type = "victory";

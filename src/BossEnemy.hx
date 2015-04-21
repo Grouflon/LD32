@@ -34,7 +34,7 @@ class BossEnemy extends Enemy
 		sprite.originX = cast(_width * 0.5, Int);
 		sprite.originY = _height;
 		
-		super(_owner, true, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, _life, sprite);
+		super(_owner, true, _xPos, _yPos, _width, _height, _speed, _visionRange, _resistance, 1, sprite);
 		
 		height = 50;
 		width = 100;
