@@ -19,7 +19,7 @@ class GB
 	static public var playerShortReach:Float	= 500;
 	
 	//               speed
-	static public var playerSpeed:Float			= 160.;
+	static public var playerSpeed:Float			= 175.;
 	static public var playerLeglessSpeed:Float 	= 0.;
 	
 	//               shake 

@@ -36,8 +36,8 @@ class Leg extends Limb
 		originX = cast(Math.round(_sprite.height / 2), Int);
 		originY = cast(Math.round(_sprite.width / 2), Int);
 		
-		_velocity.x = 5. * direction;
-		_velocity.y = -6;
+		_velocity.x = 6. * direction;
+		_velocity.y = -5;
 		
 		_bounceAmount = GB.maxBounceAmount;
 		

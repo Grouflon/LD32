@@ -59,7 +59,7 @@ class MenuScene extends Scene
 	{
 		
 		GameController.clean();
-		GameController.startGame("levels/boss_level.oel");
+		GameController.startGame("levels/level_1.oel");
 	}
 	
 	private var _image:Image;
