@@ -96,12 +96,10 @@ class RangeEnemy extends Enemy
 				if (direction == Direction.LEFT)
 				{
 					originX = cast(width * 0.5, Int) + 12;
-					sprite.flipped = true;
 				}
 				else
 				{
 					originX = cast(width * 0.5, Int) - 12;
-					sprite.flipped = false;
 				}
 			}
 		}

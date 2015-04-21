@@ -591,13 +591,13 @@ class Player extends Entity
 		
 		if (_direction > 0)
 		{
-			_legsSprite.flipped = false;
-			_chestSprite.flipped = false;
+			_legsSprite.scaleX = 1;
+			_chestSprite.scaleX = 1;
 		}
 		else if (_direction < 0)
 		{
-			_legsSprite.flipped = true;
-			_chestSprite.flipped = true;
+			_legsSprite.scaleX = -1;
+			_chestSprite.scaleX = -1;
 		}
 	}
 

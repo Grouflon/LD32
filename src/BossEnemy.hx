@@ -29,7 +29,7 @@ class BossEnemy extends Enemy
 		sprite = new Spritemap("graphics/boss_spritesheet.png", _width, _height);
 		sprite.add("sleep", [0, 0, 1, 2, 2, 1], 10);
 		sprite.add("walk", [10, 11, 12, 13, 14, 15, 16, 17], 15);
-		sprite.flipped = true;
+		sprite.scaleX = -1;
 		
 		sprite.originX = cast(_width * 0.5, Int);
 		sprite.originY = _height;

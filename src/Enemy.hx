@@ -110,9 +110,9 @@ class Enemy extends Entity
 		}
 		
 		if (direction == Direction.LEFT)
-			sprite.flipped = true;
+			sprite.scaleX = -1;
 		else if (direction == Direction.RIGHT)
-			sprite.flipped = false;
+			sprite.scaleX = 1;
 			
 		velocity.x = 0;
 	}
