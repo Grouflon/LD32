@@ -8,17 +8,17 @@
 	<window width="990" height="630" resizable="true" unless="mobile" />
 	<window fullscreen="true" if="mobile" />
 	<window orientation="landscape" vsync="true" antialiasing="0" if="cpp" />
-
+	
 	<source path="src" />
 
 	<haxelib name="HaxePunk" />
 	<haxelib name="hxmath" />
 
-	<assets path="assets/graphics" rename="graphics" include="*.png|*.jpg" />
-	<assets path="assets/audio" rename="audio" include="*.mp3" if="flash" />
-	<assets path="assets/audio" rename="audio" include="*.wav|*.ogg" unless="flash" />
-	<assets path="assets/font" rename="font" include="*.ttf" />
-	<assets path="assets/levels" rename="levels" include="*.oel|*.xml" />
+	<assets path="assets/graphics" rename="graphics" include="*.png|*.jpg" embed="false"/>
+	<assets path="assets/audio" rename="audio" include="*.mp3" if="flash" embed="false"/>
+	<assets path="assets/audio" rename="audio" include="*.wav|*.ogg" unless="flash" embed="false"/>
+	<assets path="assets/font" rename="font" include="*.ttf" embed="false"/>
+	<assets path="assets/levels" rename="levels" include="*.oel|*.xml" embed="false"/>
 	
 	<icon path="assets/HaxePunk.svg" />
 </project>

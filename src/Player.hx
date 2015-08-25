@@ -44,11 +44,11 @@ class Player extends Entity
 		name = "player";
 		type = "player";
 		
-		Input.define("Jump", [Key.W, Key.UP, Key.SPACE]);
-		Input.define("MoveLeft", [Key.A, Key.LEFT]);
+		Input.define("Jump", [Key.Z, Key.UP, Key.SPACE]);
+		Input.define("MoveLeft", [Key.Q, Key.LEFT]);
 		Input.define("MoveRight", [Key.D, Key.RIGHT]);
-		Input.define("MoveDown", [Key.CONTROL, Key.DOWN]);
-		Input.define("FireArm", [Key.Q]);
+		Input.define("MoveDown", [Key.S, Key.DOWN]);
+		Input.define("FireArm", [Key.A]);
 		Input.define("FireLeg", [Key.E]);
 		
 		_armCount = arms;
