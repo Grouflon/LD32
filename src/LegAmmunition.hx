@@ -3,7 +3,9 @@ package;
 import com.haxepunk.Graphic;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
-
+import com.haxepunk.utils.Draw;
+import com.haxepunk.graphics.Text;
+import com.haxepunk.HXP;
 import Ammunition;
 
 /**
@@ -27,6 +29,12 @@ class LegAmmunition extends Ammunition
 		
 		addGraphic(sprite);
 		sprite.play("float");
+		
+		_displayText = new Text("Press E to throw leg", x - 80, y - 60, 0, 0);
+		
+		_displayText.visible = false;
+		
+		HXP.scene.addGraphic(_displayText);
 	}
 	
 	
